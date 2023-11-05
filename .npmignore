@@ -1,6 +1,16 @@
+*.cy.ts
+*.test.ts
+
+/.browserslistrc
+/.eslintrc.json
+/.gitattributes
+/.prettierignore
+/.prettierrc
 /.idea/
 /.package-lock.json
 /auxiliary/
+/cypress.config.ts
 /node_modules/
 /test/cypress/
 /test/vitest/
+/vitest.config.ts

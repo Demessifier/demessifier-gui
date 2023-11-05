@@ -5,3 +5,7 @@ build
 coverage
 gen
 node_modules
+test/cypress/downloads
+test/cypress/screenshots
+test/cypress/videos
+test/vitest
