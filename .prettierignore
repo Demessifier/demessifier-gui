@@ -2,6 +2,6 @@
 .run
 auxiliary
 build
+coverage
 gen
 node_modules
-test/vitest/coverage
