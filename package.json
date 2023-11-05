@@ -4,10 +4,22 @@
   "description": "Demessifier GUI framework",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"TODO: write tests\" && exit 1",
-    "registry-login": "npm adduser --scope @demessifier",
-    "publish-dry": "npm publish --dry-run --access public",
-    "publish-public": "npm publish --access public"
+    "clean-node": "npx rimraf package-lock.json && npx rimraf node_modules",
+    "clear-cache": "npx rimraf auxiliary/*",
+    "dev": "vite --host 0.0.0.0",
+    "lint:fix": "eslint ./ --ext .js,.jsx,.ts,.tsx,.vue --quiet --fix --ignore-path ./.gitignore --cache --cache-strategy content --cache-location auxiliary/eslint-cache",
+    "lint:format": "prettier --loglevel warn --cache --cache-strategy content --cache-location auxiliary/prettier-cache --write \"./**/*.{cjs,css,js,json,jsx,md,ts,tsx,vue}\" ",
+    "lint": "npm run lint:format && npm run lint:fix",
+    "test": "test:vitest-coverage && test:cypress-run-component",
+    "test:vitest-coverage": "vitest run --coverage",
+    "test:vitest-coverage-viewer": "start test/vitest/coverage/index.html",
+    "test:cypress-open": "cypress open",
+    "test:cypress-run-component": "cypress run --component",
+    "test:cypress-run-e2e": "cypress run",
+    "build": "vue-tsc --noEmit && vite build --emptyOutDir",
+    "npm:registry-login": "npm adduser --scope @demessifier",
+    "npm:publish-dry": "npm publish --dry-run --access public",
+    "npm:publish-public": "npm publish --access public"
   },
   "repository": {
     "type": "git",

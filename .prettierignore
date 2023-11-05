@@ -1,0 +1,7 @@
+.idea
+.run
+auxiliary
+build
+gen
+node_modules
+test/vitest/coverage
