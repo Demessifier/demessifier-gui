@@ -1,0 +1,30 @@
+{
+  "name": "@demessifier/demessifier-gui",
+  "version": "0.0.0",
+  "description": "Demessifier GUI framework",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"TODO: write tests\" && exit 1",
+    "registry-login": "npm adduser --scope @demessifier",
+    "publish-dry": "npm publish --dry-run --access public",
+    "publish-public": "npm publish --access public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Demessifier/demessifier-gui.git"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "keywords": [
+    "demessifier",
+    "gui",
+    "vue"
+  ],
+  "author": "McLayn",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Demessifier/demessifier-gui/issues"
+  },
+  "homepage": "https://github.com/Demessifier/demessifier-gui#readme"
+}
