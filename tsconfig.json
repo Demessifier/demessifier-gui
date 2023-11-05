@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "lib": ["esnext", "dom", "dom.iterable"],
+    "allowJs": false,
+    "jsx": "preserve",
+    "skipLibCheck": true,
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "noEmit": true,
+    "types": ["node", "vite/client", "cypress"]
+  },
+  "include": [
+    "./src",
+    "node_modules/@pinia/testing/dist/index.d.ts",
+    "node_modules/cypress/types/cypress-global-vars.d.ts",
+    "cypress/support/component.ts"
+  ]
+}

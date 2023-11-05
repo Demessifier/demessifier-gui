@@ -2,20 +2,24 @@
   "name": "@demessifier/demessifier-gui",
   "version": "0.0.0",
   "description": "Demessifier GUI framework",
-  "main": "src/index.js",
+  "main": "src/main.ts",
   "scripts": {
-    "clean-node": "npx rimraf package-lock.json && npx rimraf node_modules",
-    "clear-cache": "npx rimraf auxiliary/*",
+    "clean": "npm run clean:node && npm run clean:cache",
+    "clean:node": "npx rimraf package-lock.json && npx rimraf node_modules",
+    "clean:cache": "npx rimraf auxiliary/*",
+    "install-packages": "npm install",
+    "audit": "npm audit",
+    "audit-fix": "npm audit fix",
     "dev": "vite --host 0.0.0.0",
-    "lint:fix": "eslint ./ --ext .js,.jsx,.ts,.tsx,.vue --quiet --fix --ignore-path ./.gitignore --cache --cache-strategy content --cache-location auxiliary/eslint-cache",
-    "lint:format": "prettier --loglevel warn --cache --cache-strategy content --cache-location auxiliary/prettier-cache --write \"./**/*.{cjs,css,js,json,jsx,md,ts,tsx,vue}\" ",
+    "lint:format": "prettier --log-level warn --cache --cache-strategy content --cache-location auxiliary/prettier-cache --write \"./**/*.{astro,cjs,css,js,json,jsx,md,ts,tsx,vue}\" ",
+    "lint:fix": "eslint ./ --ext .astro,.js,.jsx,.ts,.tsx,.vue --quiet --fix --ignore-path ./.gitignore --cache --cache-strategy content --cache-location auxiliary/eslint-cache",
     "lint": "npm run lint:format && npm run lint:fix",
-    "test": "test:vitest-coverage && test:cypress-run-component",
     "test:vitest-coverage": "vitest run --coverage",
     "test:vitest-coverage-viewer": "start test/vitest/coverage/index.html",
     "test:cypress-open": "cypress open",
     "test:cypress-run-component": "cypress run --component",
     "test:cypress-run-e2e": "cypress run",
+    "test": "test:vitest-coverage && test:cypress-run-component",
     "build": "vue-tsc --noEmit && vite build --emptyOutDir",
     "npm:registry-login": "npm adduser --scope @demessifier",
     "npm:publish-dry": "npm publish --dry-run --access public",
@@ -38,5 +42,23 @@
   "bugs": {
     "url": "https://github.com/Demessifier/demessifier-gui/issues"
   },
-  "homepage": "https://github.com/Demessifier/demessifier-gui#readme"
+  "homepage": "https://github.com/Demessifier/demessifier-gui#readme",
+  "dependencies": {
+    "vue": "^3.3.7"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.9.1",
+    "@typescript-eslint/parser": "^6.9.1",
+    "@vitejs/plugin-vue": "^4.4.0",
+    "@vitest/coverage-v8": "^0.34.6",
+    "cypress": "^13.4.0",
+    "eslint": "^8.53.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-vue": "^9.18.1",
+    "prettier": "^3.0.3",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2",
+    "vitest": "^0.34.6",
+    "vue-tsc": "^1.8.22"
+  }
 }

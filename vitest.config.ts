@@ -1,6 +1,6 @@
 import { defineConfig } from "vitest/config";
 import { mergeConfig } from "vite";
-import viteConfig from "./client/vite.config";
+import viteConfig from "./vite.config";
 
 // https://vitest.dev/config/
 

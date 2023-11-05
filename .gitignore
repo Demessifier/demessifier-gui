@@ -1,6 +1,5 @@
-/.idea/
-/.package-lock.json
 /auxiliary/
-/cypress/
+/cypress/screenshots/
+/cypress/videos/
 /node_modules/
 /test/vitest/

@@ -2,6 +2,7 @@
 *       text=auto
 
 # Text files with EOL normalization
+*.astro text eol=lf
 *.bat   text eol=crlf
 *.cmd   text eol=crlf
 *.css   text eol=lf
