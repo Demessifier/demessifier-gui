@@ -13,12 +13,7 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "noEmit": true,
-    "types": ["node", "vite/client", "cypress"]
+    "types": ["node", "vite/client", "cypress", "./src/shims-vue.d.ts"]
   },
-  "include": [
-    "src",
-    "node_modules/@pinia/testing/dist/index.d.ts",
-    "node_modules/cypress/types/cypress-global-vars.d.ts",
-    "test/cypress/support/component.ts"
-  ]
+  "include": ["src", "test/cypress"]
 }

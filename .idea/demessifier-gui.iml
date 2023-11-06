@@ -7,6 +7,8 @@
       <excludeFolder url="file://$MODULE_DIR$/test/cypress/screenshots" />
       <excludeFolder url="file://$MODULE_DIR$/test/cypress/videos" />
       <excludeFolder url="file://$MODULE_DIR$/test/vitest" />
+      <excludeFolder url="file://$MODULE_DIR$/build" />
+      <excludeFolder url="file://$MODULE_DIR$/test/cypress/downloads" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

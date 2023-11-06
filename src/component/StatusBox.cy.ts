@@ -7,16 +7,8 @@ function test(
   expectMinimized: boolean
 ) {
   cy.get("div.status-box")
-    .should(
-      "have.css",
-      "color",
-      'rgb(255, 255, 255)'
-    )
-    .should(
-      "have.css",
-      "background-color",
-      'rgb(0, 0, 139)'
-    )
+    .should("have.css", "color", "rgb(255, 255, 255)")
+    .should("have.css", "background-color", "rgb(0, 0, 139)")
     .should(
       "have.attr",
       "title",
@@ -41,40 +33,40 @@ function test(
 }
 
 describe("<StatusBox />", () => {
-  const state = 'default';
-    const title = `Testing state ${state}`;
-    const testingText = `Testing text for ${state}...`;
-    it(`renders ${state}`, () => {
-      // see: https://test-utils.vuejs.org/guide/
-      cy.mount(StatusBox, {
-        props: { headerText: title },
-        slots: { default: testingText },
-      });
-      test(state, testingText, title, false);
+  const state = "default";
+  const title = `Testing state ${state}`;
+  const testingText = `Testing text for ${state}...`;
+  it(`renders ${state}`, () => {
+    // see: https://test-utils.vuejs.org/guide/
+    cy.mount(StatusBox, {
+      props: { headerText: title },
+      slots: { default: testingText },
+    });
+    test(state, testingText, title, false);
 
-      // minimizing and un-minimizing
-      cy.get("div.status-box").click("bottom"); // outside h3
-      test(state, testingText, title, false);
-      cy.get("h3").click();
-      test(state, testingText, title, true);
-      cy.get("div.status-box").click("bottom"); // outside h3
-      test(state, testingText, title, false);
-      cy.get("h3").click();
-      test(state, testingText, title, true);
-      cy.get("h3").click();
-      test(state, testingText, title, false);
+    // minimizing and un-minimizing
+    cy.get("div.status-box").click("bottom"); // outside h3
+    test(state, testingText, title, false);
+    cy.get("h3").click();
+    test(state, testingText, title, true);
+    cy.get("div.status-box").click("bottom"); // outside h3
+    test(state, testingText, title, false);
+    cy.get("h3").click();
+    test(state, testingText, title, true);
+    cy.get("h3").click();
+    test(state, testingText, title, false);
+  });
+  it(`renders ${state} minimized`, () => {
+    // see: https://test-utils.vuejs.org/guide/
+    cy.mount(StatusBox, {
+      props: {
+        headerText: title,
+        initializeMinimized: true,
+      },
+      slots: { default: testingText },
     });
-    it(`renders ${state} minimized`, () => {
-      // see: https://test-utils.vuejs.org/guide/
-      cy.mount(StatusBox, {
-        props: {
-          headerText: title,
-          initializeMinimized: true,
-        },
-        slots: { default: testingText },
-      });
-      test(state, testingText, title, true);
-      cy.get("div.status-box").click();
-      test(state, testingText, title, false);
-    });
+    test(state, testingText, title, true);
+    cy.get("div.status-box").click();
+    test(state, testingText, title, false);
+  });
 });

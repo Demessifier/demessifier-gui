@@ -9,6 +9,7 @@
 /.idea/
 /.package-lock.json
 /auxiliary/
+/build/
 /cypress.config.ts
 /node_modules/
 /test/cypress/

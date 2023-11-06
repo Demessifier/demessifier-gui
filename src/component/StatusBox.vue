@@ -36,11 +36,12 @@ function unMinimize() {
     <h3
       :title="minimized ? unMinimizeTooltip : 'Minimize'"
       @click.stop="switchMinimized"
-    > [&nbsp;i&nbsp;]
+    >
+      [&nbsp;i&nbsp;]
       <span v-if="!minimized">{{ headerText }}</span>
     </h3>
     <div v-if="!minimized">
-      <slot></slot>
+      <!--      <slot></slot>-->
     </div>
   </div>
 </template>
@@ -54,7 +55,9 @@ function unMinimize() {
   /*color: v-bind('`var(--${boxType.color})`');*/
   height: fit-content;
   width: fit-content;
-  transition: width 1s, height 1s; /* doesn't work with fit-content */
+  transition:
+    width 1s,
+    height 1s; /* doesn't work with fit-content */
 
   &.minimized {
     width: fit-content;
