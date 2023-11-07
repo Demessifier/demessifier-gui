@@ -8,7 +8,7 @@ const props = defineProps<Props>();
 
 <template>
   <div>
-    <h1>{{ props.headerText}}</h1>
+    <h1>{{ props.headerText }}</h1>
     <slot></slot>
   </div>
 </template>

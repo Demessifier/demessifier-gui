@@ -41,7 +41,7 @@ function unMinimize() {
       <span v-if="!minimized">{{ headerText }}</span>
     </h3>
     <div v-if="!minimized">
-      <!--      <slot></slot>-->
+      <slot></slot>
     </div>
   </div>
 </template>

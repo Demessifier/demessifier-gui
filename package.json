@@ -4,11 +4,11 @@
   "description": "Demessifier GUI framework",
   "main": "src/index.ts",
   "scripts": {
-    "clean": "npm run clean:node && npm run clean:cache && npm run clean:test && npm run clean:build",
     "clean:node": "npx rimraf package-lock.json && npx rimraf node_modules",
     "clean:cache": "npx rimraf auxiliary/*",
     "clean:test": "npx rimraf test/vitest/* && npx rimraf test/cypress/screenshots/* && npx rimraf test/cypress/videos/* && npx rimraf test/cypress/downloads/*",
     "clean:build": "npx rimraf build/*",
+    "clean": "npm run clean:node && npm run clean:cache && npm run clean:test && npm run clean:build",
     "packages:install": "npm install",
     "packages:update": "npm update",
     "packages:audit": "npm audit",
