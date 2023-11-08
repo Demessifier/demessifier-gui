@@ -4,6 +4,7 @@
 /.browserslistrc
 /.eslintrc.json
 /.gitattributes
+/.github/
 /.prettierignore
 /.prettierrc
 /.idea/
