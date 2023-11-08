@@ -44,6 +44,6 @@ Demessifier GUI is a minimalistic GUI framework for Vue.
 [npm-license-image]: https://badgen.net/npm/license/@demessifier/demessifier-gui
 [npm-license-npm-image]: https://badgen.net/npm/license/@demessifier/demessifier-gui?label=license%20%28npm%29
 [npm-node-image]: https://badgen.net/npm/node/@demessifier/demessifier-gui
-[npm-types-image]: https://badgen.net/npm/types/@demessifier/demessifier-gui
+[npm-types-image]: https://badgen.net/npm/types/@demessifier/demessifier-gui?icon=typescript
 [npm-url]: https://www.npmjs.com/package/@demessifier/demessifier-gui
 [npm-version-image]: https://badgen.net/npm/v/@demessifier/demessifier-gui
