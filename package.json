@@ -21,7 +21,7 @@
     "test:vitest-coverage-viewer": "start test/vitest/coverage/index.html",
     "test:cypress-open": "cypress open",
     "test:cypress-run-component": "cypress run --component",
-    "test:cypress-run-e2e": "cypress run",
+    "test:cypress-run-e2e": "cypress run --e2e",
     "test": "npm run test:vitest-coverage && npm run test:cypress-run-component",
     "build": "vue-tsc --noEmit --project tsconfig.build.json && vite build --emptyOutDir",
     "npm:registry-login": "npm adduser --scope @demessifier",
