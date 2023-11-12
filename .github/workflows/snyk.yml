@@ -2,7 +2,7 @@ name: Snyk Security Check
 
 on:
   push:
-    branches: ['main', 'releasees/*', '4-versioning']
+    branches: ['main', 'releasees/*']
   pull_request:
     branches: [ 'main', 'releasees/*' ]
 
