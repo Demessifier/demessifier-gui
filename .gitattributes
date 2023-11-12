@@ -1,0 +1,37 @@
+# Auto detect text files and perform LF normalization
+*       text=auto
+
+# Text files with EOL normalization
+*.astro text eol=lf
+*.bat   text eol=crlf
+*.cmd   text eol=crlf
+*.css   text eol=lf
+*.csv   text
+*.html  text
+*.js    text eol=lf
+*.jsx   text eol=lf
+*.json  text eol=lf
+*.md    text eol=lf
+*.ps1   text eol=crlf
+*.sh    text eol=lf
+*.sql   text
+*.svg   text eol=lf
+*.ts    text eol=lf
+*.tsx   text eol=lf
+*.txt   text
+*.vue   text eol=lf
+*.xml   text
+*.yaml  text
+*.yml   text
+
+# Non-text files with no EOL normalization
+*.7z    -text
+*.gif   -text
+*.gz    -text
+*.ico   -text
+*.jpg   -text
+*.jpeg  -text
+*.pdf   -text
+*.png   -text
+*.tar   -text
+*.zip   -text
