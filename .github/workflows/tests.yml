@@ -1,13 +1,10 @@
 name: Tests
 
 on:
-  workflow_run:
-    workflows: ['Snyk Security']
-    types:
-      - completed
-
-permissions:
-  contents: read
+  push:
+    branches: ['main', 'releases/*']
+  pull_request:
+    branches: [ 'main', 'releases/*' ]
 
 jobs:
   build:
