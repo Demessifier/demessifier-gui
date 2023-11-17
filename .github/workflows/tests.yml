@@ -16,9 +16,9 @@ jobs:
         node-version: [ 18.x, 20.x ] # node.js LTS versions - see https://endoflife.date/nodejs
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@latest
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@latest
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
