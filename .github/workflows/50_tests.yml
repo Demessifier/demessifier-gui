@@ -2,9 +2,12 @@ name: Tests
 
 on:
   workflow_run:
-    workflows: ['Snyk Security Check']
+    workflows: ['Snyk Security']
     types:
       - completed
+
+permissions:
+  contents: read
 
 jobs:
   build:
