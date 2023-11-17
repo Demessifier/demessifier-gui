@@ -4,6 +4,7 @@
 [![NPM install size][npm-install-size-image]][npm-install-size-url]
 [![NodeJs version][npm-node-image]][npm-url]
 [![NPM types][npm-types-image]][npm-url]
+[![Known Vulnerabilities][github-snyk-image]][github-snyk-url]
 [![License][npm-license-image]][npm-url]
 
 <!--
@@ -33,6 +34,8 @@ Demessifier GUI is a minimalistic GUI framework for Vue.
 [github-license-local-image]: https://badgen.net/github/license/demessifier/demessifier-gui?icon=git&label=license%20%28GitHub%20local%29
 [github-license-main-image]: https://badgen.net/github/license/demessifier/demessifier-gui?icon=github&label=license%20%28GitHub%20main%29
 [github-license-url]: https://github.com/Demessifier/demessifier-gui/blob/main/LICENSE
+[github-snyk-image]: https://snyk.io/test/github/demessifier/demessifier-gui/badge.svg
+[github-snyk-url]: https://snyk.io/test/github/demessifier/demessifier-gui
 [github-url]: https://github.com/Demessifier/demessifier-gui
 [npm-dependents-image]: https://badgen.net/npm/dependents/@demessifier/demessifier-gui
 [npm-downloads-monthly-image]: https://badgen.net/npm/dm/@demessifier/demessifier-gui
