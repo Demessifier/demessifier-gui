@@ -2,15 +2,16 @@ name: Release
 
 on:
   workflow_run:
-    workflows: ['Snyk Security Check', 'Tests']
-    branches: ['main', 'releases/*']
+    workflows: [ 'Snyk Security', 'Tests' ]
+    branches: [ 'main', 'versions/*' ]
     types:
-      - completed
+      - completed # when at least one of the workflows finishes
 
 jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }} # only if the triggering workflow was successfull
     steps:
       - name: Checkout
         uses: actions/checkout@v3

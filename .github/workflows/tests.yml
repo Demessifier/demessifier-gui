@@ -1,10 +1,10 @@
 name: Tests
 
 on:
-  workflow_run:
-    workflows: ['Snyk Security Check']
-    types:
-      - completed
+  push:
+    branches: [ 'main', 'versions/*' ]
+  pull_request:
+    branches: [ 'main', 'versions/*' ]
 
 jobs:
   build:
@@ -13,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x, 20.x]
+        node-version: [ 18.x, 20.x ] # node.js LTS versions - see https://endoflife.date/nodejs
 
     steps:
       - uses: actions/checkout@v3
