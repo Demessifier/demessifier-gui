@@ -3,8 +3,12 @@ name: Snyk Security Check
 on:
   push:
     branches: ['main', 'releases/*']
+    paths:
+      - '!.idea/**'
   pull_request:
     branches: [ 'main', 'releases/*' ]
+    paths:
+      - '!.idea/**'
 
 jobs:
   security:
