@@ -24,7 +24,6 @@ on:
     paths:
       - '!.idea/**'
   pull_request:
-    branches: [ 'main', 'releases/*' ]
     paths:
       - '!.idea/**'
 
