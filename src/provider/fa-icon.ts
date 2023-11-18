@@ -65,6 +65,14 @@ export function getIconObject(icon: FaIcon): IconDefinition {
   return ICON_PACK[icon];
 }
 
+type ClassName = `fa-${string}`;
+
+export function getIconClassName(icon: FaIcon): ClassName {
+  const indexOfCharToBeReomved = 2;
+  return (icon.substring(0, indexOfCharToBeReomved) +
+    icon.substring(indexOfCharToBeReomved + 1, icon.length)) as ClassName;
+}
+
 export function faIconInit(): IconPack {
   library.add(ICON_PACK);
   return ICON_PACK;

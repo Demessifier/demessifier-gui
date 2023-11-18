@@ -1,5 +1,5 @@
 import { test, expect } from "vitest";
-import { FaIcon, faIconInit, getIconObject } from "./fa-icon";
+import { FaIcon, faIconInit, getIconClassName, getIconObject } from "./fa-icon";
 
 test("Font Awesome Icons", async () => {
   expect(faIconInit).toBeTruthy();
@@ -11,5 +11,6 @@ test("Font Awesome Icons", async () => {
     expect(key).toBeTruthy();
     expect(value).toBeTruthy();
     expect(value).toBe(getIconObject(key as FaIcon));
+    expect(getIconClassName(key as FaIcon).substring(0, 3)).to.equal("fa-");
   }
 });
