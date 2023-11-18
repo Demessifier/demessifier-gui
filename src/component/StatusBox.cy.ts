@@ -1,4 +1,6 @@
 import StatusBox from "./StatusBox.vue";
+import { statusBoxIcons } from "../provider/status-box";
+import { getIconClassName } from "../provider/fa-icon";
 
 function test(
   state: string,
@@ -39,44 +41,49 @@ function test(
   });
   cy.get("svg").should((svg) => {
     expect(svg).to.have.length(1);
+    expect(svg).to.have.class(getIconClassName(statusBoxIcons[state]));
   });
 }
 
 describe("<StatusBox />", () => {
-  const state = "default";
-  const title = `Testing state ${state}`;
-  const testingText = `Testing text for ${state}...`;
-  it(`renders ${state}`, () => {
-    // see: https://test-utils.vuejs.org/guide/
-    cy.mount(StatusBox, {
-      props: { headerText: title },
-      slots: { default: testingText },
-    });
-    test(state, testingText, title, false);
+  for (const state of Object.keys(statusBoxIcons)) {
+    describe(`State = ${state}`, () => {
+      const title = `Testing state ${state}`;
+      const testingText = `Testing text for ${state}...`;
+      it("renders and switches minimized", () => {
+        // see: https://test-utils.vuejs.org/guide/
+        cy.mount(StatusBox, {
+          props: { headerText: title, boxTypeName: state },
+          slots: { default: testingText },
+        });
+        test(state, testingText, title, false);
 
-    // minimizing and un-minimizing
-    cy.get("div.status-box").click("bottom"); // outside h3
-    test(state, testingText, title, false);
-    cy.get("h3").click();
-    test(state, testingText, title, true);
-    cy.get("div.status-box").click("bottom"); // outside h3
-    test(state, testingText, title, false);
-    cy.get("h3").click();
-    test(state, testingText, title, true);
-    cy.get("h3").click();
-    test(state, testingText, title, false);
-  });
-  it(`renders ${state} minimized`, () => {
-    // see: https://test-utils.vuejs.org/guide/
-    cy.mount(StatusBox, {
-      props: {
-        headerText: title,
-        initializeMinimized: true,
-      },
-      slots: { default: testingText },
+        // minimizing and un-minimizing
+        cy.get("div.status-box").click("bottom"); // outside h3
+        test(state, testingText, title, false);
+        cy.get("h3").click();
+        test(state, testingText, title, true);
+        cy.get("div.status-box").click("bottom"); // outside h3
+        test(state, testingText, title, false);
+        cy.get("h3").click();
+        test(state, testingText, title, true);
+        cy.get("h3").click();
+        test(state, testingText, title, false);
+      });
+      it("renders minimized", () => {
+        // see: https://test-utils.vuejs.org/guide/
+        cy.mount(StatusBox, {
+          props: {
+            headerText: title,
+            boxTypeName: state,
+            initializeMinimized: true,
+          },
+          slots: { default: testingText },
+        });
+        test(state, testingText, title, true);
+        cy.get("div.status-box").click();
+        test(state, testingText, title, false);
+      });
     });
-    test(state, testingText, title, true);
-    cy.get("div.status-box").click();
-    test(state, testingText, title, false);
-  });
+  }
 });
