@@ -14,7 +14,7 @@
     "packages:audit-fix": "npm audit fix",
     "dev": "vite --host 0.0.0.0",
     "lint:format": "prettier --log-level warn --cache --cache-strategy content --cache-location auxiliary/prettier-cache --write \"./**/*.{astro,cjs,css,js,json,jsx,md,ts,tsx,vue}\" ",
-    "lint:fix": "eslint ./ --ext .astro,.js,.jsx,.ts,.tsx,.vue --quiet --fix --ignore-path ./.gitignore --cache --cache-strategy content --cache-location auxiliary/eslint-cache",
+    "lint:fix": "eslint ./ --ext .astro,.cjs,.js,.jsx,.mjs,.ts,.tsx,.vue --quiet --fix --ignore-path ./.gitignore --cache --cache-strategy content --cache-location auxiliary/eslint-cache",
     "lint": "npm run lint:format && npm run lint:fix",
     "test:vitest-coverage": "vitest run --coverage",
     "test:vitest-coverage-viewer": "start test/vitest/coverage/index.html",
