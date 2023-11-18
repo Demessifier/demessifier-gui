@@ -37,6 +37,9 @@ function test(
       expectMinimized ? `Show: \n${headerText}` : "Minimize"
     );
   });
+  cy.get("svg").should((svg) => {
+    expect(svg).to.have.length(1);
+  });
 }
 
 describe("<StatusBox />", () => {

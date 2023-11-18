@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import FontAwesomeIcon from "./FontAwesomeIcon.vue";
 
 interface Props {
   headerText: string;
@@ -37,7 +38,7 @@ function unMinimize() {
       :title="minimized ? unMinimizeTooltip : 'Minimize'"
       @click.stop="switchMinimized"
     >
-      [&nbsp;i&nbsp;]
+      <FontAwesomeIcon icon="fas-circle-info"></FontAwesomeIcon>
       <span v-if="!minimized">{{ headerText }}</span>
     </h3>
     <div v-if="!minimized">
