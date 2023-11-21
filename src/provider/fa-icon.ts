@@ -3,38 +3,20 @@ import * as faBrands from "@fortawesome/free-brands-svg-icons";
 import * as faRegular from "@fortawesome/free-regular-svg-icons";
 import * as faSolid from "@fortawesome/free-solid-svg-icons";
 
-export type BrandsIconPackKey = `fab-${string}`;
-export type RegularIconPackKey = `far-${string}`;
-export type SolidIconPackKey = `fas-${string}`;
-// export type IconPackKey =
-//   | BrandsIconPackKey
-//   | RegularIconPackKey
-//   | SolidIconPackKey;
-
 export type IconDefinition =
   | faBrands.IconDefinition
   | faRegular.IconDefinition
   | faSolid.IconDefinition;
 
-export type BrandsIconPack = {
-  [key: BrandsIconPackKey]: faBrands.IconDefinition;
-};
-export type RegularIconPack = {
-  [key: RegularIconPackKey]: faRegular.IconDefinition;
-};
-export type SolidIconPack = {
-  [key: SolidIconPackKey]: faSolid.IconDefinition;
-};
-
-const BRANDS_ICON_PACK: BrandsIconPack = Object.freeze({
+const BRANDS_ICON_PACK = Object.freeze({
   // "fab-google": faBrands.faGoogle,
 }); // add requested brands FA icons here
 
-const REGULAR_ICON_PACK: RegularIconPack = Object.freeze({
+const REGULAR_ICON_PACK = Object.freeze({
   // "far-bars": faRegular.faCircleUser,
 }); // add requested regular FA icons here
 
-const SOLID_ICON_PACK: SolidIconPack = Object.freeze({
+const SOLID_ICON_PACK = Object.freeze({
   "fas-bars": faSolid.faBars,
   "fas-circle-xmark": faSolid.faCircleXmark,
   "fas-chevron-down": faSolid.faChevronDown,
@@ -54,12 +36,12 @@ type FarIcon = keyof FarIconPack;
 type FasIcon = keyof FasIconPack;
 export type FaIcon = FabIcon | FarIcon | FasIcon;
 
-type IconPack = { [key: FaIcon]: IconDefinition };
-const ICON_PACK: IconPack = Object.freeze({
+const ICON_PACK = Object.freeze({
   ...BRANDS_ICON_PACK,
   ...REGULAR_ICON_PACK,
   ...SOLID_ICON_PACK,
 });
+type IconPack = typeof ICON_PACK;
 
 export function getIconObject(icon: FaIcon): IconDefinition {
   return ICON_PACK[icon];
@@ -68,9 +50,9 @@ export function getIconObject(icon: FaIcon): IconDefinition {
 type ClassName = `fa-${string}`;
 
 export function getIconClassName(icon: FaIcon): ClassName {
-  const indexOfCharToBeReomved = 2;
-  return (icon.substring(0, indexOfCharToBeReomved) +
-    icon.substring(indexOfCharToBeReomved + 1, icon.length)) as ClassName;
+  const indexOfCharToBeRemoved = 2;
+  return (icon.substring(0, indexOfCharToBeRemoved) +
+    icon.substring(indexOfCharToBeRemoved + 1, icon.length)) as ClassName;
 }
 
 export function faIconInit(): IconPack {
