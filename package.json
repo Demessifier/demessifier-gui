@@ -28,28 +28,40 @@
     "npm:registry-login": "npm adduser --scope @demessifier",
     "npm:publish-dry": "npm publish --dry-run --access public",
     "npm:publish-public": "npm publish --access public",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "checklist": "npm run packages:install && npm run packages:audit && npm run lint && npm run test && npm run build && npm run npm:publish-dry",
+    "checklist:clean": "npm run clean && npm run checklist"
   },
+  "type": "module",
   "files": [
     "build"
   ],
   "types": "./build/src/index.d.ts",
-  "main": "./build/index.js",
+  "main": "./build/index.cjs",
+  "module": "./build/index.js",
   "exports": {
     ".": {
-      "import": {
-        "types": "./build/index.d.ts",
-        "default": "./build/index.mjs"
-      },
-      "require": {
-        "types": "./build/index.d.ts",
-        "default": "./build/index.js"
-      }
+      "types": "./build/index.d.ts",
+      "import": "./build/index.js",
+      "require": "./build/index.cjs",
+      "default": "./build/index.js"
+    },
+    "./component/*": {
+      "types": "./build/src/component/*.d.ts",
+      "import": "./build/src/component/*.js",
+      "require": "./build/src/component/*.cjs",
+      "default": "./build/src/component/*.js"
+    },
+    "./provider/*": {
+      "types": "./build/src/provider/*.d.ts",
+      "import": "./build/src/provider/*.js",
+      "require": "./build/src/provider/*.cjs",
+      "default": "./build/src/provider/*.js"
     }
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Demessifier/demessifier-gui.git"
+    "url": "git+https://github.com/Demessifier/demessifier-gui.git"
   },
   "publishConfig": {
     "access": "public",

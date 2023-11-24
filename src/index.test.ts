@@ -1,5 +1,5 @@
 import { test, expect } from "vitest";
 
-test("palette", async () => {
+test("index", async () => {
   expect(1).toBe(1);
 });
