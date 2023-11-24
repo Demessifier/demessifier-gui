@@ -1,8 +1,15 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import FontAwesomeIcon from "./FontAwesomeIcon.vue";
+import {
+  statusBoxType,
+  StatusBoxTypeItem,
+  StatusBoxTypeName,
+} from "../provider/status-box";
 
 interface Props {
   headerText: string;
+  boxTypeName: StatusBoxTypeName;
   initializeMinimized: boolean;
 }
 
@@ -10,6 +17,7 @@ const props = withDefaults(defineProps<Props>(), {
   initializeMinimized: false,
 });
 
+const boxType: StatusBoxTypeItem = statusBoxType[props.boxTypeName];
 const unMinimizeTooltip = `Show: \n${props.headerText}`;
 const minimized = ref(props.initializeMinimized);
 
@@ -37,7 +45,7 @@ function unMinimize() {
       :title="minimized ? unMinimizeTooltip : 'Minimize'"
       @click.stop="switchMinimized"
     >
-      [&nbsp;i&nbsp;]
+      <FontAwesomeIcon :icon="boxType.icon" />
       <span v-if="!minimized">{{ headerText }}</span>
     </h3>
     <div v-if="!minimized">
