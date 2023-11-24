@@ -4,6 +4,7 @@
 # Text files with EOL normalization
 *.astro text eol=lf
 *.bat   text eol=crlf
+*.cjs   text eol=lf
 *.cmd   text eol=crlf
 *.css   text eol=lf
 *.csv   text
@@ -12,6 +13,7 @@
 *.jsx   text eol=lf
 *.json  text eol=lf
 *.md    text eol=lf
+*.mjs   text eol=lf
 *.ps1   text eol=crlf
 *.sh    text eol=lf
 *.sql   text
