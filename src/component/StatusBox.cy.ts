@@ -1,11 +1,15 @@
 import StatusBox from "./StatusBox.vue";
-import { statusBoxIcons } from "../provider/status-box";
+import {
+  getAllStatusBoxFlavors,
+  getFlavorItem,
+  StatusBoxFlavorName,
+} from "../provider/status-box";
 import { getIconClassName } from "../provider/fa-icon";
 
 function test(
-  state: string,
+  state: StatusBoxFlavorName,
   testingBodyText: string,
-  headerText: string,
+  headlineText: string,
   expectMinimized: boolean
 ) {
   cy.get("div.status-box").should((statusBox) => {
@@ -13,7 +17,7 @@ function test(
     expect(statusBox).to.have.css("background-color", "rgb(0, 0, 139)");
     expect(statusBox).to.have.attr(
       "title",
-      expectMinimized ? `Show: \n${headerText}` : ""
+      expectMinimized ? `Show: \n${headlineText}` : ""
     );
   });
   if (expectMinimized) {
@@ -30,30 +34,30 @@ function test(
     });
     cy.get("h3 span").should((h3Span) => {
       expect(h3Span).to.have.length(1);
-      expect(h3Span).to.contain.text(headerText);
+      expect(h3Span).to.contain.text(headlineText);
     });
   }
   cy.get("h3").should((h3) => {
     expect(h3).to.have.attr(
       "title",
-      expectMinimized ? `Show: \n${headerText}` : "Minimize"
+      expectMinimized ? `Show: \n${headlineText}` : "Minimize"
     );
   });
   cy.get("svg").should((svg) => {
     expect(svg).to.have.length(1);
-    expect(svg).to.have.class(getIconClassName(statusBoxIcons[state]));
+    expect(svg).to.have.class(getIconClassName(getFlavorItem(state).icon));
   });
 }
 
 describe("<StatusBox />", () => {
-  for (const state of Object.keys(statusBoxIcons)) {
+  for (const state of getAllStatusBoxFlavors()) {
     describe(`State = ${state}`, () => {
       const title = `Testing state ${state}`;
       const testingText = `Testing text for ${state}...`;
       it("renders and switches minimized", () => {
         // see: https://test-utils.vuejs.org/guide/
         cy.mount(StatusBox, {
-          props: { headerText: title, boxTypeName: state },
+          props: { headlineText: title, boxFlavorName: state },
           slots: { default: testingText },
         });
         test(state, testingText, title, false);
@@ -74,8 +78,8 @@ describe("<StatusBox />", () => {
         // see: https://test-utils.vuejs.org/guide/
         cy.mount(StatusBox, {
           props: {
-            headerText: title,
-            boxTypeName: state,
+            headlineText: title,
+            boxFlavorName: state,
             initializeMinimized: true,
           },
           slots: { default: testingText },

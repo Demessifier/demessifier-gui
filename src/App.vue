@@ -5,7 +5,11 @@ import FontAwesomeIcon from "./component/FontAwesomeIcon.vue";
 
 const defaultView = {
   view: StatusBox,
-  properties: { headerText: "This is header", initializeMinimized: false },
+  properties: {
+    headlineText: "This is header",
+    boxFlavorName: "info",
+    initializeMinimized: false,
+  },
 };
 
 const routes: { [key: string]: any } = {
@@ -38,6 +42,7 @@ const currentProperties = computed(() => {
       <a :href="`#${route}`">{{ route }}</a>
     </li>
   </ul>
+  <StatusBox box-flavor-name="warn" headline-text="head">body</StatusBox>
   <component :is="currentView" v-bind="currentProperties" />
 </template>
 

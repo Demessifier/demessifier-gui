@@ -2,23 +2,30 @@
 import { ref } from "vue";
 import FontAwesomeIcon from "./FontAwesomeIcon.vue";
 import {
-  statusBoxType,
-  StatusBoxTypeItem,
-  StatusBoxTypeName,
+  statusBoxFlavor,
+  StatusBoxFlavorItem,
+  StatusBoxFlavorName,
 } from "../provider/status-box";
 
 interface Props {
-  headerText: string;
-  boxTypeName: StatusBoxTypeName;
-  initializeMinimized: boolean;
+  /**
+   * Headline of the box.
+   * This is shown in the tooltip when the box is minimized.
+   */
+  headlineText: string;
+  /**
+   * Determines color and icon of the box.
+   */
+  boxFlavorName: StatusBoxFlavorName;
+  initializeMinimized?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   initializeMinimized: false,
 });
 
-const boxType: StatusBoxTypeItem = statusBoxType[props.boxTypeName];
-const unMinimizeTooltip = `Show: \n${props.headerText}`;
+const boxType: StatusBoxFlavorItem = statusBoxFlavor[props.boxFlavorName];
+const unMinimizeTooltip = `Show: \n${props.headlineText}`;
 const minimized = ref(props.initializeMinimized);
 
 function switchMinimized() {
@@ -46,9 +53,10 @@ function unMinimize() {
       @click.stop="switchMinimized"
     >
       <FontAwesomeIcon :icon="boxType.icon" />
-      <span v-if="!minimized">{{ headerText }}</span>
+      <span v-if="!minimized">{{ headlineText }}</span>
     </h3>
     <div v-if="!minimized">
+      <!-- @slot Contents of the box. -->
       <slot></slot>
     </div>
   </div>
