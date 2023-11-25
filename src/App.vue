@@ -5,7 +5,11 @@ import FontAwesomeIcon from "./component/FontAwesomeIcon.vue";
 
 const defaultView = {
   view: StatusBox,
-  properties: { headerText: "This is header", initializeMinimized: false },
+  properties: {
+    headlineText: "This is header",
+    boxFlavorName: "info",
+    initializeMinimized: false,
+  },
 };
 
 const routes: { [key: string]: any } = {

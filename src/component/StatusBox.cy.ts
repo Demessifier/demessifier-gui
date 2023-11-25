@@ -1,11 +1,15 @@
 import StatusBox from "./StatusBox.vue";
-import { statusBoxIcons } from "../provider/status-box";
+import {
+  getAllStatusBoxFlavors,
+  getFlavorItem,
+  StatusBoxFlavorName,
+} from "../provider/status-box";
 import { getIconClassName } from "../provider/fa-icon";
 
 function test(
-  state: string,
+  flavor: StatusBoxFlavorName,
   testingBodyText: string,
-  headerText: string,
+  headlineText: string,
   expectMinimized: boolean
 ) {
   cy.get("div.status-box").should((statusBox) => {
@@ -13,7 +17,7 @@ function test(
     expect(statusBox).to.have.css("background-color", "rgb(0, 0, 139)");
     expect(statusBox).to.have.attr(
       "title",
-      expectMinimized ? `Show: \n${headerText}` : ""
+      expectMinimized ? `Show: \n${headlineText}` : ""
     );
   });
   if (expectMinimized) {
@@ -30,59 +34,59 @@ function test(
     });
     cy.get("h3 span").should((h3Span) => {
       expect(h3Span).to.have.length(1);
-      expect(h3Span).to.contain.text(headerText);
+      expect(h3Span).to.contain.text(headlineText);
     });
   }
   cy.get("h3").should((h3) => {
     expect(h3).to.have.attr(
       "title",
-      expectMinimized ? `Show: \n${headerText}` : "Minimize"
+      expectMinimized ? `Show: \n${headlineText}` : "Minimize"
     );
   });
   cy.get("svg").should((svg) => {
     expect(svg).to.have.length(1);
-    expect(svg).to.have.class(getIconClassName(statusBoxIcons[state]));
+    expect(svg).to.have.class(getIconClassName(getFlavorItem(flavor).icon));
   });
 }
 
 describe("<StatusBox />", () => {
-  for (const state of Object.keys(statusBoxIcons)) {
-    describe(`State = ${state}`, () => {
-      const title = `Testing state ${state}`;
-      const testingText = `Testing text for ${state}...`;
+  for (const flavor of getAllStatusBoxFlavors()) {
+    describe(`State = ${flavor}`, () => {
+      const title = `Testing state ${flavor}`;
+      const testingText = `Testing text for ${flavor}...`;
       it("renders and switches minimized", () => {
         // see: https://test-utils.vuejs.org/guide/
         cy.mount(StatusBox, {
-          props: { headerText: title, boxTypeName: state },
+          props: { headlineText: title, boxFlavorName: flavor },
           slots: { default: testingText },
         });
-        test(state, testingText, title, false);
+        test(flavor, testingText, title, false);
 
         // minimizing and un-minimizing
         cy.get("div.status-box").click("bottom"); // outside h3
-        test(state, testingText, title, false);
+        test(flavor, testingText, title, false);
         cy.get("h3").click();
-        test(state, testingText, title, true);
+        test(flavor, testingText, title, true);
         cy.get("div.status-box").click("bottom"); // outside h3
-        test(state, testingText, title, false);
+        test(flavor, testingText, title, false);
         cy.get("h3").click();
-        test(state, testingText, title, true);
+        test(flavor, testingText, title, true);
         cy.get("h3").click();
-        test(state, testingText, title, false);
+        test(flavor, testingText, title, false);
       });
       it("renders minimized", () => {
         // see: https://test-utils.vuejs.org/guide/
         cy.mount(StatusBox, {
           props: {
-            headerText: title,
-            boxTypeName: state,
+            headlineText: title,
+            boxFlavorName: flavor,
             initializeMinimized: true,
           },
           slots: { default: testingText },
         });
-        test(state, testingText, title, true);
+        test(flavor, testingText, title, true);
         cy.get("div.status-box").click();
-        test(state, testingText, title, false);
+        test(flavor, testingText, title, false);
       });
     });
   }

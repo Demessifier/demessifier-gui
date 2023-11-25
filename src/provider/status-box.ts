@@ -1,28 +1,53 @@
 import { FaIcon } from "./fa-icon";
 
-export const statusBoxIcons: { [key: string]: FaIcon } = Object.freeze({
+/**
+ * FontAwesome icons for the individual box flavors.
+ */
+const statusBoxIcons = Object.freeze({
   success: "fas-circle-check",
   info: "fas-circle-info",
   warn: "fas-circle-exclamation",
   error: "fas-triangle-exclamation",
 });
 
-export type StatusBoxTypeName = keyof typeof statusBoxIcons;
+/**
+ * Box flavor.
+ */
+export type StatusBoxFlavorName = keyof typeof statusBoxIcons;
 
-export type StatusBoxTypeItem = {
+/**
+ * Get the list of all box flavors.
+ * @returns The list of all box flavors.
+ */
+export function getAllStatusBoxFlavors(): StatusBoxFlavorName[] {
+  return Object.keys(statusBoxIcons) as StatusBoxFlavorName[];
+}
+
+/**
+ * Flavor properties for boxes.
+ */
+export type StatusBoxFlavorItem = {
   icon: FaIcon;
 };
 
-function getTypeItem(name: StatusBoxTypeName): StatusBoxTypeItem {
+/**
+ * Get flavor properties for the given box flavor.
+ * @param name Box flavor.
+ * @returns Flavor properties for the given box flavor.
+ */
+export function getFlavorItem(name: StatusBoxFlavorName): StatusBoxFlavorItem {
   return {
     icon: statusBoxIcons[name],
   };
 }
 
-const statusBoxTypePreparation: { [key: string]: StatusBoxTypeItem } = {};
-for (const boxType of Object.keys(statusBoxIcons)) {
-  statusBoxTypePreparation[boxType] = getTypeItem(boxType);
+const statusBoxFlavorPreparation: { [key: string]: StatusBoxFlavorItem } = {};
+for (const boxFlavor of getAllStatusBoxFlavors()) {
+  statusBoxFlavorPreparation[boxFlavor] = getFlavorItem(
+    boxFlavor as StatusBoxFlavorName
+  );
 }
-export const statusBoxType = Object.freeze(statusBoxTypePreparation);
-
-export type StatusBoxType = typeof statusBoxType;
+/**
+ * FontAwesome icons for the individual box flavors.
+ */
+export const statusBoxFlavor = Object.freeze(statusBoxFlavorPreparation);

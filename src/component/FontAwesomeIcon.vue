@@ -9,6 +9,9 @@ import { FaIcon, getIconObject } from "../provider/fa-icon";
 // [vite:vue] [@vue/compiler-sfc] Failed to resolve extends base type.
 // See https://github.com/vuejs/core/issues/8348
 interface Props extends /* @vue-ignore */ Omit<FontAwesomeIconProps, "icon"> {
+  /**
+   * One of the FontAwesome icons added to the library.
+   */
   icon: FaIcon; // allow only the imported icons - autocomplete
 }
 
