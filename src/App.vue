@@ -42,7 +42,6 @@ const currentProperties = computed(() => {
       <a :href="`#${route}`">{{ route }}</a>
     </li>
   </ul>
-  <StatusBox box-flavor-name="warn" headline-text="head">body</StatusBox>
   <component :is="currentView" v-bind="currentProperties" />
 </template>
 
