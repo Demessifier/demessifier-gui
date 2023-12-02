@@ -1,0 +1,84 @@
+form,
+fieldset {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  width: 100%;
+  box-sizing: border-box;
+  gap: 1em;
+  padding: 1em 0;
+}
+
+fieldset {
+  padding: 1em;
+}
+
+fieldset.radios {
+  gap: 0.1em;
+}
+
+form button,
+form input,
+form label,
+form select,
+form textarea,
+form datalist {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  width: auto;
+}
+
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  gap: 2em;
+  padding: 1em 2em;
+}
+
+input[type="date"],
+input[type="datetime-local"],
+input[type="email"],
+input[type="month"],
+input[type="number"],
+input[type="password"],
+input[type="search"],
+input[type="tel"],
+input[type="text"],
+input[type="time"],
+input[type="url"],
+input[type="week"],
+select {
+  /*padding: 1em 1em;*/
+}
+
+label > input[type="date"],
+label > input[type="datetime-local"],
+label > input[type="email"],
+label > input[type="month"],
+label > input[type="number"],
+label > input[type="password"],
+label > input[type="search"],
+label > input[type="tel"],
+label > input[type="text"],
+label > input[type="time"],
+label > input[type="url"],
+label > input[type="week"],
+label > select {
+  margin-top: 0.2em;
+}
+
+button[disabled],
+input[disabled] {
+  cursor: not-allowed;
+}

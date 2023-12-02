@@ -23,7 +23,7 @@ test("Status Box Icons", async () => {
   for (const [key, value] of Object.entries(statusBoxFlavor)) {
     expect(iconsNamesList).to.contain(key);
     expect(value).to.be.ok;
-    expect(Object.keys(value)).to.have.length(1);
+    expect(Object.keys(value)).to.have.length(4);
     expect(allIcons).to.contain(value.icon);
   }
 });

@@ -25,7 +25,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const boxType: StatusBoxFlavorItem = statusBoxFlavor[props.boxFlavorName];
-const unMinimizeTooltip = `Show: \n${props.headlineText}`;
+const unMinimizeTooltip = `Expand: \n${props.headlineText}`;
 const minimized = ref(props.initializeMinimized);
 
 function switchMinimized() {
@@ -41,8 +41,8 @@ function unMinimize() {
   <div
     class="status-box"
     :style="{
-      'background-color': 'DarkBlue',
-      color: 'white',
+      'background-color': `var(--${boxType.bgColor})`,
+      color: `var(--${boxType.color})`,
     }"
     :class="{ minimized: minimized, full: !minimized }"
     :title="minimized ? unMinimizeTooltip : ''"
