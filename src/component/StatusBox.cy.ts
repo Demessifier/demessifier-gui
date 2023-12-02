@@ -49,13 +49,12 @@ function test(
   });
 }
 
-describe("<StatusBox />", () => {
+describe("StatusBox component", () => {
   for (const flavor of getAllStatusBoxFlavors()) {
     describe(`State = ${flavor}`, () => {
       const title = `Testing state ${flavor}`;
       const testingText = `Testing text for ${flavor}...`;
-      it("renders and switches minimized", () => {
-        // see: https://test-utils.vuejs.org/guide/
+      it("Renders and switches minimized", () => {
         cy.mount(StatusBox, {
           props: { headlineText: title, boxFlavorName: flavor },
           slots: { default: testingText },
@@ -74,8 +73,7 @@ describe("<StatusBox />", () => {
         cy.get("h3").click();
         test(flavor, testingText, title, false);
       });
-      it("renders minimized", () => {
-        // see: https://test-utils.vuejs.org/guide/
+      it("Renders minimized", () => {
         cy.mount(StatusBox, {
           props: {
             headlineText: title,
