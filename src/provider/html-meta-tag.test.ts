@@ -22,6 +22,7 @@ test("HTML meta tags", async () => {
   const meta_1 = getMetaTags(META_NAME_1);
   expect(meta_1).to.have.length(count_1);
   const meta_1_0 = meta_1[0];
+  expect(htmlUtils.getMetaTag(META_NAME_1)).to.be.equal(meta_1_0);
   expect(meta_1_0.name).to.be.equal(META_NAME_1);
   expect(meta_1_0.content).to.be.equal(META_CONTENT_1);
   htmlUtils.addMetaTag(META_NAME_1, META_CONTENT_1);
@@ -42,6 +43,7 @@ test("HTML meta tags", async () => {
   count_2 += 1;
   const meta_2 = getMetaTags(META_NAME_2);
   const meta_2_0 = meta_2[0];
+  expect(htmlUtils.getMetaTag(META_NAME_2)).to.be.equal(meta_2_0);
   expect(meta_2_0.name).to.be.equal(META_NAME_2);
   expect(meta_2_0.content).to.be.equal(META_CONTENT_2);
   expect(getMetaTags(META_NAME_2)).to.have.length(count_2);
@@ -66,6 +68,7 @@ test("HTML meta tags", async () => {
     htmlUtils.ensureMetaTagContent(META_NAME_3, content_3);
     expect(getMetaTags(META_NAME_3)).to.have.length(1);
     const meta_3_0 = getMetaTags(META_NAME_3)[0];
+    expect(htmlUtils.getMetaTag(META_NAME_3)).to.be.equal(meta_3_0);
     expect(meta_3_0.name).to.be.equal(META_NAME_3);
     expect(meta_3_0.content).to.be.equal(content_3);
   }
@@ -74,6 +77,7 @@ test("HTML meta tags", async () => {
     htmlUtils.setMetaTagContent(meta, content_3);
     expect(getMetaTags(META_NAME_3)).to.have.length(1);
     const meta_3_0 = getMetaTags(META_NAME_3)[0];
+    expect(htmlUtils.getMetaTag(META_NAME_3)).to.be.equal(meta_3_0);
     expect(meta_3_0.name).to.be.equal(META_NAME_3);
     expect(meta_3_0.content).to.be.equal(content_3);
     expect(meta.name).to.be.equal(META_NAME_3);
