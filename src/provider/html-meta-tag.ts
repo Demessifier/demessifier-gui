@@ -6,6 +6,10 @@ export function addMetaTag(name: string, content: string): HTMLMetaElement {
   return meta;
 }
 
+export function getMetaTag(name: string): HTMLMetaElement | null {
+  return document.head.querySelector(`meta[name="${name}"]`);
+}
+
 export function ensureMetaTag(
   name: string,
   defaultContent: string
