@@ -2,15 +2,15 @@ import { test, expect } from "vitest";
 import { FaIcon, faIconInit, getIconClassName, getIconObject } from "./fa-icon";
 
 test("Font Awesome Icons", async () => {
-  expect(faIconInit).toBeTruthy();
+  expect(faIconInit).to.be.ok;
 
   const faIconPack = faIconInit();
-  expect(faIconPack).toBeTruthy();
-  expect(Object.keys(faIconPack).length).toBeGreaterThanOrEqual(4);
+  expect(faIconPack).to.be.ok;
+  expect(Object.keys(faIconPack).length).to.be.gte(4);
   for (const [key, value] of Object.entries(faIconPack)) {
-    expect(key).toBeTruthy();
-    expect(value).toBeTruthy();
-    expect(value).toBe(getIconObject(key as FaIcon));
-    expect(getIconClassName(key as FaIcon).substring(0, 3)).to.equal("fa-");
+    expect(key).not.to.be.undefined;
+    expect(value).to.be.ok;
+    expect(value).to.be.equal(getIconObject(key as FaIcon));
+    expect(getIconClassName(key as FaIcon).substring(0, 3)).to.be.equal("fa-");
   }
 });
