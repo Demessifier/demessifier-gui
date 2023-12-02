@@ -5,6 +5,12 @@ import {
   StatusBoxFlavorName,
 } from "../provider/status-box";
 import { getIconClassName } from "../provider/fa-icon";
+import {
+  getColorNameComplementFromPlainColorName,
+  getColorNameFromPlainColorName,
+  getCurrentColor,
+  hexToRgb,
+} from "../provider/color-palette";
 
 function test(
   flavor: StatusBoxFlavorName,
@@ -13,11 +19,19 @@ function test(
   expectMinimized: boolean
 ) {
   cy.get("div.status-box").should((statusBox) => {
-    expect(statusBox).to.have.css("color", "rgb(255, 255, 255)");
-    expect(statusBox).to.have.css("background-color", "rgb(0, 0, 139)");
+    expect(statusBox).to.have.css(
+      "color",
+      hexToRgb(
+        getCurrentColor(getColorNameComplementFromPlainColorName(flavor))
+      )
+    );
+    expect(statusBox).to.have.css(
+      "background-color",
+      hexToRgb(getCurrentColor(getColorNameFromPlainColorName(flavor)))
+    );
     expect(statusBox).to.have.attr(
       "title",
-      expectMinimized ? `Show: \n${headlineText}` : ""
+      expectMinimized ? `Expand: \n${headlineText}` : ""
     );
   });
   if (expectMinimized) {
@@ -40,7 +54,7 @@ function test(
   cy.get("h3").should((h3) => {
     expect(h3).to.have.attr(
       "title",
-      expectMinimized ? `Show: \n${headlineText}` : "Minimize"
+      expectMinimized ? `Expand: \n${headlineText}` : "Minimize"
     );
   });
   cy.get("svg").should((svg) => {

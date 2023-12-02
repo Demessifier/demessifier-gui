@@ -1,4 +1,9 @@
 import { FaIcon } from "./fa-icon";
+import {
+  getColorNameComplementFromPlainColorName,
+  getColorNameFromPlainColorName,
+  ValidColorName,
+} from "./color-palette";
 
 /**
  * FontAwesome icons for the individual box flavors.
@@ -27,7 +32,10 @@ export function getAllStatusBoxFlavors(): StatusBoxFlavorName[] {
  * Flavor properties for boxes.
  */
 export type StatusBoxFlavorItem = {
+  name: StatusBoxFlavorName;
   icon: FaIcon;
+  color: ValidColorName;
+  bgColor: ValidColorName;
 };
 
 /**
@@ -37,7 +45,10 @@ export type StatusBoxFlavorItem = {
  */
 export function getFlavorItem(name: StatusBoxFlavorName): StatusBoxFlavorItem {
   return {
+    name: name,
     icon: statusBoxIcons[name],
+    color: getColorNameComplementFromPlainColorName(name),
+    bgColor: getColorNameFromPlainColorName(name),
   };
 }
 

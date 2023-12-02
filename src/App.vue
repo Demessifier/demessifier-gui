@@ -3,6 +3,7 @@ import { computed, ref } from "vue";
 import StatusBox from "./component/StatusBox.vue";
 import FontAwesomeIcon from "./component/FontAwesomeIcon.vue";
 import ColorSchemeSwitch from "./component/global-controller/ColorSchemeSwitch.vue";
+import ColorPalette from "./component/global-controller/ColorPalette.vue";
 
 const defaultView = {
   view: StatusBox,
@@ -22,6 +23,9 @@ const routes: { [key: string]: any } = {
   },
   "/ColorSchemeSwitch": {
     view: ColorSchemeSwitch,
+  },
+  "/ColorPalette": {
+    view: ColorPalette,
   },
 };
 
