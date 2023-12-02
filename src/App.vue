@@ -2,6 +2,7 @@
 import { computed, ref } from "vue";
 import StatusBox from "./component/StatusBox.vue";
 import FontAwesomeIcon from "./component/FontAwesomeIcon.vue";
+import ColorSchemeSwitch from "./component/global-controller/ColorSchemeSwitch.vue";
 
 const defaultView = {
   view: StatusBox,
@@ -18,6 +19,9 @@ const routes: { [key: string]: any } = {
   "/FontAwesomeIcon": {
     view: FontAwesomeIcon,
     properties: { icon: "fas-triangle-exclamation" },
+  },
+  "/ColorSchemeSwitch": {
+    view: ColorSchemeSwitch,
   },
 };
 
