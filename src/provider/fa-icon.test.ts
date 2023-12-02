@@ -6,7 +6,7 @@ test("Font Awesome Icons", async () => {
 
   const faIconPack = faIconInit();
   expect(faIconPack).to.be.ok;
-  expect(Object.keys(faIconPack)).to.have.length.gte(4);
+  expect(Object.keys(faIconPack)).to.have.length.greaterThanOrEqual(4);
   for (const [key, value] of Object.entries(faIconPack)) {
     expect(key).not.to.be.undefined;
     expect(value).to.be.ok;
