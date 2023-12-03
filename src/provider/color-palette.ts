@@ -6,6 +6,9 @@ import { ensureMetaTagContent } from "./html-meta-tag";
 //   'a' | 'A' | 'b' | 'B' | 'c' | 'C' | 'd' | 'D' | 'e' | 'E' | 'f' | 'F';
 // type HexByte = `${HexDigit}${HexDigit}`;
 // type HexColor = `#${HexByte}${HexByte}${HexByte}`;
+/**
+ * An approximation of the "#RGB" color value format.
+ */
 export type HexColorApproximation = `#${string}`;
 const hexColorLengths = [3, 4, 6, 8] as const;
 const hexColorLengthsAsNumbers = Object.freeze(
@@ -17,6 +20,9 @@ type ColorRgb = [number, number, number];
 type ColorRgba = [number, number, number, number];
 type ColorRgb_a = ColorRgb | ColorRgba;
 
+/**
+ * Either "#RGB" or [R,G,B]. Supports also alpha.
+ */
 export type AnyColorType = HexColorApproximation | ColorRgb_a;
 
 type ColorAndComplement = {
@@ -28,6 +34,9 @@ type ColorPalette = {
   [color: string]: ColorAndComplement;
 };
 
+/**
+ * The default values of colors.
+ */
 export const defaultColors: ColorPalette = Object.freeze({
   primary: {
     value: "#7c2e9c",
@@ -56,13 +65,16 @@ export const defaultColors: ColorPalette = Object.freeze({
 });
 
 type PlainColorName = keyof typeof defaultColors;
+/**
+ * Color valid variable names.
+ */
 export type ValidColorName =
   | `color-${PlainColorName}`
   | `color-${PlainColorName}-complement`;
 
 let root: HTMLElement | null = null;
 
-function ensureRootObjects():HTMLElement {
+function ensureRootObjects(): HTMLElement {
   if (root === null) {
     root = document.querySelector(":root") as HTMLElement;
   }
@@ -78,6 +90,11 @@ function setRootStyleProperty(propertyName: string, propertyValue: string) {
 }
 
 // TODO: try rewire instead of export: https://www.samanthaming.com/journal/2-testing-non-exported-functions/
+/**
+ * Checks a value of CSS color. Throws Errors when it is invalid.
+ * @param colorValue CSS color value in one of the "#RGB", "#RGBA", "#RRGGBB", "#RRGGBBAA formats.
+ * @returns Length of the color value excluding the "#" sign.
+ */
 export function checkColorValueHex(
   colorValue: HexColorApproximation
 ): HexColorLength {
@@ -90,6 +107,11 @@ export function checkColorValueHex(
   return length as HexColorLength;
 }
 
+/**
+ * Sets the CSS color variable.
+ * @param colorName CSS variable name associated with the color.
+ * @param colorValue CSS color value to be set.
+ */
 export function setColor(
   colorName: ValidColorName,
   colorValue: HexColorApproximation
@@ -101,6 +123,11 @@ export function setColor(
     ensureMetaTagContent("theme-color", colorValue);
 }
 
+/**
+ * Retrieves the currently set CSS color variable value based the color name.
+ * @param colorName Name of the color to be retrieved.
+ * @returns Color value in the "#RRGGBB" hex format.
+ */
 export function getCurrentColor(
   colorName: ValidColorName
 ): HexColorApproximation {
@@ -112,18 +139,31 @@ export function getCurrentColor(
     : (retrievedValue as HexColorApproximation);
 }
 
+/**
+ * Compose color variable name.
+ * @param plainColorName The basic name of the color.
+ * @returns Variable name in the "color-${name}" format.
+ */
 export function getColorNameFromPlainColorName(
   plainColorName: keyof typeof defaultColors
 ): ValidColorName {
   return `color-${plainColorName}`;
 }
 
+/**
+ * Compose color complement variable name.
+ * @param plainColorName The basic name of the color.
+ * @returns Variable name in the "color-${name}-complement" format.
+ */
 export function getColorNameComplementFromPlainColorName(
   plainColorName: keyof typeof defaultColors
 ): ValidColorName {
   return `color-${plainColorName}-complement`;
 }
 
+/**
+ * Set the default CSS color variables.
+ */
 export function setDefaultColors() {
   for (const [key, value] of Object.entries(defaultColors)) {
     setColor(`color-${key}`, value.value);
@@ -140,6 +180,11 @@ function checkRgbBytes(color: ColorRgb_a) {
   }
 }
 
+/**
+ * Convert color format.
+ * @param hex Color in the "#RRGGBB" hex format.
+ * @returns Color in the "rgb(R, G, B)" decimal format.
+ */
 export function hexToRgb(hex: string): string {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   const errMessage = `Unable to parse color '${hex}' as HEX #RRGGBB.`;
@@ -188,6 +233,12 @@ function colorHexToBytes(color: HexColorApproximation): ColorRgb_a {
   return bytes.map((c) => parseInt(c, 16)) as ColorRgb_a;
 }
 
+/**
+ * Compute the contrast ratio of 2 colors.
+ * @param color1 Color value.
+ * @param color2 Color value.
+ * @returns The value of contrast ratio.
+ */
 export function computeColorsContrastRatio(
   color1: AnyColorType,
   color2: AnyColorType
@@ -197,7 +248,6 @@ export function computeColorsContrastRatio(
       case "string":
         return colorHexToBytes(c);
       case "object":
-        if (c instanceof Array<number>) return c;
       // if (c instanceof String)
       //   return colorHexToBytes(c);
     }
@@ -211,6 +261,14 @@ export function computeColorsContrastRatio(
   return (luminances[1] + 0.05) / (luminances[0] + 0.05);
 }
 
+/**
+ * Select a value depending on contrast ratio.
+ * @param contrastRatio It is decided based on this contrast ration. Valid values are 1-21
+ * @param ok This value is returned for contrast ratio 7-21
+ * @param meh This value is returned for contrast ratio 4.5-7
+ * @param bad This value is returned for contrast ratio 7-21
+ * @returns One of the provided values depending on the contrast ratio.
+ */
 export function selectByContrastRatio<T>(
   contrastRatio: number,
   ok: T,
