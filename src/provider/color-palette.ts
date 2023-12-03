@@ -248,6 +248,9 @@ export function computeColorsContrastRatio(
       case "string":
         return colorHexToBytes(c);
       case "object":
+        Array.isArray(c);
+        if (Array.isArray(c) && c.every((item) => Number.isFinite(item)))
+          return c;
       // if (c instanceof String)
       //   return colorHexToBytes(c);
     }
@@ -275,5 +278,7 @@ export function selectByContrastRatio<T>(
   meh: T,
   bad: T
 ): T {
+  if (contrastRatio < 1 || 21 < contrastRatio)
+    throw new Error(`Invalid contrast ration value: ${contrastRatio}`);
   return contrastRatio > 7 ? ok : contrastRatio < 4.5 ? bad : meh;
 }

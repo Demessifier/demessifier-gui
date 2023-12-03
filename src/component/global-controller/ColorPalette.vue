@@ -13,7 +13,6 @@ import {
 import FaIconWrapper from "../FontAwesomeIcon.vue";
 import { computed, ComputedRef, Ref, ref } from "vue";
 import StatusBox from "../StatusBox.vue";
-import { FaIcon } from "../../provider/fa-icon";
 import { getFlavorItem, StatusBoxFlavorItem } from "../../provider/status-box";
 
 const COLOR_NAME = "color_name";
