@@ -4,6 +4,7 @@ import StatusBox from "./component/StatusBox.vue";
 import FontAwesomeIcon from "./component/FontAwesomeIcon.vue";
 import ColorSchemeSwitch from "./component/global-controller/ColorSchemeSwitch.vue";
 import ColorPalette from "./component/global-controller/ColorPalette.vue";
+import { setDefaultColors } from "./provider/color-palette";
 
 const defaultView = {
   view: StatusBox,
@@ -42,6 +43,8 @@ const currentView = computed(() => {
 const currentProperties = computed(() => {
   return routes[currentPath.value.slice(1) || "/"].properties || StatusBox;
 });
+
+setDefaultColors();
 </script>
 
 <template>

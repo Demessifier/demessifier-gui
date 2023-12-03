@@ -12,6 +12,7 @@ import {
   computeColorsContrastRatio,
   AnyColorType,
   hexToRgb,
+  selectByContrastRatio,
 } from "./color-palette";
 import crypto from "crypto";
 
@@ -218,4 +219,33 @@ test("hexToRgb", async () => {
   expect(hexToRgb("#FFFFFF")).to.be.equal("rgb(255, 255, 255)");
   expect(hexToRgb("#DEADFF")).to.be.equal("rgb(222, 173, 255)");
   expect(hexToRgb("#00BEEF")).to.be.equal("rgb(0, 190, 239)");
+});
+
+test("selectByContrastRatio", async () => {
+  for (const values of [
+    ["good", "not good", "horrible"],
+    [true, undefined, false],
+    [42, 0, -42],
+  ]) {
+    for (const contrast of [
+      -999, -100, -52.52, -8, -2, -1, 0, 0.5, 0.999, 21.001, 21.5, 22, 52.52,
+      100, 999,
+    ]) {
+      expect(() =>
+        selectByContrastRatio(contrast, values[0], values[1], values[2])
+      ).to.throw(`Invalid contrast ration value: ${contrast}`);
+    }
+    const contrasts = [
+      [7.001, 8, 10, 16.789, 20, 20.99, 21],
+      [4.5, 4.501, 5, 6.9, 6.999, 7],
+      [1, 1.1, 2, 3.75, 4, 4.499],
+    ];
+    for (let i = 0; i < 3; i++) {
+      for (const contrast of contrasts[i]) {
+        expect(
+          selectByContrastRatio(contrast, values[0], values[1], values[2])
+        ).to.be.equal(values[i]);
+      }
+    }
+  }
 });
