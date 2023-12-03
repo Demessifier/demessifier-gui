@@ -28,6 +28,9 @@ const SOLID_ICON_PACK = Object.freeze({
   "fas-circle-info": faSolid.faCircleInfo,
   "fas-circle-exclamation": faSolid.faCircleExclamation,
   "fas-triangle-exclamation": faSolid.faTriangleExclamation,
+  "fas-palette": faSolid.faPalette,
+  "fas-star": faSolid.faStar,
+  "fas-table": faSolid.faTable,
 }); // add requested solid FA icons here
 
 type FabIconPack = typeof BRANDS_ICON_PACK;
