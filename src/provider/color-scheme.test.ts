@@ -1,23 +1,30 @@
 import { test, expect } from "vitest";
 import {
-  colorSchemes,
-  getColorScheme,
-  getPreferredColorScheme,
+  supportedColorSchemes,
+  getColorSchemeConfigured,
+  getColorSchemeConfiguredOrPreferred,
+  getColorSchemePreferredOrDefault,
   setColorScheme,
 } from "./color-scheme";
 import { getRandomItem } from "./randomness";
 
 test("Color scheme", async () => {
-  expect(colorSchemes).to.have.length(2);
-  expect(colorSchemes).to.contain(getPreferredColorScheme());
+  expect(supportedColorSchemes).to.have.length(2);
+  expect(supportedColorSchemes).to.contain(getColorSchemePreferredOrDefault());
+  expect(supportedColorSchemes).to.contain(
+    getColorSchemeConfiguredOrPreferred()
+  );
 
-  let previousScheme = getColorScheme();
-  for (let _i = 0; _i < 10 * colorSchemes.length; _i++) {
-    const randomScheme = getRandomItem(colorSchemes, [previousScheme]);
-    setColorScheme(randomScheme);
-    const activeScheme = getColorScheme();
+  let previousScheme = getColorSchemeConfigured();
+  for (let _i = 0; _i < 10 * supportedColorSchemes.length; _i++) {
+    const randomScheme = getRandomItem(supportedColorSchemes, [previousScheme]);
+    expect(randomScheme).to.be.ok;
+    setColorScheme(randomScheme as string);
+    const activeScheme = getColorSchemeConfigured();
+    const schemeCP = getColorSchemeConfiguredOrPreferred();
     expect(activeScheme).to.be.equal(randomScheme);
-    expect(colorSchemes).to.contain(activeScheme);
+    expect(activeScheme).to.be.equal(schemeCP);
+    expect(supportedColorSchemes).to.contain(activeScheme);
     previousScheme = randomScheme;
   }
 });
