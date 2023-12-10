@@ -78,6 +78,10 @@ function unMinimize() {
   &.minimized {
     width: fit-content;
     cursor: pointer;
+
+    h3 {
+      margin: 0;
+    }
   }
 
   &.full {
@@ -85,6 +89,7 @@ function unMinimize() {
 
     h3 {
       cursor: pointer;
+      padding: 0 1em;
     }
   }
 
@@ -92,7 +97,7 @@ function unMinimize() {
     width: fit-content;
 
     span {
-      padding: 0 0.5em;
+      padding: 0 1em;
     }
   }
 }
