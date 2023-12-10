@@ -7,6 +7,7 @@ for (const menuItem of MENU) {
     path: menuItem.path,
     name: menuItem.name,
     component: menuItem.component,
+    props: menuItem.componentProps,
     meta: {
       title: menuItem.metaTitle,
     },
