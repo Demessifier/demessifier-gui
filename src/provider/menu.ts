@@ -18,6 +18,7 @@ export type ClientPath = (typeof clientPaths)[Keys];
 export type MenuItem = {
   name: string;
   component: () => Promise<ModuleType> | any; // TODO: remove any
+  componentProps: any; // TODO: remove any
   path: ClientPath;
   title: string;
   fa: FaIcon;
@@ -27,6 +28,7 @@ export type MenuItem = {
 const MENU_COLORS: MenuItem = {
   name: "ColorPalette",
   component: () => import("../component/global-controller/ColorPalette.vue"),
+  componentProps: {},
   path: clientPaths._,
   title: "ColorPalette",
   fa: "fas-palette",
@@ -37,6 +39,7 @@ const MENU_SCHEME: MenuItem = {
   name: "ColorSchemeSwitch",
   component: () =>
     import("../component/global-controller/ColorSchemeSwitch.vue"),
+  componentProps: {},
   path: clientPaths.scheme,
   title: "ColorSchemeSwitch",
   fa: "fas-circle-half-stroke",
@@ -46,6 +49,7 @@ const MENU_SCHEME: MenuItem = {
 const MENU_ICONS: MenuItem = {
   name: "FontAwesomeIcon",
   component: () => import("../component/FontAwesomeIcon.vue"),
+  componentProps: { icon: "fas-star", spin: true },
   path: clientPaths.icons,
   title: "FontAwesomeIcon",
   fa: "fas-star",
@@ -55,6 +59,10 @@ const MENU_ICONS: MenuItem = {
 const MENU_STATUS: MenuItem = {
   name: "StatusBox",
   component: () => import("../component/StatusBox.vue"),
+  componentProps: {
+    headlineText: "StatusBox",
+    boxFlavorName: "success",
+  },
   path: clientPaths.status,
   title: "StatusBox",
   fa: "fas-table",
