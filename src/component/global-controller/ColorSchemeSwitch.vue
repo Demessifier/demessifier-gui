@@ -2,13 +2,13 @@
 import { ref } from "vue";
 import FontAwesomeIcon from "../FontAwesomeIcon.vue";
 import {
-  colorSchemes,
-  getPreferredColorScheme,
+  supportedColorSchemes,
+  getColorSchemeConfiguredOrPreferred,
   Scheme,
   setColorScheme,
 } from "../../provider/color-scheme";
 
-const preferredColorScheme = ref(getPreferredColorScheme());
+const preferredColorScheme = ref(getColorSchemeConfiguredOrPreferred());
 setColorScheme(preferredColorScheme.value);
 
 function switchSchemeTo(scheme: Scheme) {
@@ -20,7 +20,7 @@ function switchSchemeTo(scheme: Scheme) {
 <template>
   <div class="buttons">
     <button
-      v-for="scheme in colorSchemes"
+      v-for="scheme in supportedColorSchemes"
       :key="scheme"
       type="button"
       @click="switchSchemeTo(scheme)"
@@ -37,6 +37,7 @@ function switchSchemeTo(scheme: Scheme) {
 .buttons {
   display: flex;
   flex-direction: column;
+
   & div {
   }
 }
