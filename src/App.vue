@@ -5,6 +5,8 @@ import * as Z_INDEX from "./provider/z-index";
 import MenuLeft from "./component/layout/MenuLeft.vue";
 import FontAwesomeIcon from "./component/FontAwesomeIcon.vue";
 import { MENU } from "./provider/menu";
+import MenuTopRight from "./component/layout/MenuTopRight.vue";
+import BrandLogo from "./component/layout/BrandLogo.vue";
 
 // window size for responsiveness
 const windowSize = ref(window.innerWidth);
@@ -63,7 +65,7 @@ setDefaultColors();
           :title="`${leftMenuVisible ? 'Hide' : 'Show'} main menu`"
         />
       </span>
-      <!-- <BrandLogo class="logo" /> -->
+      <BrandLogo class="logo" />
       <span class="icon-button" @click="toggleRightMenu">
         <FontAwesomeIcon
           icon="fas-chevron-down"
@@ -77,11 +79,11 @@ setDefaultColors();
       :style="`z-index: ${Z_INDEX.RIGHT_MENU_BACKDROP}`"
       @click="hideRightMenu"
     />
-    <!-- <MenuTopRight -->
-    <!--   class="menu-content right-menu-content" -->
-    <!--   :class="{ hidden: !rightMenuVisible, compact: compactView }" -->
-    <!--   :style="`z-index: ${Z_INDEX.RIGHT_MENU}`" -->
-    <!-- /> -->
+    <MenuTopRight
+      class="menu-content right-menu-content"
+      :class="{ hidden: !rightMenuVisible, compact: compactView }"
+      :style="`z-index: ${Z_INDEX.RIGHT_MENU}`"
+    />
     <div class="left-and-main" :class="{ compact: compactView }">
       <div
         class="backdrop left-menu-backdrop"
@@ -142,6 +144,14 @@ header {
     aspect-ratio: 1 / 1;
     cursor: pointer;
 
+    &:first-child {
+      border-right: var(--color-secondary) solid 1px;
+    }
+
+    &:last-child {
+      border-left: var(--color-secondary) solid 1px;
+    }
+
     svg {
       $padding: 25%;
       height: calc(100% - 2 * $padding);
@@ -155,18 +165,14 @@ header {
   }
 
   .logo {
-    padding-left: 5%;
-    padding-right: 5%;
+    margin-left: 5%;
+    margin-right: 5%;
     width: 100%;
   }
 }
 
 header > * {
   height: 100%;
-}
-
-header > *:not(:last-child) {
-  border-right: var(--color-secondary) solid 1px;
 }
 
 .menu-content,
