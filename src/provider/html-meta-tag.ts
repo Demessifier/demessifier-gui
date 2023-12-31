@@ -22,6 +22,15 @@ export function getMetaTag(name: string): HTMLMetaElement | null {
 }
 
 /**
+ * Retrieves a meta tag content by the name of the meta tag.
+ * @param name Name of the meta tag to retrieve content from.
+ * @returns The retrieved meta tag content or undefined.
+ */
+export function getMetaTagContent(name: string): string | undefined {
+  return getMetaTag(name)?.content;
+}
+
+/**
  * Makes sure that a meta tag exists.
  * If it exists, the value is ignored.
  * If it doesn't exist, it is created with the given value.
@@ -29,7 +38,7 @@ export function getMetaTag(name: string): HTMLMetaElement | null {
  * @param defaultContent The value to be used if the meta tag didn't exist.
  * @returns The edited meta tag.
  */
-export function ensureMetaTag(
+export function ensureMetaTagExistence(
   name: string,
   defaultContent: string
 ): HTMLMetaElement {
@@ -46,7 +55,7 @@ export function ensureMetaTagContent(
   name: string,
   newContent: string
 ): HTMLMetaElement {
-  const meta = ensureMetaTag(name, newContent);
+  const meta = ensureMetaTagExistence(name, newContent);
   return setMetaTagContent(meta, newContent);
 }
 

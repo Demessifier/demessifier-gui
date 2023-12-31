@@ -1,4 +1,4 @@
-import { ensureMetaTagContent, getMetaTag } from "./html-meta-tag";
+import { ensureMetaTagContent, getMetaTagContent } from "./html-meta-tag";
 
 const colorSchemesDefinition = ["dark", "light"];
 /**
@@ -25,7 +25,7 @@ export function setColorScheme(scheme: Scheme) {
  * @returns The currently set color scheme.
  */
 export function getColorSchemeConfigured(): Scheme | undefined {
-  const configuredScheme = getMetaTag("color-scheme")?.content;
+  const configuredScheme = getMetaTagContent("color-scheme");
 
   // nothing found
   if (!configuredScheme) return undefined;
