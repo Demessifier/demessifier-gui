@@ -31,7 +31,7 @@ test("HTML meta tags", async () => {
   htmlUtils.addMetaTag(META_NAME_1, META_CONTENT_1 + META_CONTENT_1);
   count_1 += 1;
   expect(getMetaTags(META_NAME_1)).to.have.length(count_1);
-  htmlUtils.ensureMetaTag(META_NAME_1, META_CONTENT_1);
+  htmlUtils.ensureMetaTagExistence(META_NAME_1, META_CONTENT_1);
   expect(getMetaTags(META_NAME_1)).to.have.length(count_1);
 
   const META_NAME_2 = "another_nonexistent-name";
@@ -39,7 +39,7 @@ test("HTML meta tags", async () => {
 
   let count_2 = 0;
   expect(getMetaTags(META_NAME_2)).to.have.length(count_2);
-  htmlUtils.ensureMetaTag(META_NAME_2, META_CONTENT_2);
+  htmlUtils.ensureMetaTagExistence(META_NAME_2, META_CONTENT_2);
   count_2 += 1;
   const meta_2 = getMetaTags(META_NAME_2);
   const meta_2_0 = meta_2[0];
@@ -47,14 +47,14 @@ test("HTML meta tags", async () => {
   expect(meta_2_0.name).to.be.equal(META_NAME_2);
   expect(meta_2_0.content).to.be.equal(META_CONTENT_2);
   expect(getMetaTags(META_NAME_2)).to.have.length(count_2);
-  htmlUtils.ensureMetaTag(META_NAME_2, META_CONTENT_2);
+  htmlUtils.ensureMetaTagExistence(META_NAME_2, META_CONTENT_2);
   expect(getMetaTags(META_NAME_2)).to.have.length(count_2);
-  htmlUtils.ensureMetaTag(META_NAME_2, META_CONTENT_2);
+  htmlUtils.ensureMetaTagExistence(META_NAME_2, META_CONTENT_2);
   expect(getMetaTags(META_NAME_2)).to.have.length(count_2);
   htmlUtils.addMetaTag(META_NAME_2, META_CONTENT_2);
   count_2 += 1;
   expect(getMetaTags(META_NAME_2)).to.have.length(count_2);
-  htmlUtils.ensureMetaTag(META_NAME_2, META_CONTENT_2);
+  htmlUtils.ensureMetaTagExistence(META_NAME_2, META_CONTENT_2);
   expect(getMetaTags(META_NAME_2)).to.have.length(count_2);
 
   const META_NAME_3 = "just_meta_3";
