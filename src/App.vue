@@ -122,8 +122,7 @@ setDefaultColors();
   flex-direction: column;
   flex-wrap: nowrap;
   align-items: center;
-  height: 100%;
-  width: 100%;
+  height: 100vh;
 }
 
 $headerHeight: 3rem;
