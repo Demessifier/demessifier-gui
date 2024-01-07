@@ -28,4 +28,4 @@ function filterProps(p: Props): FontAwesomeIconProps {
   <FontAwesomeIconOriginal v-bind="filterProps(props)" />
 </template>
 
-<style scoped></style>
+<style lang="scss" scoped></style>
