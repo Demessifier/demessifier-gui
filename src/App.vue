@@ -65,7 +65,9 @@ setDefaultColors();
           :title="`${leftMenuVisible ? 'Hide' : 'Show'} main menu`"
         />
       </span>
-      <BrandLogo class="logo" />
+      <div class="logo">
+        <BrandLogo />
+      </div>
       <span class="icon-button" @click="toggleRightMenu">
         <FontAwesomeIcon
           icon="fas-chevron-down"
@@ -124,7 +126,7 @@ setDefaultColors();
   width: 100%;
 }
 
-$headerHeight: 3em;
+$headerHeight: 3rem;
 $headerBorderBottom: 1px;
 
 header {
@@ -165,9 +167,11 @@ header {
   }
 
   .logo {
-    margin-left: 5%;
-    margin-right: 5%;
+    margin-left: 20px;
+    margin-right: 20px;
     width: 100%;
+    height: 80%;
+    font-size: calc($headerHeight * 0.8);
   }
 }
 

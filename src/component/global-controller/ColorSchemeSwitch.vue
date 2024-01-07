@@ -33,7 +33,7 @@ function switchSchemeTo(scheme: Scheme) {
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .buttons {
   display: flex;
   flex-direction: column;
