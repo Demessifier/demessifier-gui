@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import {
-  defaultColors,
-  setColor,
-  getCurrentColor,
-  ValidColorName,
-  HexColorApproximation,
-  getColorNameFromPlainColorName,
-  getColorNameComplementFromPlainColorName,
   computeColorsContrastRatio,
+  defaultColors,
+  getColorNameComplementFromPlainColorName,
+  getColorNameFromPlainColorName,
+  getCurrentColor,
+  HexColorApproximation,
   selectByContrastRatio,
+  setColor,
+  ValidColorName,
 } from "../../provider/color-palette";
 import FaIconWrapper from "../FontAwesomeIcon.vue";
 import { computed, ComputedRef, Ref, ref } from "vue";
@@ -31,29 +31,52 @@ function createDataAttribute(name: string, value: ValidColorName) {
   return { [`data-${name}`]: value };
 }
 
-type Contrasts = {
-  [key: string]: {
-    contrast: Ref<number>;
-    flavor: ComputedRef<StatusBoxFlavorItem>;
-  };
+type ContrastItem = {
+  contrast: Ref<number>;
+  flavor: ComputedRef<StatusBoxFlavorItem>;
 };
-const contrasts: Contrasts = {};
+type Contrasts = {
+  [key: string]: ContrastItem;
+};
+const contrastsComplement: Contrasts = {};
+const contrastsBlack: Contrasts = {};
+const contrastsWhite: Contrasts = {};
 
 function recalculateContrast(colorName: keyof typeof defaultColors) {
-  contrasts[colorName].contrast.value = computeColorsContrastRatio(
-    getCurrentColor(getColorNameFromPlainColorName(colorName)),
-    getCurrentColor(getColorNameComplementFromPlainColorName(colorName))
+  const currentColor = getCurrentColor(
+    getColorNameFromPlainColorName(colorName)
+  );
+  const currentComplement = getCurrentColor(
+    getColorNameComplementFromPlainColorName(colorName)
+  );
+  contrastsComplement[colorName].contrast.value = computeColorsContrastRatio(
+    currentComplement,
+    currentColor
+  );
+  contrastsBlack[colorName].contrast.value = computeColorsContrastRatio(
+    "#000",
+    currentColor
+  );
+  contrastsWhite[colorName].contrast.value = computeColorsContrastRatio(
+    "#FFF",
+    currentColor
   );
 }
 
-for (const colorName of Object.keys(defaultColors)) {
+function prepareContrastObject(): ContrastItem {
   const contrast = ref(0);
   const flavor: ComputedRef<StatusBoxFlavorItem> = computed(() =>
     getFlavorItem(
       selectByContrastRatio(contrast.value, "success", "warn", "error")
     )
   );
-  contrasts[colorName] = { contrast, flavor };
+  return { contrast, flavor };
+}
+
+for (const colorName of Object.keys(defaultColors)) {
+  contrastsComplement[colorName] = prepareContrastObject();
+  contrastsBlack[colorName] = prepareContrastObject();
+  contrastsWhite[colorName] = prepareContrastObject();
   recalculateContrast(colorName);
 }
 </script>
@@ -115,6 +138,10 @@ for (const colorName of Object.keys(defaultColors)) {
             <th>Example</th>
             <th>Name</th>
             <th>Contrast ratio</th>
+            <th>Example black</th>
+            <th>Contrast black</th>
+            <th>Example white</th>
+            <th>Contrast white</th>
           </tr>
         </thead>
         <tbody>
@@ -129,11 +156,45 @@ for (const colorName of Object.keys(defaultColors)) {
             <td>{{ colorName }}</td>
             <td
               class="contrast"
-              :class="`${contrasts[colorName].flavor.value.name}`"
+              :class="`${contrastsComplement[colorName].flavor.value.name}`"
             >
               <span>
-                <FaIconWrapper :icon="contrasts[colorName].flavor.value.icon" />
-                {{ contrasts[colorName].contrast.value.toFixed(2) }}
+                <FaIconWrapper
+                  :icon="contrastsComplement[colorName].flavor.value.icon"
+                />
+                {{ contrastsComplement[colorName].contrast.value.toFixed(2) }}
+              </span>
+            </td>
+            <td>
+              <span :class="`${colorName}-black`">X</span>
+              &nbsp;
+              <span :class="`black-${colorName}`">X</span>
+            </td>
+            <td
+              class="contrast"
+              :class="`${contrastsBlack[colorName].flavor.value.name}`"
+            >
+              <span>
+                <FaIconWrapper
+                  :icon="contrastsBlack[colorName].flavor.value.icon"
+                />
+                {{ contrastsBlack[colorName].contrast.value.toFixed(2) }}
+              </span>
+            </td>
+            <td>
+              <span :class="`${colorName}-white`">X</span>
+              &nbsp;
+              <span :class="`white-${colorName}`">X</span>
+            </td>
+            <td
+              class="contrast"
+              :class="`${contrastsWhite[colorName].flavor.value.name}`"
+            >
+              <span>
+                <FaIconWrapper
+                  :icon="contrastsWhite[colorName].flavor.value.icon"
+                />
+                {{ contrastsWhite[colorName].contrast.value.toFixed(2) }}
               </span>
             </td>
           </tr>
@@ -143,6 +204,10 @@ for (const colorName of Object.keys(defaultColors)) {
             <th>Example</th>
             <th>Name</th>
             <th>Contrast ratio</th>
+            <th>Example black</th>
+            <th>Contrast black</th>
+            <th>Example white</th>
+            <th>Contrast white</th>
           </tr>
         </tfoot>
       </table>
@@ -230,6 +295,26 @@ $colorNames: primary, secondary, success, info, warn, error;
     span {
       color: var(--color-#{$colorName}-complement);
     }
+  }
+  span.#{$colorName}-black {
+    color: var(--color-#{$colorName});
+    background-color: black;
+    padding: 0.5em;
+  }
+  span.#{$colorName}-white {
+    color: var(--color-#{$colorName});
+    background-color: white;
+    padding: 0.5em;
+  }
+  span.black-#{$colorName} {
+    color: black;
+    background-color: var(--color-#{$colorName});
+    padding: 0.5em;
+  }
+  span.white-#{$colorName} {
+    color: white;
+    background-color: var(--color-#{$colorName});
+    padding: 0.5em;
   }
 }
 
