@@ -1,21 +1,31 @@
 <script setup lang="ts">
 import {
-  computeColorsContrastRatio,
   defaultColors,
   getColorNameComplementFromPlainColorName,
   getColorNameFromPlainColorName,
   getCurrentColor,
   HexColorApproximation,
-  selectByContrastRatio,
   setColor,
   ValidColorName,
 } from "../../provider/color-palette";
-import FaIconWrapper from "../FontAwesomeIcon.vue";
-import { computed, ComputedRef, Ref, ref } from "vue";
 import StatusBox from "../StatusBox.vue";
-import { getFlavorItem, StatusBoxFlavorItem } from "../../provider/status-box";
+import ColorPaletteTdContrast from "./ColorPaletteTdContrast.vue";
+import { Ref, ref } from "vue";
 
 const COLOR_NAME = "color_name";
+
+type ColorValue = {
+  [key: string]: Ref<HexColorApproximation>;
+};
+const colorValues: ColorValue = {};
+for (const colorName of Object.keys(defaultColors)) {
+  colorValues[getColorNameFromPlainColorName(colorName)] = ref(
+    getCurrentColor(getColorNameFromPlainColorName(colorName))
+  );
+  colorValues[getColorNameComplementFromPlainColorName(colorName)] = ref(
+    getCurrentColor(getColorNameComplementFromPlainColorName(colorName))
+  );
+}
 
 function applyColor(event: Event) {
   const input = event.target as HTMLInputElement;
@@ -24,60 +34,11 @@ function applyColor(event: Event) {
   if (!colorName)
     throw new Error(`Data field '${COLOR_NAME}' not found in input element.`);
   setColor(colorName, colorValue);
-  recalculateContrast(colorName.replace(/^color-/, "").replace(/-.*/, ""));
+  colorValues[colorName].value = colorValue;
 }
 
 function createDataAttribute(name: string, value: ValidColorName) {
   return { [`data-${name}`]: value };
-}
-
-type ContrastItem = {
-  contrast: Ref<number>;
-  flavor: ComputedRef<StatusBoxFlavorItem>;
-};
-type Contrasts = {
-  [key: string]: ContrastItem;
-};
-const contrastsComplement: Contrasts = {};
-const contrastsBlack: Contrasts = {};
-const contrastsWhite: Contrasts = {};
-
-function recalculateContrast(colorName: keyof typeof defaultColors) {
-  const currentColor = getCurrentColor(
-    getColorNameFromPlainColorName(colorName)
-  );
-  const currentComplement = getCurrentColor(
-    getColorNameComplementFromPlainColorName(colorName)
-  );
-  contrastsComplement[colorName].contrast.value = computeColorsContrastRatio(
-    currentComplement,
-    currentColor
-  );
-  contrastsBlack[colorName].contrast.value = computeColorsContrastRatio(
-    "#000",
-    currentColor
-  );
-  contrastsWhite[colorName].contrast.value = computeColorsContrastRatio(
-    "#FFF",
-    currentColor
-  );
-}
-
-function prepareContrastObject(): ContrastItem {
-  const contrast = ref(0);
-  const flavor: ComputedRef<StatusBoxFlavorItem> = computed(() =>
-    getFlavorItem(
-      selectByContrastRatio(contrast.value, "success", "warn", "error")
-    )
-  );
-  return { contrast, flavor };
-}
-
-for (const colorName of Object.keys(defaultColors)) {
-  contrastsComplement[colorName] = prepareContrastObject();
-  contrastsBlack[colorName] = prepareContrastObject();
-  contrastsWhite[colorName] = prepareContrastObject();
-  recalculateContrast(colorName);
 }
 </script>
 
@@ -154,49 +115,37 @@ for (const colorName of Object.keys(defaultColors)) {
               <span> Example </span>
             </td>
             <td>{{ colorName }}</td>
-            <td
-              class="contrast"
-              :class="`${contrastsComplement[colorName].flavor.value.name}`"
-            >
-              <span>
-                <FaIconWrapper
-                  :icon="contrastsComplement[colorName].flavor.value.icon"
-                />
-                {{ contrastsComplement[colorName].contrast.value.toFixed(2) }}
-              </span>
-            </td>
+            <ColorPaletteTdContrast
+              :color-value="
+                colorValues[getColorNameFromPlainColorName(colorName)].value
+              "
+              :other-color-value="
+                colorValues[getColorNameComplementFromPlainColorName(colorName)]
+                  .value
+              "
+            ></ColorPaletteTdContrast>
             <td>
               <span :class="`${colorName}-black`">X</span>
               &nbsp;
               <span :class="`black-${colorName}`">X</span>
             </td>
-            <td
-              class="contrast"
-              :class="`${contrastsBlack[colorName].flavor.value.name}`"
-            >
-              <span>
-                <FaIconWrapper
-                  :icon="contrastsBlack[colorName].flavor.value.icon"
-                />
-                {{ contrastsBlack[colorName].contrast.value.toFixed(2) }}
-              </span>
-            </td>
+            <ColorPaletteTdContrast
+              :color-value="
+                colorValues[getColorNameFromPlainColorName(colorName)].value
+              "
+              other-color-value="#000"
+            ></ColorPaletteTdContrast>
             <td>
               <span :class="`${colorName}-white`">X</span>
               &nbsp;
               <span :class="`white-${colorName}`">X</span>
             </td>
-            <td
-              class="contrast"
-              :class="`${contrastsWhite[colorName].flavor.value.name}`"
-            >
-              <span>
-                <FaIconWrapper
-                  :icon="contrastsWhite[colorName].flavor.value.icon"
-                />
-                {{ contrastsWhite[colorName].contrast.value.toFixed(2) }}
-              </span>
-            </td>
+            <ColorPaletteTdContrast
+              :color-value="
+                colorValues[getColorNameFromPlainColorName(colorName)].value
+              "
+              other-color-value="#FFF"
+            ></ColorPaletteTdContrast>
           </tr>
         </tbody>
         <tfoot>
