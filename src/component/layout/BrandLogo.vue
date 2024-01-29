@@ -13,7 +13,7 @@ const cssMaskUrl = `url(${LogoSvg})`;
 
 <style lang="scss" scoped>
 .logo-wrapper {
-  display:flex;
+  display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   align-items: center;
