@@ -4,9 +4,9 @@
   "description": "Demessifier GUI framework",
   "scripts": {
     "clean:node": "npx rimraf package-lock.json && npx rimraf node_modules",
-    "clean:cache": "npx rimraf auxiliary/*",
-    "clean:test": "npx rimraf test/vitest/* && npx rimraf test/cypress/screenshots/* && npx rimraf test/cypress/videos/* && npx rimraf test/cypress/downloads/*",
-    "clean:build": "npx rimraf build/*",
+    "clean:cache": "npx rimraf --glob auxiliary/*",
+    "clean:test": "npx rimraf --glob test/vitest/* && npx rimraf --glob test/cypress/screenshots/* && npx rimraf --glob test/cypress/videos/* && npx rimraf --glob test/cypress/downloads/*",
+    "clean:build": "npx rimraf --glob build/*",
     "clean:generate": "npx rimraf src/css/default-css-variables.css",
     "clean": "npm run clean:node && npm run clean:cache && npm run clean:test && npm run clean:build && npm run clean:generate",
     "packages:install": "npm install",
