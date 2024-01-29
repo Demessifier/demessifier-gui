@@ -75,7 +75,7 @@ function testColorOrComplementSetting(
 
 function testContrasts() {
   cy.get("tbody td.contrast").should((contrast) => {
-    expect(contrast).to.have.length(Object.keys(defaultColors).length);
+    expect(contrast).to.have.length(Object.keys(defaultColors).length * 3);
   });
   for (const colorName of Object.keys(defaultColors)) {
     cy.then(() => {
@@ -101,7 +101,7 @@ function testContrasts() {
 
       cy.get(`tbody tr.${colorName} td.contrast`)
         .should((contrast) => {
-          expect(contrast).to.have.length(1);
+          expect(contrast).to.have.length(3);
           expect(contrast).to.have.css(
             "background-color",
             hexToRgb(
