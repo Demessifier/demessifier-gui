@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import FontAwesomeIcon from "./FontAwesomeIcon.vue";
 import {
   statusBoxFlavor,
@@ -27,6 +27,8 @@ const props = withDefaults(defineProps<Props>(), {
 const boxType: StatusBoxFlavorItem = statusBoxFlavor[props.boxFlavorName];
 const unMinimizeTooltip = `Expand: \n${props.headlineText}`;
 const minimized = ref(props.initializeMinimized);
+const boxColor = computed(() => `var(--${boxType.color})`);
+const boxBgColor = computed(() => `var(--${boxType.bgColor})`);
 
 function switchMinimized() {
   minimized.value = !minimized.value;
@@ -40,22 +42,17 @@ function unMinimize() {
 <template>
   <div
     class="status-box"
-    :style="{
-      'background-color': `var(--${boxType.bgColor})`,
-      color: `var(--${boxType.color})`,
-    }"
     :class="{ minimized: minimized, full: !minimized }"
     :title="minimized ? unMinimizeTooltip : ''"
     @click="unMinimize"
   >
-    <h3
-      :title="minimized ? unMinimizeTooltip : 'Minimize'"
-      @click.stop="switchMinimized"
-    >
-      <FontAwesomeIcon :icon="boxType.icon" />
-      <span v-if="!minimized">{{ headlineText }}</span>
-    </h3>
-    <div v-if="!minimized">
+    <div class="header" @click.stop="switchMinimized">
+      <h3 :title="minimized ? unMinimizeTooltip : 'Minimize'">
+        <FontAwesomeIcon :icon="boxType.icon" />
+        <span v-if="!minimized">{{ headlineText }}</span>
+      </h3>
+    </div>
+    <div class="content" v-if="!minimized">
       <!-- @slot Contents of the box. -->
       <slot></slot>
     </div>
@@ -64,11 +61,13 @@ function unMinimize() {
 
 <style lang="scss" scoped>
 .status-box {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+
   padding: 1em;
-  border: 2px solid;
-  border-radius: 0.5em;
-  /*background-color: v-bind('`var(--${boxType.bgColor})`');*/
-  /*color: v-bind('`var(--${boxType.color})`');*/
+  border: 2px solid v-bind(boxBgColor);
+  border-radius: 0.5rem;
   height: fit-content;
   width: fit-content;
   transition:
@@ -78,27 +77,44 @@ function unMinimize() {
   &.minimized {
     width: fit-content;
     cursor: pointer;
+    background-color: v-bind(boxBgColor);
 
-    h3 {
-      margin: 0;
+    div.header {
+      h3 {
+        margin: 0;
+      }
     }
   }
 
   &.full {
     width: auto;
 
-    h3 {
+    div.header {
       cursor: pointer;
-      padding: 0 1em;
+      border-radius: 0.25rem;
+
+      h3 {
+        padding: 0 1em;
+      }
     }
   }
 
-  h3 {
-    width: fit-content;
+  div.header {
+    color: v-bind(boxColor);
+    background-color: v-bind(boxBgColor);
+    margin: 0;
 
-    span {
-      padding: 0 1em;
+    h3 {
+      width: fit-content;
+
+      span {
+        padding: 0 1em;
+      }
     }
+  }
+
+  div.content {
+    padding-top: 1em;
   }
 }
 </style>
