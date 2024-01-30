@@ -27,7 +27,7 @@ function testColorOrComplement(
   colorName: string,
   complement: boolean,
   colorValue: HexColorApproximation,
-  complementValue: HexColorApproximation
+  complementValue: HexColorApproximation,
 ) {
   const labelPrefix = complement ? "color complement for " : "";
   const labelSuffix = complement ? "" : " color";
@@ -36,11 +36,11 @@ function testColorOrComplement(
       expect(item).to.have.length(1);
       expect(item).to.have.css(
         `${complement ? "background-" : ""}color`,
-        hexToRgb(colorValue)
+        hexToRgb(colorValue),
       );
       expect(item).to.have.css(
         `${complement ? "" : "background-"}color`,
-        hexToRgb(complementValue)
+        hexToRgb(complementValue),
       );
     })
     .find("label")
@@ -55,7 +55,7 @@ function testColorOrComplement(
 
 function testColorOrComplementSetting(
   colorName: string,
-  complement: boolean
+  complement: boolean,
 ): HexColorApproximation {
   const randomColor = getRandomColor();
   const fullColorName = complement
@@ -80,23 +80,23 @@ function testContrasts() {
   for (const colorName of Object.keys(defaultColors)) {
     cy.then(() => {
       const colorValue = getCurrentColor(
-        getColorNameFromPlainColorName(colorName)
+        getColorNameFromPlainColorName(colorName),
       );
       const colorComplement = getCurrentColor(
-        getColorNameComplementFromPlainColorName(colorName)
+        getColorNameComplementFromPlainColorName(colorName),
       );
       const contrast = computeColorsContrastRatio(colorValue, colorComplement);
       const contrastStatus: StatusBoxFlavorName = selectByContrastRatio(
         contrast,
         "success",
         "warn",
-        "error"
+        "error",
       );
       const contrastSvgClass: string = selectByContrastRatio(
         contrast,
         "fa-circle-check",
         "fa-circle-exclamation",
-        "fa-triangle-exclamation"
+        "fa-triangle-exclamation",
       );
 
       cy.get(`tbody tr.${colorName} td.contrast`)
@@ -105,8 +105,8 @@ function testContrasts() {
           expect(contrast).to.have.css(
             "background-color",
             hexToRgb(
-              getCurrentColor(getColorNameFromPlainColorName(contrastStatus))
-            )
+              getCurrentColor(getColorNameFromPlainColorName(contrastStatus)),
+            ),
           );
           expect(contrast).to.have.class(contrastStatus);
         })
@@ -116,9 +116,9 @@ function testContrasts() {
             "color",
             hexToRgb(
               getCurrentColor(
-                getColorNameComplementFromPlainColorName(contrastStatus)
-              )
-            )
+                getColorNameComplementFromPlainColorName(contrastStatus),
+              ),
+            ),
           );
           expect(span).to.contain.text(contrast.toFixed(2));
         })
@@ -143,27 +143,27 @@ describe("ColorPalette component", () => {
         colorName,
         false,
         defaultColors[colorName].value,
-        defaultColors[colorName].complementValue
+        defaultColors[colorName].complementValue,
       );
       testColorOrComplement(
         colorName,
         true,
         defaultColors[colorName].value,
-        defaultColors[colorName].complementValue
+        defaultColors[colorName].complementValue,
       );
       cy.get(`tbody td.${colorName}`)
         .should((td) => {
           expect(td).to.have.length.at.least(1);
           expect(td).to.have.css(
             "background-color",
-            hexToRgb(defaultColors[colorName].value)
+            hexToRgb(defaultColors[colorName].value),
           );
         })
         .find("span")
         .should((span) => {
           expect(span).to.have.css(
             "color",
-            hexToRgb(defaultColors[colorName].complementValue)
+            hexToRgb(defaultColors[colorName].complementValue),
           );
         });
     }
@@ -175,20 +175,20 @@ describe("ColorPalette component", () => {
       const randomColor = testColorOrComplementSetting(colorName, false);
       const randomColorComplement = testColorOrComplementSetting(
         colorName,
-        true
+        true,
       );
 
       testColorOrComplement(
         colorName,
         false,
         randomColor,
-        randomColorComplement
+        randomColorComplement,
       );
       testColorOrComplement(
         colorName,
         true,
         randomColor,
-        randomColorComplement
+        randomColorComplement,
       );
     }
 

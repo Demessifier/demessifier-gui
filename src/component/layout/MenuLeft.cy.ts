@@ -9,11 +9,11 @@ describe("MenuLeft component", () => {
     for (const menuItem of MENU) {
       cy.get(`menu li router-link[to="${menuItem.path}"]`).should(
         "have.length",
-        1
+        1,
       );
       cy.get(`menu li router-link[to="${menuItem.path}"] svg`).should(
         "have.length",
-        1
+        1,
       );
       cy.get(`menu li router-link[to="${menuItem.path}"] span.menu-title`)
         .should("have.length", 1)

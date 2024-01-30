@@ -16,12 +16,12 @@ interface Props {
 const props = defineProps<Props>();
 
 const contrast: ComputedRef<number> = computed(() =>
-  computeColorsContrastRatio(props.colorValue, props.otherColorValue)
+  computeColorsContrastRatio(props.colorValue, props.otherColorValue),
 );
 const flavor: ComputedRef<StatusBoxFlavorItem> = computed(() =>
   getFlavorItem(
-    selectByContrastRatio(contrast.value, "success", "warn", "error")
-  )
+    selectByContrastRatio(contrast.value, "success", "warn", "error"),
+  ),
 );
 </script>
 

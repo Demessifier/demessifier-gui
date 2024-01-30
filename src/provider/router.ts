@@ -20,7 +20,7 @@ routes.push(
     meta: {
       title: "404 not found",
     },
-  }
+  },
   // {
   //   path: "/:pathMatch(.*)*",
   //   redirect: clientPaths._404,

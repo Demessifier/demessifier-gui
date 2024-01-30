@@ -20,10 +20,10 @@ type ColorValue = {
 const colorValues: ColorValue = {};
 for (const colorName of Object.keys(defaultColors)) {
   colorValues[getColorNameFromPlainColorName(colorName)] = ref(
-    getCurrentColor(getColorNameFromPlainColorName(colorName))
+    getCurrentColor(getColorNameFromPlainColorName(colorName)),
   );
   colorValues[getColorNameComplementFromPlainColorName(colorName)] = ref(
-    getCurrentColor(getColorNameComplementFromPlainColorName(colorName))
+    getCurrentColor(getColorNameComplementFromPlainColorName(colorName)),
   );
 }
 
@@ -60,7 +60,7 @@ function createDataAttribute(name: string, value: ValidColorName) {
             v-bind="
               createDataAttribute(
                 COLOR_NAME,
-                getColorNameFromPlainColorName(colorName)
+                getColorNameFromPlainColorName(colorName),
               )
             "
             :value="getCurrentColor(getColorNameFromPlainColorName(colorName))"
@@ -78,12 +78,12 @@ function createDataAttribute(name: string, value: ValidColorName) {
             v-bind="
               createDataAttribute(
                 COLOR_NAME,
-                getColorNameComplementFromPlainColorName(colorName)
+                getColorNameComplementFromPlainColorName(colorName),
               )
             "
             :value="
               getCurrentColor(
-                getColorNameComplementFromPlainColorName(colorName)
+                getColorNameComplementFromPlainColorName(colorName),
               )
             "
             @change="applyColor"

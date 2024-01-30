@@ -40,7 +40,7 @@ export function getMetaTagContent(name: string): string | undefined {
  */
 export function ensureMetaTagExistence(
   name: string,
-  defaultContent: string
+  defaultContent: string,
 ): HTMLMetaElement {
   return getMetaTag(name) ?? addMetaTag(name, defaultContent);
 }
@@ -53,7 +53,7 @@ export function ensureMetaTagExistence(
  */
 export function ensureMetaTagContent(
   name: string,
-  newContent: string
+  newContent: string,
 ): HTMLMetaElement {
   const meta = ensureMetaTagExistence(name, newContent);
   return setMetaTagContent(meta, newContent);
@@ -67,7 +67,7 @@ export function ensureMetaTagContent(
  */
 export function setMetaTagContent(
   meta: HTMLMetaElement,
-  content: string
+  content: string,
 ): HTMLMetaElement {
   meta.setAttribute("content", content);
   return meta;
