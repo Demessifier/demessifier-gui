@@ -20,10 +20,10 @@ const resizeEventListener = () => {
   }
 };
 onMounted(() =>
-  window.addEventListener(eventListenerType, resizeEventListener)
+  window.addEventListener(eventListenerType, resizeEventListener),
 );
 onBeforeUnmount(() =>
-  window.removeEventListener(eventListenerType, resizeEventListener)
+  window.removeEventListener(eventListenerType, resizeEventListener),
 );
 
 const compactView = computed(() => windowSize.value < 1024);

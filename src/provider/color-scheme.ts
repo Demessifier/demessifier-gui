@@ -9,7 +9,7 @@ export type Scheme = (typeof colorSchemesDefinition)[number];
  * List of supported color schemes.
  */
 export const supportedColorSchemes = Object.freeze(
-  colorSchemesDefinition
+  colorSchemesDefinition,
 ) as Scheme[];
 
 /**

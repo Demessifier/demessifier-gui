@@ -13,13 +13,13 @@ function runTestsForColorPair(props: {
   it(`Renders ${JSON.stringify(props)}`, () => {
     const contrastValue = computeColorsContrastRatio(
       props.colorValue,
-      props.otherColorValue
+      props.otherColorValue,
     );
     const contrastClass = selectByContrastRatio(
       contrastValue,
       "success",
       "warn",
-      "error"
+      "error",
     );
     cy.mount(ColorPaletteTdContrast, { props: props });
     cy.get("td.contrast").should((td) => {

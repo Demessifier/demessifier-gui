@@ -33,7 +33,7 @@ test("Color scheme", async () => {
   expect(supportedColorSchemes).to.have.length(2);
   expect(supportedColorSchemes).to.contain(getColorSchemePreferredOrDefault());
   expect(supportedColorSchemes).to.contain(
-    getColorSchemeConfiguredOrPreferred()
+    getColorSchemeConfiguredOrPreferred(),
   );
 
   testSchemeName("light", "light");

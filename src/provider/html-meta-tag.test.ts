@@ -3,7 +3,7 @@ import * as htmlUtils from "./html-meta-tag";
 
 function getMetaTags(name: string): HTMLMetaElement[] {
   const metasCollection = document.head.getElementsByTagName(
-    "meta"
+    "meta",
   ) as HTMLCollectionOf<HTMLMetaElement>;
   const metasArray = [...metasCollection];
   return metasArray.filter((meta) => meta.name === name);

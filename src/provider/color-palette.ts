@@ -12,7 +12,7 @@ import { ensureMetaTagContent } from "./html-meta-tag";
 export type HexColorApproximation = `#${string}`;
 const hexColorLengths = [3, 4, 6, 8] as const;
 const hexColorLengthsAsNumbers = Object.freeze(
-  hexColorLengths.map((n) => n as number)
+  hexColorLengths.map((n) => n as number),
 );
 type HexColorLength = (typeof hexColorLengths)[number];
 
@@ -96,7 +96,7 @@ function setRootStyleProperty(propertyName: string, propertyValue: string) {
  * @returns Length of the color value excluding the "#" sign.
  */
 export function checkColorValueHex(
-  colorValue: HexColorApproximation
+  colorValue: HexColorApproximation,
 ): HexColorLength {
   const length = colorValue.length - 1;
   if (!hexColorLengthsAsNumbers.includes(length))
@@ -114,7 +114,7 @@ export function checkColorValueHex(
  */
 export function setColor(
   colorName: ValidColorName,
-  colorValue: HexColorApproximation
+  colorValue: HexColorApproximation,
 ) {
   checkColorValueHex(colorValue);
 
@@ -129,7 +129,7 @@ export function setColor(
  * @returns Color value in the "#RRGGBB" hex format.
  */
 export function getCurrentColor(
-  colorName: ValidColorName
+  colorName: ValidColorName,
 ): HexColorApproximation {
   const defaultColor = "#888888" as HexColorApproximation;
   const retrievedValue = getRootStyleProperty(`--${colorName}`); // empty string if not set
@@ -145,7 +145,7 @@ export function getCurrentColor(
  * @returns Variable name in the "color-${name}" format.
  */
 export function getColorNameFromPlainColorName(
-  plainColorName: keyof typeof defaultColors
+  plainColorName: keyof typeof defaultColors,
 ): ValidColorName {
   return `color-${plainColorName}`;
 }
@@ -156,7 +156,7 @@ export function getColorNameFromPlainColorName(
  * @returns Variable name in the "color-${name}-complement" format.
  */
 export function getColorNameComplementFromPlainColorName(
-  plainColorName: keyof typeof defaultColors
+  plainColorName: keyof typeof defaultColors,
 ): ValidColorName {
   return `color-${plainColorName}-complement`;
 }
@@ -175,7 +175,7 @@ function checkRgbBytes(color: ColorRgb_a) {
   for (const byte of color) {
     if (byte < 0 || byte >= 256 || byte % 1 !== 0)
       throw new Error(
-        `Invalid byte '${byte}' in color RGB/RGBA [${color.join(",")}].`
+        `Invalid byte '${byte}' in color RGB/RGBA [${color.join(",")}].`,
       );
   }
 }
@@ -202,7 +202,7 @@ function computeRelativeLuminance(color_256: ColorRgb_a): number {
   if (color_256.length === 4) color_256.pop();
   const color_1 = color_256.map((c) => c / 255);
   const partialLuminance = color_1.map(
-    (c) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4) // to power 2.4
+    (c) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4), // to power 2.4
   );
   const [R, G, B] = partialLuminance;
   return 0.2126 * R + 0.7152 * G + 0.0722 * B;
@@ -241,7 +241,7 @@ function colorHexToBytes(color: HexColorApproximation): ColorRgb_a {
  */
 export function computeColorsContrastRatio(
   color1: AnyColorType,
-  color2: AnyColorType
+  color2: AnyColorType,
 ): number {
   const colors: ColorRgb_a[] = [color1, color2].map((c) => {
     switch (typeof c) {
@@ -276,7 +276,7 @@ export function selectByContrastRatio<T>(
   contrastRatio: number,
   ok: T,
   meh: T,
-  bad: T
+  bad: T,
 ): T {
   if (contrastRatio < 1 || 21 < contrastRatio)
     throw new Error(`Invalid contrast ration value: ${contrastRatio}`);

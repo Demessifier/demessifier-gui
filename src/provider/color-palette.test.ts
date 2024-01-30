@@ -18,12 +18,12 @@ import crypto from "crypto";
 
 function checkMetaThemeColor(
   colorName: ValidColorName,
-  colorValue: HexColorApproximation
+  colorValue: HexColorApproximation,
 ) {
   if (colorName !== "color-primary") return;
 
   const metasCollection = document.head.getElementsByTagName(
-    "meta"
+    "meta",
   ) as HTMLCollectionOf<HTMLMetaElement>;
   const metasArray = [...metasCollection];
   const metas = metasArray.filter((meta) => meta.name === "theme-color");
@@ -40,7 +40,7 @@ function setAndCheckDefaultColors() {
     const colorNameComplement =
       getColorNameComplementFromPlainColorName(colorName);
     expect(getCurrentColor(colorNameComplement)).to.be.equal(
-      color.complementValue
+      color.complementValue,
     );
     checkMetaThemeColor(colorNameColor, color.value);
   }
@@ -57,10 +57,10 @@ test("color palette", async () => {
 
   for (const colorName of colorNames) {
     expect(getColorNameFromPlainColorName(colorName)).to.be.equal(
-      `color-${colorName}`
+      `color-${colorName}`,
     );
     expect(getColorNameComplementFromPlainColorName(colorName)).to.be.equal(
-      `color-${colorName}-complement`
+      `color-${colorName}-complement`,
     );
   }
 
@@ -86,14 +86,14 @@ test("color palette", async () => {
     const badColor: HexColorApproximation = `${randomColor}${randomBytes}`;
     const badComplement: HexColorApproximation = `${randomColor}${randomBytes}`;
     expect(() => checkColorValueHex(badColor)).to.throw(
-      `Unexpected length of color '${badColor}'.`
+      `Unexpected length of color '${badColor}'.`,
     );
     expect(() => checkColorValueHex(badComplement)).to.throw(
-      `Unexpected length of color '${badComplement}'.`
+      `Unexpected length of color '${badComplement}'.`,
     );
     const randomByte = crypto.randomBytes(1).toString("hex");
     expect(() => checkColorValueHex(`#${randomByte}x`)).to.throw(
-      `Unexpected color value '#${randomByte}x'.`
+      `Unexpected color value '#${randomByte}x'.`,
     );
   }
   for (let c = 0; c < colorNames.length; c++) {
@@ -131,70 +131,70 @@ test("contrast ratio", async () => {
   for (const [colorName, color] of Object.entries(defaultColors)) {
     const colorToComplementContrastRatio = computeColorsContrastRatio(
       color.value,
-      color.complementValue
+      color.complementValue,
     );
     expect(
       colorToComplementContrastRatio,
-      `symmetry - ${colorName}`
+      `symmetry - ${colorName}`,
     ).to.be.equal(
-      computeColorsContrastRatio(color.complementValue, color.value)
+      computeColorsContrastRatio(color.complementValue, color.value),
     );
     expect(
       computeColorsContrastRatio(color.value, color.value),
-      `same color - ${colorName}`
+      `same color - ${colorName}`,
     ).to.be.equal(1);
     expect(
       computeColorsContrastRatio(color.complementValue, color.complementValue),
-      `same complement - ${colorName}`
+      `same complement - ${colorName}`,
     ).to.be.equal(1);
     expect(
       colorToComplementContrastRatio,
-      `defaults are contrasting enough - ${colorName}`
+      `defaults are contrasting enough - ${colorName}`,
     ).to.be.at.least(7); // technical minimum is 1, but we have contrasting colors
     expect(
       colorToComplementContrastRatio,
-      `less than maximum - ${colorName}`
+      `less than maximum - ${colorName}`,
     ).to.be.at.most(21);
   }
   const exampleContrastRation = computeColorsContrastRatio("#123", "#987");
   expect(exampleContrastRation, "RGB ~ RRGGBB").to.be.equal(
-    computeColorsContrastRatio("#112233", "#998877")
+    computeColorsContrastRatio("#112233", "#998877"),
   );
   expect(exampleContrastRation, "RGB ~ RGBA").to.be.equal(
-    computeColorsContrastRatio("#1234", "#9876")
+    computeColorsContrastRatio("#1234", "#9876"),
   );
   expect(exampleContrastRation, "RGB ~ RRGGBBAA").to.be.equal(
-    computeColorsContrastRatio("#11223344", "#99887766")
+    computeColorsContrastRatio("#11223344", "#99887766"),
   );
   expect(exampleContrastRation, "RGB ~ RGB(A)").to.be.equal(
-    computeColorsContrastRatio("#123f", "#987f")
+    computeColorsContrastRatio("#123f", "#987f"),
   );
   expect(exampleContrastRation, "RGB ~ RRGGBB(AA)").to.be.equal(
-    computeColorsContrastRatio("#112233ff", "#998877ff")
+    computeColorsContrastRatio("#112233ff", "#998877ff"),
   );
   expect(exampleContrastRation, "RGB ~ [RR GG BB]").to.be.equal(
-    computeColorsContrastRatio([0x11, 0x22, 0x33], [0x99, 0x88, 0x77])
+    computeColorsContrastRatio([0x11, 0x22, 0x33], [0x99, 0x88, 0x77]),
   );
 
   expect(
     computeColorsContrastRatio("#000", "#fff"),
-    "black and white"
+    "black and white",
   ).to.be.equal(21);
 
   expect(() =>
     computeColorsContrastRatio(
       [999, 88, 4] as AnyColorType,
-      "#bad" as AnyColorType
-    )
+      "#bad" as AnyColorType,
+    ),
   ).to.throw("Invalid byte '999' in color RGB/RGBA [999,88,4].");
   expect(() => computeColorsContrastRatio("#badbadbad", "#bad")).to.throw(
-    "Unexpected length of color '#badbadbad'."
+    "Unexpected length of color '#badbadbad'.",
   );
   expect(() => computeColorsContrastRatio("#bad", "#xyz")).to.throw(
-    "Unexpected color value '#xyz'."
+    "Unexpected color value '#xyz'.",
   );
   expect(() => computeColorsContrastRatio({} as AnyColorType, "#xyz")).to.throw(
-    `Unexpected type of color '${{}}'.`
+    `Unexpected type of color '${{}}'.`,
   );
 });
 
@@ -212,7 +212,7 @@ test("hexToRgb", async () => {
     "#00000000",
   ]) {
     expect(() => hexToRgb(invalidColor)).to.throw(
-      `Unable to parse color '${invalidColor}' as HEX #RRGGBB.`
+      `Unable to parse color '${invalidColor}' as HEX #RRGGBB.`,
     );
   }
   expect(hexToRgb("#000000")).to.be.equal("rgb(0, 0, 0)");
@@ -232,7 +232,7 @@ test("selectByContrastRatio", async () => {
       100, 999,
     ]) {
       expect(() =>
-        selectByContrastRatio(contrast, values[0], values[1], values[2])
+        selectByContrastRatio(contrast, values[0], values[1], values[2]),
       ).to.throw(`Invalid contrast ration value: ${contrast}`);
     }
     const contrasts = [
@@ -243,7 +243,7 @@ test("selectByContrastRatio", async () => {
     for (let i = 0; i < 3; i++) {
       for (const contrast of contrasts[i]) {
         expect(
-          selectByContrastRatio(contrast, values[0], values[1], values[2])
+          selectByContrastRatio(contrast, values[0], values[1], values[2]),
         ).to.be.equal(values[i]);
       }
     }
