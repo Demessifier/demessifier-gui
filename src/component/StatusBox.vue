@@ -75,8 +75,8 @@ function unMinimize() {
   height: fit-content;
   width: fit-content;
   transition:
-    width 1s,
-    height 1s; /* doesn't work with fit-content */
+    width 300ms ease,
+    height 300ms ease; /* doesn't work with fit-content */
 
   &.minimized {
     width: fit-content;
@@ -109,6 +109,7 @@ function unMinimize() {
     margin: 0;
 
     h3 {
+      transition: all 300ms ease;
       width: fit-content;
 
       span {
