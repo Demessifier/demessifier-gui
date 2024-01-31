@@ -1,4 +1,9 @@
-import { FaIcon } from "./fa-icon";
+import {
+  faCircleHalfStroke,
+  faPalette,
+  faTable,
+} from "@fortawesome/free-solid-svg-icons";
+import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 
 type ModuleType = typeof import("../App.vue");
 
@@ -21,7 +26,7 @@ export type MenuItem = {
   componentProps: any; // TODO: remove any
   path: ClientPath;
   title: string;
-  fa: FaIcon;
+  fa: IconDefinition;
   metaTitle: string;
 };
 
@@ -31,7 +36,7 @@ const MENU_COLORS: MenuItem = {
   componentProps: {},
   path: clientPaths._,
   title: "ColorPalette",
-  fa: "fas-palette",
+  fa: faPalette,
   metaTitle: "ColorPalette",
 };
 
@@ -42,18 +47,8 @@ const MENU_SCHEME: MenuItem = {
   componentProps: {},
   path: clientPaths.scheme,
   title: "ColorSchemeSwitch",
-  fa: "fas-circle-half-stroke",
+  fa: faCircleHalfStroke,
   metaTitle: "ColorSchemeSwitch",
-};
-
-const MENU_ICONS: MenuItem = {
-  name: "FontAwesomeIcon",
-  component: () => import("../component/FontAwesomeIcon.vue"),
-  componentProps: { icon: "fas-star", spin: true },
-  path: clientPaths.icons,
-  title: "FontAwesomeIcon",
-  fa: "fas-star",
-  metaTitle: "FontAwesomeIcon",
 };
 
 const MENU_STATUS: MenuItem = {
@@ -65,13 +60,12 @@ const MENU_STATUS: MenuItem = {
   },
   path: clientPaths.status,
   title: "StatusBox",
-  fa: "fas-table",
+  fa: faTable,
   metaTitle: "StatusBox",
 };
 
 export const MENU = Object.freeze([
   MENU_COLORS,
   MENU_SCHEME,
-  MENU_ICONS,
   MENU_STATUS,
 ] as MenuItem[]);
