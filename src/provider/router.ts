@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import { MENU } from "./menu";
+import NotFound from "../component/layout/NotFound.vue";
 
 const routes: RouteRecordRaw[] = [];
 for (const menuItem of MENU) {
@@ -16,7 +17,7 @@ for (const menuItem of MENU) {
 routes.push(
   {
     path: "/:pathMatch(.*)*",
-    component: () => import("../component/layout/NotFound.vue"),
+    component: () => NotFound,
     meta: {
       title: "404 not found",
     },
