@@ -10,14 +10,14 @@ function test(
   flavor: StatusBoxFlavorName,
   testingBodyText: string,
   headlineText: string,
-  expectMinimized: boolean
+  expectMinimized: boolean,
 ) {
   cy.get("div.status-box").should((statusBox) => {
     expect(statusBox).to.have.css("color", "rgb(255, 255, 255)");
     expect(statusBox).to.have.css("background-color", "rgb(0, 0, 139)");
     expect(statusBox).to.have.attr(
       "title",
-      expectMinimized ? `Show: \n${headlineText}` : ""
+      expectMinimized ? `Show: \n${headlineText}` : "",
     );
   });
   if (expectMinimized) {
@@ -40,7 +40,7 @@ function test(
   cy.get("h3").should((h3) => {
     expect(h3).to.have.attr(
       "title",
-      expectMinimized ? `Show: \n${headlineText}` : "Minimize"
+      expectMinimized ? `Show: \n${headlineText}` : "Minimize",
     );
   });
   cy.get("svg").should((svg) => {
