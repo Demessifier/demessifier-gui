@@ -1,29 +1,19 @@
 import { test, expect } from "vitest";
-import {
-  getAllStatusBoxFlavors,
-  getFlavorItem,
-  statusBoxFlavor,
-} from "./status-box";
-import { faIconInit } from "./fa-icon";
+import { getAllStatusBoxFlavors, statusBoxFlavor } from "./status-box";
 
 test("Status Box Icons", async () => {
-  const allIcons = Object.keys(faIconInit());
   const NUMBER_OF_STATES = 4;
 
-  expect(getAllStatusBoxFlavors).toBeTruthy();
+  expect(getAllStatusBoxFlavors).to.be.ok;
   const statusBoxFlavors = getAllStatusBoxFlavors();
-  expect(statusBoxFlavors).toHaveLength(NUMBER_OF_STATES);
-  for (const flavor of statusBoxFlavors) {
-    expect(allIcons).toContain(getFlavorItem(flavor).icon);
-  }
+  expect(statusBoxFlavors).to.have.length(NUMBER_OF_STATES);
   const iconsNamesList = statusBoxFlavors;
 
-  expect(statusBoxFlavor).toBeTruthy();
-  expect(Object.keys(statusBoxFlavor)).toHaveLength(NUMBER_OF_STATES);
+  expect(statusBoxFlavor).to.be.ok;
+  expect(Object.keys(statusBoxFlavor)).to.have.length(NUMBER_OF_STATES);
   for (const [key, value] of Object.entries(statusBoxFlavor)) {
-    expect(iconsNamesList).toContain(key);
-    expect(value).toBeTruthy();
-    expect(Object.keys(value)).toHaveLength(1);
-    expect(allIcons).toContain(value.icon);
+    expect(iconsNamesList).to.contain(key);
+    expect(value).to.be.ok;
+    expect(Object.keys(value)).to.have.length(4);
   }
 });

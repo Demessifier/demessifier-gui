@@ -1,13 +1,24 @@
-import { FaIcon } from "./fa-icon";
+import {
+  getColorNameComplementFromPlainColorName,
+  getColorNameFromPlainColorName,
+  ValidColorName,
+} from "./color-palette";
+import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import {
+  faCircleCheck,
+  faCircleExclamation,
+  faCircleInfo,
+  faTriangleExclamation,
+} from "@fortawesome/free-solid-svg-icons";
 
 /**
  * FontAwesome icons for the individual box flavors.
  */
 const statusBoxIcons = Object.freeze({
-  success: "fas-circle-check",
-  info: "fas-circle-info",
-  warn: "fas-circle-exclamation",
-  error: "fas-triangle-exclamation",
+  success: faCircleCheck,
+  info: faCircleInfo,
+  warn: faCircleExclamation,
+  error: faTriangleExclamation,
 });
 
 /**
@@ -27,7 +38,10 @@ export function getAllStatusBoxFlavors(): StatusBoxFlavorName[] {
  * Flavor properties for boxes.
  */
 export type StatusBoxFlavorItem = {
-  icon: FaIcon;
+  name: StatusBoxFlavorName;
+  icon: IconDefinition;
+  color: ValidColorName;
+  bgColor: ValidColorName;
 };
 
 /**
@@ -37,7 +51,10 @@ export type StatusBoxFlavorItem = {
  */
 export function getFlavorItem(name: StatusBoxFlavorName): StatusBoxFlavorItem {
   return {
+    name: name,
     icon: statusBoxIcons[name],
+    color: getColorNameComplementFromPlainColorName(name),
+    bgColor: getColorNameFromPlainColorName(name),
   };
 }
 

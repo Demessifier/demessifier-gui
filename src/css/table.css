@@ -1,0 +1,38 @@
+table {
+  border-collapse: collapse;
+}
+
+table,
+td,
+th {
+  border: 1px solid rgba(180, 180, 180, 50%);
+}
+
+td {
+  padding: 0.15em 0.5em;
+}
+
+th {
+  padding: 0.3em 0.5em;
+  border-left-width: 0;
+  border-top-width: 0;
+}
+
+th:last-child {
+  border-right: 0;
+}
+
+tr:last-child > th {
+  border-bottom: 0;
+}
+
+tbody > tr:hover,
+tbody > tr:hover > td {
+  background-color: rgba(180, 180, 180, 20%);
+}
+
+thead,
+tfoot {
+  background-color: var(--color-primary);
+  color: var(--color-primary-complement);
+}

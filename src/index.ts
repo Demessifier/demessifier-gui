@@ -1,12 +1,17 @@
 import { createApp } from "vue";
 import App from "./App.vue";
-import { faIconInit } from "./provider/fa-icon";
 import StatusBox from "./component/StatusBox.vue";
-import FontAwesomeIcon from "./component/FontAwesomeIcon.vue";
+import "./css/default-css-variables.css";
+import "./css/global.css";
+import "./css/table.css";
+import "./css/form.css";
+import { router } from "./provider/router";
 
-export { StatusBox, FontAwesomeIcon };
+export { StatusBox }; // Removing this breaks vite building
 
 const app = createApp(App);
-faIconInit();
+app.use(router);
 
-app.mount("#app");
+router.isReady().then(() => {
+  app.mount("#app");
+});

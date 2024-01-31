@@ -9,7 +9,8 @@ const customization: UserConfig = {
     coverage: {
       reportsDirectory: "./test/vitest/coverage",
     },
-    //environment: "jsdom", // to have HTML "document" object in tests
+    setupFiles: "./test/vitest-setup/setup.ts", // to have matchMedia in "window" object in tests
+    environment: "jsdom", // to have HTML "document" object in tests
   },
 };
 

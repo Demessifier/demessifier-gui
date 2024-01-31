@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import FontAwesomeIcon from "./FontAwesomeIcon.vue";
+import { computed, ref } from "vue";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
   statusBoxFlavor,
   StatusBoxFlavorItem,
@@ -25,8 +25,10 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const boxType: StatusBoxFlavorItem = statusBoxFlavor[props.boxFlavorName];
-const unMinimizeTooltip = `Show: \n${props.headlineText}`;
+const unMinimizeTooltip = `Expand: \n${props.headlineText}`;
 const minimized = ref(props.initializeMinimized);
+const boxColor = computed(() => `var(--${boxType.color})`);
+const boxBgColor = computed(() => `var(--${boxType.bgColor})`);
 
 function switchMinimized() {
   minimized.value = !minimized.value;
@@ -40,22 +42,21 @@ function unMinimize() {
 <template>
   <div
     class="status-box"
-    :style="{
-      'background-color': 'DarkBlue',
-      color: 'white',
-    }"
     :class="{ minimized: minimized, full: !minimized }"
     :title="minimized ? unMinimizeTooltip : ''"
     @click="unMinimize"
   >
-    <h3
-      :title="minimized ? unMinimizeTooltip : 'Minimize'"
+    <div
+      class="header"
       @click.stop="switchMinimized"
+      :title="minimized ? unMinimizeTooltip : 'Minimize'"
     >
-      <FontAwesomeIcon :icon="boxType.icon" />
-      <span v-if="!minimized">{{ headlineText }}</span>
-    </h3>
-    <div v-if="!minimized">
+      <h3>
+        <FontAwesomeIcon :icon="boxType.icon" />
+        <span v-if="!minimized">{{ headlineText }}</span>
+      </h3>
+    </div>
+    <div class="content" v-if="!minimized">
       <!-- @slot Contents of the box. -->
       <slot></slot>
     </div>
@@ -64,36 +65,61 @@ function unMinimize() {
 
 <style lang="scss" scoped>
 .status-box {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+
   padding: 1em;
-  border: 2px solid;
-  border-radius: 0.5em;
-  /*background-color: v-bind('`var(--${boxType.bgColor})`');*/
-  /*color: v-bind('`var(--${boxType.color})`');*/
+  border: 2px solid v-bind(boxBgColor);
+  border-radius: 0.5rem;
   height: fit-content;
   width: fit-content;
   transition:
-    width 1s,
-    height 1s; /* doesn't work with fit-content */
+    width 300ms ease,
+    height 300ms ease; /* doesn't work with fit-content */
 
   &.minimized {
     width: fit-content;
     cursor: pointer;
+    background-color: v-bind(boxBgColor);
+
+    div.header {
+      h3 {
+        margin: 0;
+      }
+    }
   }
 
   &.full {
     width: auto;
 
-    h3 {
+    div.header {
       cursor: pointer;
+      border-radius: 0.25rem;
+
+      h3 {
+        padding: 0 1em;
+      }
     }
   }
 
-  h3 {
-    width: fit-content;
+  div.header {
+    color: v-bind(boxColor);
+    background-color: v-bind(boxBgColor);
+    margin: 0;
 
-    span {
-      padding: 0 0.5em;
+    h3 {
+      transition: all 300ms ease;
+      width: fit-content;
+
+      span {
+        padding: 0 1em;
+      }
     }
+  }
+
+  div.content {
+    padding-top: 1em;
   }
 }
 </style>
