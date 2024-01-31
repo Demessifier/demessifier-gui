@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import FontAwesomeIcon from "./FontAwesomeIcon.vue";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
   statusBoxFlavor,
   StatusBoxFlavorItem,
@@ -46,8 +46,12 @@ function unMinimize() {
     :title="minimized ? unMinimizeTooltip : ''"
     @click="unMinimize"
   >
-    <div class="header" @click.stop="switchMinimized">
-      <h3 :title="minimized ? unMinimizeTooltip : 'Minimize'">
+    <div
+      class="header"
+      @click.stop="switchMinimized"
+      :title="minimized ? unMinimizeTooltip : 'Minimize'"
+    >
+      <h3>
         <FontAwesomeIcon :icon="boxType.icon" />
         <span v-if="!minimized">{{ headlineText }}</span>
       </h3>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import FontAwesomeIcon from "../FontAwesomeIcon.vue";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { MenuItem } from "../../provider/menu";
 
 interface Props {

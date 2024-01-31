@@ -3,10 +3,11 @@ import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { setDefaultColors } from "./provider/color-palette";
 import * as Z_INDEX from "./provider/z-index";
 import MenuLeft from "./component/layout/MenuLeft.vue";
-import FontAwesomeIcon from "./component/FontAwesomeIcon.vue";
 import { MENU } from "./provider/menu";
 import MenuTopRight from "./component/layout/MenuTopRight.vue";
 import BrandLogo from "./component/layout/BrandLogo.vue";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { faBars, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 // window size for responsiveness
 const windowSize = ref(window.innerWidth);
@@ -61,7 +62,7 @@ setDefaultColors();
     <header :style="`z-index: ${Z_INDEX.HEADER}`">
       <span class="icon-button" @click="toggleLeftMenu">
         <FontAwesomeIcon
-          icon="fas-bars"
+          :icon="faBars"
           :title="`${leftMenuVisible ? 'Hide' : 'Show'} main menu`"
         />
       </span>
@@ -70,7 +71,7 @@ setDefaultColors();
       </div>
       <span class="icon-button" @click="toggleRightMenu">
         <FontAwesomeIcon
-          icon="fas-chevron-down"
+          :icon="faChevronDown"
           :title="`${rightMenuVisible ? 'Hide' : 'Show'} quick menu`"
         />
       </span>

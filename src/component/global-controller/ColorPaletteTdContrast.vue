@@ -4,7 +4,7 @@ import {
   HexColorApproximation,
   selectByContrastRatio,
 } from "../../provider/color-palette";
-import FaIconWrapper from "../FontAwesomeIcon.vue";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { computed, ComputedRef } from "vue";
 import { getFlavorItem, StatusBoxFlavorItem } from "../../provider/status-box";
 
@@ -28,7 +28,7 @@ const flavor: ComputedRef<StatusBoxFlavorItem> = computed(() =>
 <template>
   <td class="contrast" :class="`${flavor.name}`">
     <span>
-      <FaIconWrapper :icon="flavor.icon" />
+      <FontAwesomeIcon :icon="flavor.icon" />
       {{ contrast.toFixed(2) }}
     </span>
   </td>

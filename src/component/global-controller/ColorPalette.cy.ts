@@ -10,7 +10,6 @@ import {
   selectByContrastRatio,
   setDefaultColors,
 } from "../../provider/color-palette";
-import { FaIcon } from "../../provider/fa-icon";
 import { StatusBoxFlavorName } from "../../provider/status-box";
 
 export function getRandomColor(): HexColorApproximation {
