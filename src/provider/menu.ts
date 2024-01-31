@@ -4,8 +4,9 @@ import {
   faTable,
 } from "@fortawesome/free-solid-svg-icons";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-
-type ModuleType = typeof import("../App.vue");
+import ColorSchemeSwitch from "../component/global-controller/ColorSchemeSwitch.vue";
+import StatusBox from "../component/StatusBox.vue";
+import ColorPalette from "../component/global-controller/ColorPalette.vue";
 
 type Path = `/${string}`;
 type PathsList = { [key: string]: Path };
@@ -22,7 +23,7 @@ export type ClientPath = (typeof clientPaths)[Keys];
 
 export type MenuItem = {
   name: string;
-  component: () => Promise<ModuleType> | any; // TODO: remove any
+  component: () => any; // TODO: remove any
   componentProps: any; // TODO: remove any
   path: ClientPath;
   title: string;
@@ -32,7 +33,7 @@ export type MenuItem = {
 
 const MENU_COLORS: MenuItem = {
   name: "ColorPalette",
-  component: () => import("../component/global-controller/ColorPalette.vue"),
+  component: () => ColorPalette,
   componentProps: {},
   path: clientPaths._,
   title: "ColorPalette",
@@ -42,8 +43,7 @@ const MENU_COLORS: MenuItem = {
 
 const MENU_SCHEME: MenuItem = {
   name: "ColorSchemeSwitch",
-  component: () =>
-    import("../component/global-controller/ColorSchemeSwitch.vue"),
+  component: () => ColorSchemeSwitch,
   componentProps: {},
   path: clientPaths.scheme,
   title: "ColorSchemeSwitch",
@@ -53,7 +53,7 @@ const MENU_SCHEME: MenuItem = {
 
 const MENU_STATUS: MenuItem = {
   name: "StatusBox",
-  component: () => import("../component/StatusBox.vue"),
+  component: () => StatusBox,
   componentProps: {
     headlineText: "StatusBox",
     boxFlavorName: "success",
