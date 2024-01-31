@@ -44,7 +44,7 @@ export function getFlavorItem(name: StatusBoxFlavorName): StatusBoxFlavorItem {
 const statusBoxFlavorPreparation: { [key: string]: StatusBoxFlavorItem } = {};
 for (const boxFlavor of getAllStatusBoxFlavors()) {
   statusBoxFlavorPreparation[boxFlavor] = getFlavorItem(
-    boxFlavor as StatusBoxFlavorName
+    boxFlavor as StatusBoxFlavorName,
   );
 }
 /**

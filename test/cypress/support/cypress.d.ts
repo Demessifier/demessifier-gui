@@ -5,7 +5,7 @@ declare global {
     interface Chainable {
       mount<Component extends Vue>(
         component: Component,
-        options?: ComponentMountingOptions<Component>
+        options?: ComponentMountingOptions<Component>,
       ): Chainable<any>;
     }
   }
