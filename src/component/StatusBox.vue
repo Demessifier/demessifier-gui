@@ -56,7 +56,7 @@ function unMinimize() {
         <span v-if="!minimized">{{ headlineText }}</span>
       </h3>
     </div>
-    <div class="content" v-if="!minimized">
+    <div class="content" v-if="!minimized && $slots.default">
       <!-- @slot Contents of the box. -->
       <slot></slot>
     </div>
