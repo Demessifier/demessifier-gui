@@ -105,7 +105,15 @@ setDefaultColors();
       >
         <MenuLeft :menu-items="JSON.parse(JSON.stringify(MENU))" />
       </nav>
-      <main>
+      <main :style="`z-index: ${Z_INDEX.MAIN_CONTENT}`">
+        <div
+          class="notifications-backdrop"
+          :style="`z-index: ${Z_INDEX.NOTIFICATIONS}`"
+        >
+          <p>test</p>
+          <p>test</p>
+          <p>test test test test test test test test</p>
+        </div>
         <router-view v-slot="{ Component }">
           <transition name="fade" mode="out-in" appear>
             <component :is="Component" />
@@ -281,6 +289,7 @@ header > * {
     box-sizing: border-box;
     max-height: calc(100vh - $headerHeight - $headerBorderBottom);
     overflow: auto;
+    position: relative;
 
     .fade-enter-active,
     .fade-leave-active {
@@ -290,6 +299,16 @@ header > * {
     .fade-enter-from,
     .fade-leave-to {
       opacity: 0;
+    }
+
+    .notifications-backdrop {
+      position: absolute;
+      top: 0;
+      right: 0;
+
+      & > * {
+        background-color: grey; // TODO: get the same color as the body background (initial=transparent)
+      }
     }
   }
 }
