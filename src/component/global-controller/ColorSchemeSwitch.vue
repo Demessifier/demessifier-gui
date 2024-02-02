@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faCircleHalfStroke } from "@fortawesome/free-solid-svg-icons";
 import {
   supportedColorSchemes,
@@ -8,6 +7,7 @@ import {
   Scheme,
   setColorScheme,
 } from "../../provider/color-scheme";
+import ButtonWithIcon from "./ButtonWithIcon.vue";
 
 const preferredColorScheme = ref(getColorSchemeConfiguredOrPreferred());
 setColorScheme(preferredColorScheme.value);
@@ -20,17 +20,15 @@ function switchSchemeTo(scheme: Scheme) {
 
 <template>
   <div class="buttons">
-    <button
+    <ButtonWithIcon
       v-for="scheme in supportedColorSchemes"
       :key="scheme"
-      type="button"
+      :icon="faCircleHalfStroke"
+      :text="`Switch to ${scheme} scheme`"
       @click="switchSchemeTo(scheme)"
       :disabled="preferredColorScheme == scheme"
       :id="`scheme-switch-${scheme}`"
-    >
-      <FontAwesomeIcon :icon="faCircleHalfStroke" />
-      Switch to {{ scheme }} scheme
-    </button>
+    ></ButtonWithIcon>
   </div>
 </template>
 
@@ -38,8 +36,5 @@ function switchSchemeTo(scheme: Scheme) {
 .buttons {
   display: flex;
   flex-direction: column;
-
-  & div {
-  }
 }
 </style>
