@@ -4,8 +4,12 @@
 [![NPM install size][npm-install-size-image]][npm-install-size-url]
 [![NodeJs version][npm-node-image]][npm-url]
 [![NPM types][npm-types-image]][npm-url]
-[![Known Vulnerabilities][github-snyk-image]][github-snyk-url]
 [![License][npm-license-image]][npm-url]
+
+[![Last commit][github-last-commit-image]][github-url]
+[![Known Vulnerabilities][github-snyk-image]][github-snyk-url]
+
+<!--[![Dependabot][github-dependabot-image]][github-url] TODO: broken: https://github.com/dependabot/dependabot-core/issues/1912 -->
 
 <!--
 [![NPM downloads monthly][npm-downloads-monthly-image]][npm-downloads-url]
@@ -13,21 +17,25 @@
 [![NPM downloads total][npm-downloads-total-image]][npm-downloads-url]
 [![NPM dependents][npm-dependents-image]][npm-downloads-url]
 -->
-<!--[![Last commit][github-last-commit-image]][github-url] -->
-<!-- [![Dependabot][github-dependabot-image]][github-url] -->
 
 Demessifier GUI is a minimalistic GUI framework for Vue.
 
 ## License
 
-<!--
 [![License (GitHub)][github-license-local-image]](LICENSE)
+
 [![License (GitHub)][github-license-main-image]][github-license-url]
--->
 
 [![License (npm)][npm-license-npm-image]][npm-url]
 
-<!-- -->
+## Project setup
+
+- Install dependencies
+  - NodeJS LTS \* Windows: `winget install -e --id OpenJS.NodeJS.LTS`
+  <!--  * `pnpm` TODO: eaten by Avast
+      * Windows: `winget install -e --id pnpm.pnpm` -->
+
+<!-- ---------------------------------------------------------------- -->
 
 [github-dependabot-image]: https://badgen.net/github/dependabot/demessifier/demessifier-gui
 [github-last-commit-image]: https://badgen.net/github/last-commit/demessifier/demessifier-gui?icon=git
