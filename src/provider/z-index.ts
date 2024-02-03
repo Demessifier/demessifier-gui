@@ -2,7 +2,7 @@ let i = 5;
 
 // background
 
-export const MAIN_CONTENT  = 100 * i++;
+export const MAIN_CONTENT = 100 * i++;
 
 export const NOTIFICATIONS = 100 * i++;
 
