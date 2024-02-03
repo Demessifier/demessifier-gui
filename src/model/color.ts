@@ -1,5 +1,15 @@
+import crypto from "crypto";
+
 export abstract class Color {
   readonly alpha100: number;
+
+  get alpha255(): number {
+    return (this.alpha100 * 255) / 100;
+  }
+
+  get alpha1(): number {
+    return this.alpha100 / 100;
+  }
 
   protected constructor(alpha: number | string = 100) {
     this.alpha100 = Color.parseNumber(alpha, 100);
@@ -10,8 +20,8 @@ export abstract class Color {
     ignoreAlpha: boolean = false,
     tolerance: number = 0,
   ): boolean {
-    const thisRgba = this.getRGBA();
-    const otherRgba = other.getRGBA();
+    const thisRgba = this.rgba;
+    const otherRgba = other.rgba;
     if (
       !ignoreAlpha &&
       Math.abs(thisRgba.alpha100 - otherRgba.alpha100) > tolerance
@@ -24,9 +34,22 @@ export abstract class Color {
     );
   }
 
-  abstract getRGBA(): ColorRGBA;
+  abstract get rgba(): ColorRGBA;
 
-  abstract getHSLA(): ColorHSLA;
+  abstract get hsla(): ColorHSLA;
+
+  get hexString(): string {
+    const thisRgba = this.rgba;
+    const r = thisRgba.red255.toString(16).padStart(2, "0");
+    const g = thisRgba.green255.toString(16).padStart(2, "0");
+    const b = thisRgba.blue255.toString(16).padStart(2, "0");
+    const a = thisRgba.alpha255.toString(16).padStart(2, "0");
+    return `#${r}${g}${b}${a}`;
+  }
+
+  toString(): string {
+    return this.hexString;
+  }
 
   static parse(input: string): Color {
     input = input.toLowerCase();
@@ -50,7 +73,9 @@ export abstract class Color {
       const g = parseInt(input.substring(3, 5), 16);
       const b = parseInt(input.substring(5, 7), 16);
       const a =
-        input.length === 7 ? 100 : parseInt(input.substring(7, 9), 16) / 255;
+        input.length === 7
+          ? 100
+          : (parseInt(input.substring(7, 9), 16) * 100) / 255;
       return new ColorRGBA(r, g, b, a);
     }
 
@@ -145,12 +170,51 @@ export abstract class Color {
 
     return value;
   }
+
+  get relativeLuminance(): number {
+    const thisRgba = this.rgba;
+    const color_1 = [thisRgba.red1, thisRgba.green1, thisRgba.blue1];
+    const partialLuminance = color_1.map(
+      (c) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4), // to power 2.4
+    );
+    const [R, G, B] = partialLuminance;
+    return 0.2126 * R + 0.7152 * G + 0.0722 * B;
+  }
+
+  /**
+   * Compute the contrast ratio of 2 colors.
+   * @param other The other color.
+   * @returns The value of contrast ratio.
+   */
+  colorsContrastRatio(other: Color): number {
+    const luminances = [this.rgba, other.rgba]
+      .map((c) => c.relativeLuminance)
+      .sort();
+    // Contrast ratio = (Y_lighter + 0.05) / (Y_darker + 0.05)
+    return (luminances[1] + 0.05) / (luminances[0] + 0.05);
+  }
+
+  static get randomColor(): Color {
+    return Color.parse(`#${crypto.randomBytes(3).toString("hex")}`);
+  }
 }
 
 export class ColorRGBA extends Color {
   readonly red255: number;
   readonly green255: number;
   readonly blue255: number;
+
+  get red1(): number {
+    return this.red255 / 255;
+  }
+
+  get green1(): number {
+    return this.green255 / 255;
+  }
+
+  get blue1(): number {
+    return this.blue255 / 255;
+  }
 
   constructor(
     red: number | string,
@@ -165,14 +229,14 @@ export class ColorRGBA extends Color {
     this.blue255 = Color.parseNumber(blue, 255);
   }
 
-  getRGBA(): ColorRGBA {
+  get rgba(): ColorRGBA {
     return this;
   }
 
-  getHSLA(): ColorHSLA {
-    const red1 = this.red255 / 255;
-    const green1 = this.green255 / 255;
-    const blue1 = this.blue255 / 255;
+  get hsla(): ColorHSLA {
+    const red1 = this.red1;
+    const green1 = this.green1;
+    const blue1 = this.blue1;
 
     const max1 = Math.max(red1, green1, blue1);
     const min1 = Math.min(red1, green1, blue1);
@@ -216,6 +280,18 @@ export class ColorHSLA extends Color {
   readonly saturation100: number;
   readonly lightness100: number;
 
+  get hue1(): number {
+    return this.hue360 / 360;
+  }
+
+  get saturation1(): number {
+    return this.saturation100 / 100;
+  }
+
+  get lightness1(): number {
+    return this.lightness100 / 100;
+  }
+
   constructor(
     hue: number | string,
     saturation: number | string,
@@ -229,13 +305,13 @@ export class ColorHSLA extends Color {
     this.lightness100 = Color.parseNumber(lightness, 100);
   }
 
-  getHSLA(): ColorHSLA {
+  get hsla(): ColorHSLA {
     return this;
   }
 
-  getRGBA(): ColorRGBA {
-    const saturation1 = this.saturation100 / 100;
-    const lightness1 = this.lightness100 / 100;
+  get rgba(): ColorRGBA {
+    const saturation1 = this.saturation1;
+    const lightness1 = this.lightness1;
     const hue360 = this.hue360;
 
     const f = (n: number): number => {

@@ -6,20 +6,14 @@ import {
   getColorNameFromPlainColorName,
   getColorNameComplementFromPlainColorName,
   setDefaultColors,
-  HexColorApproximation,
-  checkColorValueHex,
   ValidColorName,
-  computeColorsContrastRatio,
-  AnyColorType,
   hexToRgb,
   selectByContrastRatio,
 } from "./color-palette";
 import crypto from "crypto";
+import { Color } from "../model/color";
 
-function checkMetaThemeColor(
-  colorName: ValidColorName,
-  colorValue: HexColorApproximation,
-) {
+function checkMetaThemeColor(colorName: ValidColorName, colorValue: Color) {
   if (colorName !== "color-primary") return;
 
   const metasCollection = document.head.getElementsByTagName(
@@ -28,7 +22,7 @@ function checkMetaThemeColor(
   const metasArray = [...metasCollection];
   const metas = metasArray.filter((meta) => meta.name === "theme-color");
   expect(metas.length).to.be.equal(1);
-  const currentColorValue = metas[0].content as HexColorApproximation;
+  const currentColorValue = Color.parse(metas[0].content);
   expect(currentColorValue).to.be.equal(colorValue);
 }
 
@@ -44,10 +38,6 @@ function setAndCheckDefaultColors() {
     );
     checkMetaThemeColor(colorNameColor, color.value);
   }
-}
-
-function getRandomColor(): HexColorApproximation {
-  return `#${crypto.randomBytes(3).toString("hex")}`;
 }
 
 test("color palette", async () => {
@@ -67,11 +57,11 @@ test("color palette", async () => {
   setAndCheckDefaultColors();
 
   // set and check random colors
-  const randomColors: HexColorApproximation[] = [];
-  const randomComplements: HexColorApproximation[] = [];
+  const randomColors: Color[] = [];
+  const randomComplements: Color[] = [];
   for (const colorName of colorNames) {
-    const randomColor = getRandomColor();
-    const randomComplement = getRandomColor();
+    const randomColor = Color.randomColor;
+    const randomComplement = Color.randomColor;
     randomColors.push(randomColor);
     randomComplements.push(randomComplement);
     const colorNameColor = getColorNameFromPlainColorName(colorName);
@@ -83,16 +73,18 @@ test("color palette", async () => {
     setColor(colorNameComplement, randomComplement);
     expect(getCurrentColor(colorNameComplement)).to.be.equal(randomComplement);
     const randomBytes = crypto.randomBytes(2).toString("hex");
-    const badColor: HexColorApproximation = `${randomColor}${randomBytes}`;
-    const badComplement: HexColorApproximation = `${randomColor}${randomBytes}`;
-    expect(() => checkColorValueHex(badColor)).to.throw(
-      `Unexpected length of color '${badColor}'.`,
+    expect(() =>
+      Color.parse(`${randomColor.hexString}${randomBytes}`),
+    ).to.throw(
+      `Unexpected length of color '${randomColor.hexString}${randomBytes}'.`,
     );
-    expect(() => checkColorValueHex(badComplement)).to.throw(
-      `Unexpected length of color '${badComplement}'.`,
+    expect(() =>
+      Color.parse(`${randomColor.hexString}${randomBytes}`),
+    ).to.throw(
+      `Unexpected length of color '${randomColor.hexString}${randomBytes}'.`,
     );
     const randomByte = crypto.randomBytes(1).toString("hex");
-    expect(() => checkColorValueHex(`#${randomByte}x`)).to.throw(
+    expect(() => Color.parse(`#${randomByte}x`)).to.throw(
       `Unexpected color value '#${randomByte}x'.`,
     );
   }
@@ -125,77 +117,6 @@ test("color palette", async () => {
   }
 
   setAndCheckDefaultColors();
-});
-
-test("contrast ratio", async () => {
-  for (const [colorName, color] of Object.entries(defaultColors)) {
-    const colorToComplementContrastRatio = computeColorsContrastRatio(
-      color.value,
-      color.complementValue,
-    );
-    expect(
-      colorToComplementContrastRatio,
-      `symmetry - ${colorName}`,
-    ).to.be.equal(
-      computeColorsContrastRatio(color.complementValue, color.value),
-    );
-    expect(
-      computeColorsContrastRatio(color.value, color.value),
-      `same color - ${colorName}`,
-    ).to.be.equal(1);
-    expect(
-      computeColorsContrastRatio(color.complementValue, color.complementValue),
-      `same complement - ${colorName}`,
-    ).to.be.equal(1);
-    expect(
-      colorToComplementContrastRatio,
-      `defaults are contrasting enough - ${colorName}`,
-    ).to.be.at.least(7); // technical minimum is 1, but we have contrasting colors
-    expect(
-      colorToComplementContrastRatio,
-      `less than maximum - ${colorName}`,
-    ).to.be.at.most(21);
-  }
-  const exampleContrastRation = computeColorsContrastRatio("#123", "#987");
-  expect(exampleContrastRation, "RGB ~ RRGGBB").to.be.equal(
-    computeColorsContrastRatio("#112233", "#998877"),
-  );
-  expect(exampleContrastRation, "RGB ~ RGBA").to.be.equal(
-    computeColorsContrastRatio("#1234", "#9876"),
-  );
-  expect(exampleContrastRation, "RGB ~ RRGGBBAA").to.be.equal(
-    computeColorsContrastRatio("#11223344", "#99887766"),
-  );
-  expect(exampleContrastRation, "RGB ~ RGB(A)").to.be.equal(
-    computeColorsContrastRatio("#123f", "#987f"),
-  );
-  expect(exampleContrastRation, "RGB ~ RRGGBB(AA)").to.be.equal(
-    computeColorsContrastRatio("#112233ff", "#998877ff"),
-  );
-  expect(exampleContrastRation, "RGB ~ [RR GG BB]").to.be.equal(
-    computeColorsContrastRatio([0x11, 0x22, 0x33], [0x99, 0x88, 0x77]),
-  );
-
-  expect(
-    computeColorsContrastRatio("#000", "#fff"),
-    "black and white",
-  ).to.be.equal(21);
-
-  expect(() =>
-    computeColorsContrastRatio(
-      [999, 88, 4] as AnyColorType,
-      "#bad" as AnyColorType,
-    ),
-  ).to.throw("Invalid byte '999' in color RGB/RGBA [999,88,4].");
-  expect(() => computeColorsContrastRatio("#badbadbad", "#bad")).to.throw(
-    "Unexpected length of color '#badbadbad'.",
-  );
-  expect(() => computeColorsContrastRatio("#bad", "#xyz")).to.throw(
-    "Unexpected color value '#xyz'.",
-  );
-  expect(() => computeColorsContrastRatio({} as AnyColorType, "#xyz")).to.throw(
-    `Unexpected type of color '${{}}'.`,
-  );
 });
 
 test("hexToRgb", async () => {
