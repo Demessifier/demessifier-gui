@@ -133,7 +133,7 @@ function createDataAttribute(name: string, value: ValidColorName) {
               :color-value="
                 colorValues[getColorNameFromPlainColorName(colorName)].value
               "
-              other-color-value="#000"
+              :other-color-value="Color.parse('#000')"
             ></ColorPaletteTdContrast>
             <td>
               <span :class="`${colorName}-white`">X</span>
@@ -144,7 +144,7 @@ function createDataAttribute(name: string, value: ValidColorName) {
               :color-value="
                 colorValues[getColorNameFromPlainColorName(colorName)].value
               "
-              other-color-value="#FFF"
+              :other-color-value="Color.parse('#FFF')"
             ></ColorPaletteTdContrast>
           </tr>
         </tbody>
