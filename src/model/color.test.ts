@@ -21,6 +21,21 @@ test("color", async () => {
   expect(() => Color.parse("rgbhsl(42,42,42)")).to.throw(
     "Unexpected format of color: rgbhsl(42,42,42)",
   );
+  expect(() => new ColorRGBA(-42, 42, 42)).to.throw(
+    "Color component value -42 < 0.",
+  );
+  const sevens = Color.parse("#777");
+  const moreSevens = Color.parse("#7777");
+  expect(sevens.equals(moreSevens, true)).to.be.true;
+  expect(sevens.equals(moreSevens, false)).to.be.false;
+  expect(
+    Color.parse("rgba(20%, 40%,    60%,80%)").equals(Color.parse("#336699CC")),
+  ).to.be.true; // spaces, percentages
+  expect(
+    Color.parse("hsl(-60, 42, 66.6%)").equals(
+      Color.parse("hsla(300,42,66.6,100)"),
+    ),
+  ).to.be.true; // spaces, negative hue, percentage, decimal
 });
 
 test("color: RGB -> HSL -> RGB", async () => {

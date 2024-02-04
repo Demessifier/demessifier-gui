@@ -4,16 +4,16 @@
 */
 
 :root {
-  --color-primary: #7c2e9c;
-  --color-primary-complement: #ffffff;
-  --color-secondary: #edbefe;
-  --color-secondary-complement: #000000;
-  --color-success: #b3ff80;
-  --color-success-complement: #000000;
-  --color-info: #90aafe;
-  --color-info-complement: #000000;
-  --color-warn: #fec17c;
-  --color-warn-complement: #000000;
-  --color-error: #ff7a85;
-  --color-error-complement: #000000;
+  --color-primary: #7c2e9cff;
+  --color-primary-complement: #ffffffff;
+  --color-secondary: #edbefeff;
+  --color-secondary-complement: #000000ff;
+  --color-success: #b3ff80ff;
+  --color-success-complement: #000000ff;
+  --color-info: #90aafeff;
+  --color-info-complement: #000000ff;
+  --color-warn: #fec17cff;
+  --color-warn-complement: #000000ff;
+  --color-error: #ff7a85ff;
+  --color-error-complement: #000000ff;
 }

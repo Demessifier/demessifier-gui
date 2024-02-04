@@ -93,12 +93,14 @@ export abstract class Color {
       // matches: D.D
       // matches: D.D%
 
+      const minus = ["hsl", "hsla"].some((p) => p === prefix) ? "\\-?" : "";
+
       let result = "";
       for (let i = 0; i < digitsCount; i++) {
         if (result.length > 0) result += ",";
         result += digit;
       }
-      return RegExp(`^${prefix}\\(${result}\\)$`);
+      return RegExp(`^${prefix}\\(${minus}${result}\\)$`);
     }
 
     if (getDigitsRegex("rgb", 3).test(input)) {
