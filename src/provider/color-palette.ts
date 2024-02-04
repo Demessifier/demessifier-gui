@@ -80,13 +80,13 @@ export function setColor(colorName: ValidColorName, colorValue: Color) {
 /**
  * Retrieves the currently set CSS color variable value based the color name.
  * @param colorName Name of the color to be retrieved.
- * @returns Color value in the "#RRGGBB" hex format.
+ * @returns Color value.
  */
 export function getCurrentColor(colorName: ValidColorName): Color {
   const defaultColor = Color.parse("#888888");
   const retrievedValue = getRootStyleProperty(`--${colorName}`); // empty string if not set
 
-  return retrievedValue.trim() == ""
+  return retrievedValue.trim() === ""
     ? defaultColor
     : Color.parse(retrievedValue);
 }

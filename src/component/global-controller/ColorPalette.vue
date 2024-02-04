@@ -34,7 +34,7 @@ function applyColor(event: Event) {
   if (!colorName)
     throw new Error(`Data field '${COLOR_NAME}' not found in input element.`);
   setColor(colorName, colorValue);
-  colorValues[colorName].value = colorValue;
+  colorValues[colorName].value = colorValue; // TODO: FIXME
 }
 
 function createDataAttribute(name: string, value: ValidColorName) {
