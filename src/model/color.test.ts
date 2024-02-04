@@ -33,6 +33,12 @@ test("color: RGB -> HSL -> RGB", async () => {
     const rgba_rgba = rgba.rgba;
     const rgb_rgba = rgb.rgba;
 
+    expect(`${rgba}`).to.be.equal(rgba.hexString);
+    expect(rgba.hexString).to.match(/^#[0-9abcdef]{8}$/);
+    expect(rgb.hexString).to.match(/^#[0-9abcdef]{6}ff$/);
+    expect(Color.parse(`rgba(${r},${g},${b},${a})`).equals(rgba)).to.be.true;
+    expect(Color.parse(`rgb(${r},${g},${b})`).equals(rgb)).to.be.true;
+
     for (const pair of getPairs([rgba, rgb, rgba_rgba, rgb_rgba])) {
       expect(pair[0].red255).to.be.equal(pair[1].red255, msg);
       expect(pair[0].green255).to.be.equal(pair[1].green255, msg);
@@ -107,6 +113,12 @@ test("color: HSL -> RGB -> HSL", async () => {
     const hsl = new ColorHSLA(h, s, l);
     const hsla_hsla = hsla.hsla;
     const hsl_hsla = hsl.hsla;
+
+    expect(`${hsla}`).to.be.equal(hsla.hexString);
+    expect(hsla.hexString).to.match(/^#[0-9abcdef]{8}$/);
+    expect(hsl.hexString).to.match(/^#[0-9abcdef]{6}ff$/);
+    expect(Color.parse(`hsla(${h},${s},${l},${a})`).equals(hsla)).to.be.true;
+    expect(Color.parse(`hsl(${h},${s},${l})`).equals(hsl)).to.be.true;
 
     for (const pair of getPairs([hsla, hsl, hsla_hsla, hsl_hsla])) {
       expect(pair[0].hue360).to.be.equal(pair[1].hue360, msg);

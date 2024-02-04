@@ -148,7 +148,7 @@ export abstract class Color {
       const s = items[1];
       const l = items[2];
       const a = items[3];
-      return new ColorRGBA(h, s, l, a);
+      return new ColorHSLA(h, s, l, a);
     }
 
     throw new Error(`Unexpected format of color: ${input}`);
@@ -284,10 +284,6 @@ export class ColorHSLA extends Color {
   readonly hue360: number;
   readonly saturation100: number;
   readonly lightness100: number;
-
-  get hue1(): number {
-    return this.hue360 / 360;
-  }
 
   get saturation1(): number {
     return this.saturation100 / 100;
