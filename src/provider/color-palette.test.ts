@@ -7,7 +7,6 @@ import {
   getColorNameComplementFromPlainColorName,
   setDefaultColors,
   ValidColorName,
-  hexToRgb,
   selectByContrastRatio,
 } from "./color-palette";
 import crypto from "crypto";
@@ -117,29 +116,6 @@ test("color palette", async () => {
   }
 
   setAndCheckDefaultColors();
-});
-
-test("hexToRgb", async () => {
-  expect(hexToRgb).to.be.ok;
-  for (const invalidColor of [
-    "#",
-    "#0",
-    "#00",
-    "#000",
-    "#0000",
-    "#00000",
-    "#XXYYZZ",
-    "#0000000",
-    "#00000000",
-  ]) {
-    expect(() => hexToRgb(invalidColor)).to.throw(
-      `Unable to parse color '${invalidColor}' as HEX #RRGGBB.`,
-    );
-  }
-  expect(hexToRgb("#000000")).to.be.equal("rgb(0, 0, 0)");
-  expect(hexToRgb("#FFFFFF")).to.be.equal("rgb(255, 255, 255)");
-  expect(hexToRgb("#DEADFF")).to.be.equal("rgb(222, 173, 255)");
-  expect(hexToRgb("#00BEEF")).to.be.equal("rgb(0, 190, 239)");
 });
 
 test("selectByContrastRatio", async () => {

@@ -124,24 +124,6 @@ export function setDefaultColors() {
 }
 
 /**
- * Convert color format.
- * @param hex Color in the "#RRGGBB" hex format.
- * @returns Color in the "rgb(R, G, B)" decimal format.
- */
-export function hexToRgb(hex: string): string {
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  const errMessage = `Unable to parse color '${hex}' as HEX #RRGGBB.`;
-  if (result === null) throw new Error(errMessage);
-  const parsed: RegExpExecArray = result;
-
-  function rgbAsNum(i: number): number {
-    return parseInt(parsed[i], 16);
-  }
-
-  return `rgb(${rgbAsNum(1)}, ${rgbAsNum(2)}, ${rgbAsNum(3)})`;
-}
-
-/**
  * Select a value depending on contrast ratio.
  * @param contrastRatio It is decided based on this contrast ration. Valid values are 1-21
  * @param ok This value is returned for contrast ratio 7-21

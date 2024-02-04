@@ -1,18 +1,14 @@
 import ColorPaletteTdContrast from "./ColorPaletteTdContrast.vue";
-import { getRandomColor } from "./ColorPalette.cy";
-import {
-  computeColorsContrastRatio,
-  HexColorApproximation,
-  selectByContrastRatio,
-} from "../../provider/color-palette";
+import { selectByContrastRatio } from "../../provider/color-palette";
+import { Color, ColorRGBA } from "../../model/color";
+import { getPairs } from "../../provider/combinations";
 
 function runTestsForColorPair(props: {
-  colorValue: HexColorApproximation;
-  otherColorValue: HexColorApproximation;
+  colorValue: Color;
+  otherColorValue: Color;
 }) {
   it(`Renders ${JSON.stringify(props)}`, () => {
-    const contrastValue = computeColorsContrastRatio(
-      props.colorValue,
+    const contrastValue = props.colorValue.colorsContrastRatio(
       props.otherColorValue,
     );
     const contrastClass = selectByContrastRatio(
@@ -32,14 +28,16 @@ function runTestsForColorPair(props: {
 }
 
 describe("ColorPaletteTdContrast component", () => {
-  runTestsForColorPair({ colorValue: "#000000", otherColorValue: "#000000" });
-  runTestsForColorPair({ colorValue: "#000000", otherColorValue: "#FFFFFF" });
-  runTestsForColorPair({ colorValue: "#FFFFFF", otherColorValue: "#000000" });
-  runTestsForColorPair({ colorValue: "#FFFFFF", otherColorValue: "#FFFFFF" });
+  for (const pair of getPairs([
+    new ColorRGBA(0, 0, 0),
+    new ColorRGBA(255, 255, 255),
+  ])) {
+    runTestsForColorPair({ colorValue: pair[0], otherColorValue: pair[1] });
+  }
   for (let _ = 0; _ < 30; _++) {
     const props = {
-      colorValue: getRandomColor(),
-      otherColorValue: getRandomColor(),
+      colorValue: Color.randomColor,
+      otherColorValue: Color.randomColor,
     };
     runTestsForColorPair(props);
   }

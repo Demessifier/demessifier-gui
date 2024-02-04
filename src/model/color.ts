@@ -1,4 +1,5 @@
 import crypto from "crypto";
+import { getRandomInteger } from "../provider/randomness";
 
 export abstract class Color {
   readonly alpha100: number;
@@ -50,6 +51,12 @@ export abstract class Color {
       Math.round(c).toString(16).padStart(2, "0"),
     );
     return `#${rgbaHex.join("")}`;
+  }
+
+  get rgbString(): string {
+    const thisRgba = this.rgba;
+    const rgb255 = [thisRgba.red255, thisRgba.green255, thisRgba.blue255];
+    return `rgb(${rgb255.join(", ")})`;
   }
 
   toString(): string {
@@ -202,7 +209,11 @@ export abstract class Color {
   }
 
   static get randomColor(): Color {
-    return Color.parse(`#${crypto.randomBytes(3).toString("hex")}`);
+    return new ColorRGBA(
+      getRandomInteger(256),
+      getRandomInteger(256),
+      getRandomInteger(256),
+    );
   }
 }
 

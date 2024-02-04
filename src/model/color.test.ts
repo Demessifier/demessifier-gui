@@ -38,6 +38,27 @@ test("color", async () => {
   ).to.be.true; // spaces, negative hue, percentage, decimal
 });
 
+test("color rgbHexString", async () => {
+  for (const invalidColor of [
+    "#",
+    "#0",
+    "#00",
+    "#00000",
+    "#XXYYZZ",
+    "#xxyyzz",
+    "#0000000",
+    "#000000000",
+  ]) {
+    expect(() => Color.parse(invalidColor)).to.throw(
+      `Unexpected format of color: ${invalidColor.toLowerCase()}`,
+    );
+  }
+  expect(Color.parse("#000000").rgbString).to.be.equal("rgb(0, 0, 0)");
+  expect(Color.parse("#FFFFFF").rgbString).to.be.equal("rgb(255, 255, 255)");
+  expect(Color.parse("#DEADFF").rgbString).to.be.equal("rgb(222, 173, 255)");
+  expect(Color.parse("#00BEEF").rgbString).to.be.equal("rgb(0, 190, 239)");
+});
+
 test("color: RGB -> HSL -> RGB", async () => {
   const DELTA = 0.001;
   for (let _ = 0; _ < 30; _++) {
