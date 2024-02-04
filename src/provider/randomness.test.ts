@@ -1,5 +1,9 @@
 import { test, expect } from "vitest";
-import { getRandomInteger, getRandomItem } from "./randomness";
+import {
+  getRandomInteger,
+  getRandomIntegers,
+  getRandomItem,
+} from "./randomness";
 
 test("Randomness tools: getRandomItem", async () => {
   const bigger = ["cheese", "vegetables", "apple", "water", "carrot"];
@@ -37,6 +41,26 @@ test("Randomness tools: getRandomInteger", async () => {
     expect(randomMaximum % 1).to.be.equal(0);
 
     const randomValue = getRandomInteger(randomMaximum);
+    expect(randomValue).to.be.greaterThanOrEqual(0);
+    expect(randomValue).to.be.lessThan(randomMaximum);
+    expect(randomValue % 1).to.be.equal(0);
+  }
+});
+
+test("Randomness tools: getRandomIntegers", async () => {
+  const LENGTH = 30;
+  const bot = 1;
+  const top = 1000;
+  const randomMaximums = [];
+  for (let _ = 0; _ < LENGTH; _++) {
+    randomMaximums.push(getRandomInteger(top) + bot);
+  }
+  const randomValues = getRandomIntegers(randomMaximums);
+  expect(randomMaximums).to.have.length(LENGTH);
+  expect(randomValues).to.have.length(LENGTH);
+  for (let i = 0; i < LENGTH; i++) {
+    const randomValue = randomValues[i];
+    const randomMaximum = randomMaximums[i];
     expect(randomValue).to.be.greaterThanOrEqual(0);
     expect(randomValue).to.be.lessThan(randomMaximum);
     expect(randomValue % 1).to.be.equal(0);

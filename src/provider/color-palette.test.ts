@@ -23,19 +23,18 @@ function checkMetaThemeColor(colorName: ValidColorName, colorValue: Color) {
   const metas = metasArray.filter((meta) => meta.name === "theme-color");
   expect(metas.length).to.be.equal(1);
   const currentColorValue = Color.parse(metas[0].content);
-  expect(currentColorValue).to.be.equal(colorValue);
+  expect(currentColorValue.equals(colorValue)).to.be.true;
 }
 
 function setAndCheckDefaultColors() {
   setDefaultColors();
   for (const [colorName, color] of Object.entries(defaultColors)) {
     const colorNameColor = getColorNameFromPlainColorName(colorName);
-    expect(getCurrentColor(colorNameColor)).to.be.equal(color.value);
+    expect(getCurrentColor(colorNameColor).equals(color.value)).to.be.true;
     const colorNameComplement =
       getColorNameComplementFromPlainColorName(colorName);
-    expect(getCurrentColor(colorNameComplement)).to.be.equal(
-      color.complementValue,
-    );
+    expect(getCurrentColor(colorNameComplement).equals(color.complementValue))
+      .to.be.true;
     checkMetaThemeColor(colorNameColor, color.value);
   }
 }
@@ -68,24 +67,25 @@ test("color palette", async () => {
     const colorNameComplement =
       getColorNameComplementFromPlainColorName(colorName);
     setColor(colorNameColor, randomColor);
-    expect(getCurrentColor(colorNameColor)).to.be.equal(randomColor);
+    expect(getCurrentColor(colorNameColor).equals(randomColor)).to.be.true;
     checkMetaThemeColor(colorNameColor, randomColor);
     setColor(colorNameComplement, randomComplement);
-    expect(getCurrentColor(colorNameComplement)).to.be.equal(randomComplement);
+    expect(getCurrentColor(colorNameComplement).equals(randomComplement)).to.be
+      .true;
     const randomBytes = crypto.randomBytes(2).toString("hex");
     expect(() =>
       Color.parse(`${randomColor.hexString}${randomBytes}`),
     ).to.throw(
-      `Unexpected length of color '${randomColor.hexString}${randomBytes}'.`,
+      `Unexpected format of color: ${randomColor.hexString}${randomBytes}`,
     );
     expect(() =>
       Color.parse(`${randomColor.hexString}${randomBytes}`),
     ).to.throw(
-      `Unexpected length of color '${randomColor.hexString}${randomBytes}'.`,
+      `Unexpected format of color: ${randomColor.hexString}${randomBytes}`,
     );
     const randomByte = crypto.randomBytes(1).toString("hex");
     expect(() => Color.parse(`#${randomByte}x`)).to.throw(
-      `Unexpected color value '#${randomByte}x'.`,
+      `Unexpected format of color: #${randomByte}x`,
     );
   }
   for (let c = 0; c < colorNames.length; c++) {
@@ -95,24 +95,24 @@ test("color palette", async () => {
     const colorNameColor = getColorNameFromPlainColorName(colorName);
     const colorNameComplement =
       getColorNameComplementFromPlainColorName(colorName);
-    expect(getCurrentColor(colorNameColor)).to.be.equal(color);
+    expect(getCurrentColor(colorNameColor).equals(color)).to.be.true;
     checkMetaThemeColor(colorNameColor, color);
-    expect(getCurrentColor(colorNameComplement)).to.be.equal(complement);
+    expect(getCurrentColor(colorNameComplement).equals(complement)).to.be.true;
   }
 
   setAndCheckDefaultColors();
 
   const root = document.querySelector(":root") as HTMLElement;
   const rootStyle = root.style;
-  const defaultColor = "#888888";
+  const defaultColor = Color.parse("#888888");
   for (const colorName of colorNames) {
     const colorNameColor = getColorNameFromPlainColorName(colorName);
     const colorNameComplement =
       getColorNameComplementFromPlainColorName(colorName);
     for (const color of [colorNameColor, colorNameComplement]) {
-      expect(getCurrentColor(color)).not.to.be.equal(defaultColor);
+      expect(getCurrentColor(color).equals(defaultColor)).to.be.false;
       rootStyle.removeProperty(`--${color}`);
-      expect(getCurrentColor(color)).to.be.equal(defaultColor);
+      expect(getCurrentColor(color).equals(defaultColor)).to.be.true;
     }
   }
 

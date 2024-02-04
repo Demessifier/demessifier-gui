@@ -40,11 +40,16 @@ export abstract class Color {
 
   get hexString(): string {
     const thisRgba = this.rgba;
-    const r = thisRgba.red255.toString(16).padStart(2, "0");
-    const g = thisRgba.green255.toString(16).padStart(2, "0");
-    const b = thisRgba.blue255.toString(16).padStart(2, "0");
-    const a = thisRgba.alpha255.toString(16).padStart(2, "0");
-    return `#${r}${g}${b}${a}`;
+    const rgba255 = [
+      thisRgba.red255,
+      thisRgba.green255,
+      thisRgba.blue255,
+      thisRgba.alpha255,
+    ];
+    const rgbaHex = rgba255.map((c: number): string =>
+      Math.round(c).toString(16).padStart(2, "0"),
+    );
+    return `#${rgbaHex.join("")}`;
   }
 
   toString(): string {
@@ -93,7 +98,7 @@ export abstract class Color {
         if (result.length > 0) result += ",";
         result += digit;
       }
-      return RegExp(`${prefix}\\(${result}\\)`);
+      return RegExp(`^${prefix}\\(${result}\\)$`);
     }
 
     if (getDigitsRegex("rgb", 3).test(input)) {

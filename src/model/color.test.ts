@@ -1,8 +1,8 @@
 import { test, expect } from "vitest";
 import { Color, ColorHSLA, ColorRGBA } from "./color";
-import { getRandomInteger } from "../provider/randomness";
+import { getRandomIntegers } from "../provider/randomness";
 import { getPairs } from "../provider/combinations";
-import { AnyColorType, defaultColors } from "../provider/color-palette";
+import { defaultColors } from "../provider/color-palette";
 
 test("color", async () => {
   expect(Color).to.be.ok;
@@ -24,11 +24,9 @@ test("color", async () => {
 });
 
 test("color: RGB -> HSL -> RGB", async () => {
+  const DELTA = 0.001;
   for (let _ = 0; _ < 30; _++) {
-    const r = getRandomInteger(255);
-    const g = getRandomInteger(255);
-    const b = getRandomInteger(255);
-    const a = getRandomInteger(100);
+    const [r, g, b, a] = getRandomIntegers([255, 255, 255, 100]);
     const msg = `RGBA=[${r},${g},${b},${a}]`;
     const rgba = new ColorRGBA(r, g, b, a);
     const rgb = new ColorRGBA(r, g, b);
@@ -42,6 +40,9 @@ test("color: RGB -> HSL -> RGB", async () => {
       expect(pair[0].equals(pair[1], true)).to.be.true;
     }
     expect(rgba.alpha100).to.be.equal(rgba_rgba.alpha100, msg);
+    expect(rgba.alpha1).to.be.equal(rgba_rgba.alpha1, msg);
+    expect(rgba.alpha1 * 100).to.be.approximately(rgba.alpha100, DELTA, msg);
+    expect(rgba.alpha1 * 255).to.be.approximately(rgba.alpha255, DELTA, msg);
     expect(rgb.alpha100).to.be.equal(rgb_rgba.alpha100, msg);
     expect(rgba.equals(rgba_rgba)).to.be.true;
     expect(rgb.equals(rgb_rgba)).to.be.true;
@@ -63,7 +64,6 @@ test("color: RGB -> HSL -> RGB", async () => {
     expect(rgba_hsla_rgba.equals(rgb_hsla_rgba, true)).to.be.true;
     expect(rgba_hsla_rgba.alpha100).to.be.equal(a, msg);
     expect(rgb_hsla_rgba.alpha100).to.be.equal(100, msg);
-    const DELTA = 0.001;
     expect(rgba_hsla_rgba.red255).to.be.approximately(r, DELTA, msg);
     expect(rgba_hsla_rgba.green255).to.be.approximately(g, DELTA, msg);
     expect(rgba_hsla_rgba.blue255).to.be.approximately(b, DELTA, msg);
@@ -73,14 +73,35 @@ test("color: RGB -> HSL -> RGB", async () => {
     expect(rgb_hsla_rgba.blue255).to.be.approximately(b, DELTA, msg);
     expect(rgb_hsla_rgba.equals(rgb, false, DELTA)).to.be.true;
   }
+  {
+    // black
+    const [r, g, b] = [0, 0, 0];
+    const col1 = new ColorRGBA(r, g, b);
+    const col2 = col1.hsla.rgba;
+    expect(col2.equals(col1)).to.be.true;
+    expect(col1.hexString).to.be.equal("#000000ff");
+  }
+  {
+    // gray
+    const [r, g, b] = [0x42, 66, 0x42];
+    const col1 = new ColorRGBA(r, g, b);
+    const col2 = col1.hsla.rgba;
+    expect(col2.equals(col1, false, DELTA)).to.be.true;
+    expect(col1.hexString).to.be.equal("#424242ff");
+  }
+  {
+    // white
+    const [r, g, b] = [255, 255, 255];
+    const col1 = new ColorRGBA(r, g, b);
+    const col2 = col1.hsla.rgba;
+    expect(col2.equals(col1)).to.be.true;
+    expect(col1.hexString).to.be.equal("#ffffffff");
+  }
 });
 
 test("color: HSL -> RGB -> HSL", async () => {
   for (let _ = 0; _ < 30; _++) {
-    const h = getRandomInteger(360);
-    const s = getRandomInteger(100);
-    const l = getRandomInteger(100);
-    const a = getRandomInteger(100);
+    const [h, s, l, a] = getRandomIntegers([360, 100, 100, 100]);
     const msg = `HSLA=[${h},${s},${l},${a}]`;
     const hsla = new ColorHSLA(h, s, l, a);
     const hsl = new ColorHSLA(h, s, l);
@@ -122,14 +143,42 @@ test("color: HSL -> RGB -> HSL", async () => {
     expect(hsla_rgba_hsla.alpha100).to.be.equal(a, msg);
     expect(hsl_rgba_hsla.alpha100).to.be.equal(100, msg);
     const DELTA = 0.001;
-    expect(hsla_rgba_hsla.hue360).to.be.approximately(h, DELTA, msg);
-    expect(hsla_rgba_hsla.saturation100).to.be.approximately(s, DELTA, msg);
+    if (s !== 0 && l !== 0 && l !== 100)
+      expect(hsla_rgba_hsla.hue360).to.be.approximately(h, DELTA, msg);
+    if (l !== 0 && l !== 100)
+      expect(hsla_rgba_hsla.saturation100).to.be.approximately(s, DELTA, msg);
     expect(hsla_rgba_hsla.lightness100).to.be.approximately(l, DELTA, msg);
     expect(hsla_rgba_hsla.equals(hsla, false, DELTA)).to.be.true;
-    expect(hsl_rgba_hsla.hue360).to.be.approximately(h, DELTA, msg);
-    expect(hsl_rgba_hsla.saturation100).to.be.approximately(s, DELTA, msg);
+    if (s !== 0 && l !== 0 && l !== 100)
+      expect(hsl_rgba_hsla.hue360).to.be.approximately(h, DELTA, msg);
+    if (l !== 0 && l !== 100)
+      expect(hsl_rgba_hsla.saturation100).to.be.approximately(s, DELTA, msg);
     expect(hsl_rgba_hsla.lightness100).to.be.approximately(l, DELTA, msg);
     expect(hsl_rgba_hsla.equals(hsl, false, DELTA)).to.be.true;
+  }
+  {
+    // black
+    const [h, s, l] = [222, 42, 0];
+    const col1 = new ColorHSLA(h, s, l);
+    const col2 = col1.rgba.hsla;
+    expect(col2.equals(col1)).to.be.true;
+    expect(col1.hexString).to.be.equal("#000000ff");
+  }
+  {
+    // gray
+    const [h, s, l] = [222, 0, 42];
+    const col1 = new ColorHSLA(h, s, l);
+    const col2 = col1.rgba.hsla;
+    expect(col2.equals(col1)).to.be.true;
+    expect(col1.hexString).to.be.equal("#6b6b6bff");
+  }
+  {
+    // white
+    const [h, s, l] = [222, 42, 100];
+    const col1 = new ColorHSLA(h, s, l);
+    const col2 = col1.rgba.hsla;
+    expect(col2.equals(col1)).to.be.true;
+    expect(col1.hexString).to.be.equal("#ffffffff");
   }
 });
 

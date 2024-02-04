@@ -7,6 +7,14 @@ export function getRandomInteger(maximum: number): number {
 }
 
 /**
+ * Get random integers: 0 <= results[i] < maximums[i]
+ * @param maximums upper bounds (excluded)
+ */
+export function getRandomIntegers(maximums: number[]): number[] {
+  return maximums.map((n: number): number => getRandomInteger(n));
+}
+
+/**
  * Get a random item from the first array that is not in the second array.
  * @param array One of these items will be randomly selected.
  * @param notTheseItems None of these items will be selected.
