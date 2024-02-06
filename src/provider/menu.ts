@@ -25,8 +25,8 @@ export type ClientPath = (typeof clientPaths)[Keys];
 
 export type MenuItem = {
   name: string;
-  component: () => any; // TODO: remove any
-  componentProps: any; // TODO: remove any
+  component: () => Promise<any>; // TODO: replace any with Vue component type
+  componentProps: any; // TODO: replace any with the Props type of the given component
   path: ClientPath;
   title: string;
   fa: IconDefinition;
@@ -35,7 +35,7 @@ export type MenuItem = {
 
 const MENU_COLORS: MenuItem = {
   name: "ColorPalette",
-  component: () => ColorPalette,
+  component: async () => ColorPalette,
   componentProps: {},
   path: clientPaths._,
   title: "ColorPalette",
@@ -45,7 +45,7 @@ const MENU_COLORS: MenuItem = {
 
 const MENU_SCHEME: MenuItem = {
   name: "ColorSchemeSwitch",
-  component: () => ColorSchemeSwitch,
+  component: async () => ColorSchemeSwitch,
   componentProps: {},
   path: clientPaths.scheme,
   title: "ColorSchemeSwitch",
@@ -55,7 +55,7 @@ const MENU_SCHEME: MenuItem = {
 
 const MENU_STATUS: MenuItem = {
   name: "StatusBox",
-  component: () => StatusBox,
+  component: async () => StatusBox,
   componentProps: {
     headlineText: "StatusBox",
     boxFlavorName: "success",
@@ -68,7 +68,7 @@ const MENU_STATUS: MenuItem = {
 
 const MENU_ICON_BUTTON: MenuItem = {
   name: "ButtonWithIcon",
-  component: () => ButtonWithIcon,
+  component: async () => ButtonWithIcon,
   componentProps: {
     text: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Mauris tincidunt sem sed arcu. Sed ac dolor sit amet purus malesuada congue. Etiam neque. Nullam faucibus mi quis velit. Integer rutrum, orci vestibulum ullamcorper ultricies, lacus quam ultricies odio, vitae placerat pede sem sit amet enim. Aenean placerat. Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur? Fusce dui leo, imperdiet in, aliquam sit amet, feugiat eu, orci.",
     icon: faCircleDot,
