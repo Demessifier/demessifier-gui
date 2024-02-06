@@ -38,7 +38,7 @@ function testColorOrComplement(
     .find("input[type=color]")
     .should((input) => {
       expect(input).to.have.value(
-        (complement ? complementValue : colorValue).hexStringWithAlpha,
+        (complement ? complementValue : colorValue).hexStringNoAlpha,
       );
     });
 }
@@ -57,7 +57,7 @@ function testColorOrComplementSetting(
     })
     .each((i) => {
       const input = i.get()[0] as HTMLInputElement;
-      input.value = randomColor.hexStringWithAlpha; // doesn't trigger onChange event
+      input.value = randomColor.hexStringNoAlpha; // doesn't trigger onChange event
     })
     .trigger("change");
   return randomColor;

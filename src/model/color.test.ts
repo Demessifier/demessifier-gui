@@ -72,6 +72,15 @@ test("color: RGB -> HSL -> RGB", async () => {
     expect(`${rgba}`).to.be.equal(rgba.hexStringWithAlpha);
     expect(rgba.hexStringWithAlpha).to.match(/^#[0-9abcdef]{8}$/);
     expect(rgb.hexStringWithAlpha).to.match(/^#[0-9abcdef]{6}ff$/);
+    expect(rgba.hexStringNoAlpha).to.match(/^#[0-9abcdef]{6}$/);
+    expect(rgb.hexStringNoAlpha).to.match(/^#[0-9abcdef]{6}$/);
+    expect(rgba.hexStringNoAlpha).to.be.equal(rgb.hexStringNoAlpha);
+    expect(rgba.hexStringNoAlpha).to.be.equal(
+      rgba.hexStringWithAlpha.substring(0, 7),
+    );
+    expect(rgba.hexStringNoAlpha).to.be.equal(
+      rgb.hexStringWithAlpha.substring(0, 7),
+    );
     expect(Color.parse(`rgba(${r},${g},${b},${a})`).equals(rgba)).to.be.true;
     expect(Color.parse(`rgb(${r},${g},${b})`).equals(rgb)).to.be.true;
 
@@ -122,6 +131,7 @@ test("color: RGB -> HSL -> RGB", async () => {
     const col2 = col1.hsla.rgba;
     expect(col2.equals(col1)).to.be.true;
     expect(col1.hexStringWithAlpha).to.be.equal("#000000ff");
+    expect(col1.hexStringNoAlpha).to.be.equal("#000000");
   }
   {
     // gray
@@ -130,6 +140,7 @@ test("color: RGB -> HSL -> RGB", async () => {
     const col2 = col1.hsla.rgba;
     expect(col2.equals(col1, false, DELTA)).to.be.true;
     expect(col1.hexStringWithAlpha).to.be.equal("#424242ff");
+    expect(col1.hexStringNoAlpha).to.be.equal("#424242");
   }
   {
     // white
@@ -138,6 +149,7 @@ test("color: RGB -> HSL -> RGB", async () => {
     const col2 = col1.hsla.rgba;
     expect(col2.equals(col1)).to.be.true;
     expect(col1.hexStringWithAlpha).to.be.equal("#ffffffff");
+    expect(col1.hexStringNoAlpha).to.be.equal("#ffffff");
   }
 });
 
@@ -211,6 +223,7 @@ test("color: HSL -> RGB -> HSL", async () => {
     const col2 = col1.rgba.hsla;
     expect(col2.equals(col1)).to.be.true;
     expect(col1.hexStringWithAlpha).to.be.equal("#000000ff");
+    expect(col1.hexStringNoAlpha).to.be.equal("#000000");
   }
   {
     // gray
@@ -219,6 +232,7 @@ test("color: HSL -> RGB -> HSL", async () => {
     const col2 = col1.rgba.hsla;
     expect(col2.equals(col1)).to.be.true;
     expect(col1.hexStringWithAlpha).to.be.equal("#6b6b6bff");
+    expect(col1.hexStringNoAlpha).to.be.equal("#6b6b6b");
   }
   {
     // white
@@ -227,6 +241,7 @@ test("color: HSL -> RGB -> HSL", async () => {
     const col2 = col1.rgba.hsla;
     expect(col2.equals(col1)).to.be.true;
     expect(col1.hexStringWithAlpha).to.be.equal("#ffffffff");
+    expect(col1.hexStringNoAlpha).to.be.equal("#ffffff");
   }
 });
 
