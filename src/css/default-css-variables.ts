@@ -10,9 +10,10 @@ export function generateDefaultCssVariables(): string {
   result += "\n";
   result += ":root {\n";
   for (const [key, value] of Object.entries(defaultColors)) {
-    result += `  --color-${key}: ${value.value};\n`;
-    result += `  --color-${key}-complement: ${value.complementValue};\n`;
+    result += `  --color-${key}: ${value.value.hexStringNoAlpha};\n`;
+    result += `  --color-${key}-complement: ${value.complementValue.hexStringNoAlpha};\n`;
   }
+  result += `  --default-bg-color: grey;\n`;
   result += "}\n";
   return result;
 }

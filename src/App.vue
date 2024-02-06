@@ -321,7 +321,7 @@ header > * {
       pointer-events: none;
 
       & > * {
-        background-color: grey; // TODO: get the same color as the body background (initial=transparent)
+        background-color: var(--default-bg-color);
         margin: 1em;
         pointer-events: auto;
       }

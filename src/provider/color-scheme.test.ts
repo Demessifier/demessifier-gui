@@ -5,6 +5,8 @@ import {
   getColorSchemeConfiguredOrPreferred,
   getColorSchemePreferredOrDefault,
   setColorScheme,
+  getDefaultBackgroundColor,
+  Scheme,
 } from "./color-scheme";
 import { getRandomItem } from "./randomness";
 import { ensureMetaTagContent, getMetaTagContent } from "./html-meta-tag";
@@ -45,7 +47,7 @@ test("Color scheme", async () => {
   for (let _i = 0; _i < 10 * supportedColorSchemes.length; _i++) {
     const randomScheme = getRandomItem(supportedColorSchemes, [previousScheme]);
     expect(randomScheme).to.be.ok;
-    setColorScheme(randomScheme as string);
+    setColorScheme(randomScheme as Scheme);
     const activeScheme = getColorSchemeConfigured();
     const schemeCP = getColorSchemeConfiguredOrPreferred();
     expect(activeScheme).to.be.equal(randomScheme);

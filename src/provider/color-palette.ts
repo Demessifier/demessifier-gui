@@ -70,7 +70,10 @@ function setRootStyleProperty(propertyName: string, propertyValue: string) {
  * @param colorName CSS variable name associated with the color.
  * @param colorValue CSS color value to be set.
  */
-export function setColor(colorName: ValidColorName, colorValue: Color) {
+export function setColor(
+  colorName: ValidColorName | "default-bg-color",
+  colorValue: Color,
+) {
   const hexString = colorValue.hexStringWithAlpha;
   setRootStyleProperty(`--${colorName}`, hexString);
   if (colorName === "color-primary")
