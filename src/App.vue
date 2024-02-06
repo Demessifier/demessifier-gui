@@ -302,6 +302,7 @@ header > * {
     }
 
     .notifications-backdrop {
+      // TODO: fix against scrolling
       position: absolute;
       top: 0;
       right: 0;
