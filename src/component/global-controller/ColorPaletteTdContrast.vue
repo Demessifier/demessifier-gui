@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import {
-  selectByContrastRatio,
-} from "../../provider/color-palette";
+import { selectByContrastRatio } from "../../provider/color-palette";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { computed, ComputedRef } from "vue";
 import { getFlavorItem, StatusBoxFlavorItem } from "../../provider/status-box";
@@ -15,7 +13,7 @@ interface Props {
 const props = defineProps<Props>();
 
 const contrast: ComputedRef<number> = computed(() =>
-  props.colorValue.colorsContrastRatio( props.otherColorValue),
+  props.colorValue.colorsContrastRatio(props.otherColorValue),
 );
 const flavor: ComputedRef<StatusBoxFlavorItem> = computed(() =>
   getFlavorItem(

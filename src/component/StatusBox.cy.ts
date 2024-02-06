@@ -25,7 +25,8 @@ function test(
   cy.get("div.status-box div.header").should((statusBoxHeader) => {
     expect(statusBoxHeader).to.have.css(
       "color",
-        getCurrentColor(getColorNameComplementFromPlainColorName(flavor)).rgbString,
+      getCurrentColor(getColorNameComplementFromPlainColorName(flavor))
+        .rgbString,
     );
     expect(statusBoxHeader).to.have.css(
       "background-color",
