@@ -105,7 +105,7 @@ setDefaultColors();
       >
         <MenuLeft :menu-items="JSON.parse(JSON.stringify(MENU))" />
       </nav>
-      <main :style="`z-index: ${Z_INDEX.MAIN_CONTENT}`">
+      <div class="main-and-notifications">
         <div
           class="notifications-backdrop"
           :style="`z-index: ${Z_INDEX.NOTIFICATIONS}`"
@@ -114,12 +114,14 @@ setDefaultColors();
           <p>test</p>
           <p>test test test test test test test test</p>
         </div>
-        <router-view v-slot="{ Component }">
-          <transition name="fade" mode="out-in" appear>
-            <component :is="Component" />
-          </transition>
-        </router-view>
-      </main>
+        <main :style="`z-index: ${Z_INDEX.MAIN_CONTENT}`">
+          <router-view v-slot="{ Component }">
+            <transition name="fade" mode="out-in" appear>
+              <component :is="Component" />
+            </transition>
+          </router-view>
+        </main>
+      </div>
     </div>
     <!-- <footer> </footer> -->
   </div>
@@ -283,32 +285,45 @@ header > * {
     flex-wrap: nowrap;
   }
 
-  main {
-    padding: 1em;
-    width: 100%;
-    box-sizing: border-box;
-    max-height: calc(100vh - $headerHeight - $headerBorderBottom);
-    overflow: auto;
+  .main-and-notifications {
     position: relative;
+    width: 100%;
+    height: calc(100vh - $headerHeight - $headerBorderBottom);
 
-    .fade-enter-active,
-    .fade-leave-active {
-      transition: all 300ms ease;
-    }
+    main {
+      padding: 1em;
+      box-sizing: border-box;
+      overflow: auto;
+      max-height: calc(100vh - $headerHeight - $headerBorderBottom);
 
-    .fade-enter-from,
-    .fade-leave-to {
-      opacity: 0;
+      .fade-enter-active,
+      .fade-leave-active {
+        transition: all 300ms ease;
+      }
+
+      .fade-enter-from,
+      .fade-leave-to {
+        opacity: 0;
+      }
     }
 
     .notifications-backdrop {
-      // TODO: fix against scrolling
       position: absolute;
       top: 0;
-      right: 0;
+      right: 1em;
+
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      align-content: flex-end;
+      justify-content: flex-start;
+
+      pointer-events: none;
 
       & > * {
         background-color: grey; // TODO: get the same color as the body background (initial=transparent)
+        margin: 1em;
+        pointer-events: auto;
       }
     }
   }
