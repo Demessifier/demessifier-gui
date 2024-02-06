@@ -71,7 +71,7 @@ function setRootStyleProperty(propertyName: string, propertyValue: string) {
  * @param colorValue CSS color value to be set.
  */
 export function setColor(colorName: ValidColorName, colorValue: Color) {
-  const hexString = colorValue.hexString;
+  const hexString = colorValue.hexStringWithAlpha;
   setRootStyleProperty(`--${colorName}`, hexString);
   if (colorName === "color-primary")
     ensureMetaTagContent("theme-color", hexString);

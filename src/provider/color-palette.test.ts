@@ -73,14 +73,14 @@ test("color palette", async () => {
       .true;
     const randomBytes = crypto.randomBytes(2).toString("hex");
     expect(() =>
-      Color.parse(`${randomColor.hexString}${randomBytes}`),
+      Color.parse(`${randomColor.hexStringWithAlpha}${randomBytes}`),
     ).to.throw(
-      `Unexpected format of color: ${randomColor.hexString}${randomBytes}`,
+      `Unexpected format of color: ${randomColor.hexStringWithAlpha}${randomBytes}`,
     );
     expect(() =>
-      Color.parse(`${randomColor.hexString}${randomBytes}`),
+      Color.parse(`${randomColor.hexStringWithAlpha}${randomBytes}`),
     ).to.throw(
-      `Unexpected format of color: ${randomColor.hexString}${randomBytes}`,
+      `Unexpected format of color: ${randomColor.hexStringWithAlpha}${randomBytes}`,
     );
     const randomByte = crypto.randomBytes(1).toString("hex");
     expect(() => Color.parse(`#${randomByte}x`)).to.throw(

@@ -39,18 +39,22 @@ export abstract class Color {
 
   abstract get hsla(): ColorHSLA;
 
-  get hexString(): string {
+  getHexString(withAlpha: boolean = true): string {
     const thisRgba = this.rgba;
-    const rgba255 = [
-      thisRgba.red255,
-      thisRgba.green255,
-      thisRgba.blue255,
-      thisRgba.alpha255,
-    ];
+    const rgba255 = [thisRgba.red255, thisRgba.green255, thisRgba.blue255];
+    if (withAlpha) rgba255.push(thisRgba.alpha255);
     const rgbaHex = rgba255.map((c: number): string =>
       Math.round(c).toString(16).padStart(2, "0"),
     );
     return `#${rgbaHex.join("")}`;
+  }
+
+  get hexStringWithAlpha(): string {
+    return this.getHexString(true);
+  }
+
+  get hexStringNoAlpha(): string {
+    return this.getHexString(false);
   }
 
   get rgbString(): string {
@@ -60,7 +64,7 @@ export abstract class Color {
   }
 
   toString(): string {
-    return this.hexString;
+    return this.hexStringWithAlpha;
   }
 
   static parse(input: string): Color {

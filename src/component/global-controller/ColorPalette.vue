@@ -34,7 +34,7 @@ function applyColor(event: Event) {
   if (!colorName)
     throw new Error(`Data field '${COLOR_NAME}' not found in input element.`);
   setColor(colorName, colorValue);
-  colorValues[colorName].value = colorValue; // TODO: FIXME
+  colorValues[colorName].value = colorValue;
 }
 
 function createDataAttribute(name: string, value: ValidColorName) {
@@ -63,7 +63,10 @@ function createDataAttribute(name: string, value: ValidColorName) {
                 getColorNameFromPlainColorName(colorName),
               )
             "
-            :value="getCurrentColor(getColorNameFromPlainColorName(colorName))"
+            :value="
+              getCurrentColor(getColorNameFromPlainColorName(colorName))
+                .hexStringNoAlpha
+            "
             @change="applyColor"
           />
         </label>
@@ -84,7 +87,7 @@ function createDataAttribute(name: string, value: ValidColorName) {
             :value="
               getCurrentColor(
                 getColorNameComplementFromPlainColorName(colorName),
-              )
+              ).hexStringNoAlpha
             "
             @change="applyColor"
           />
