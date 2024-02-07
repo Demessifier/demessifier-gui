@@ -85,7 +85,9 @@ export function setColor(
  * @param colorName Name of the color to be retrieved.
  * @returns Color value.
  */
-export function getCurrentColor(colorName: ValidColorName): Color {
+export function getCurrentColor(
+  colorName: ValidColorName | "default-bg-color",
+): Color {
   const defaultColor = Color.parse("#888888");
   const retrievedValue = getRootStyleProperty(`--${colorName}`); // empty string if not set
 
