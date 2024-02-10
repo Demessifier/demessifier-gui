@@ -107,7 +107,7 @@ setDefaultColors();
       </nav>
       <div class="main-and-notifications">
         <div
-          class="notifications-backdrop"
+          id="notifications-backdrop"
           :style="`z-index: ${Z_INDEX.NOTIFICATIONS}`"
         >
           <p>test</p>
@@ -307,7 +307,7 @@ header > * {
       }
     }
 
-    .notifications-backdrop {
+    #notifications-backdrop {
       position: absolute;
       top: 0;
       right: 1em;
