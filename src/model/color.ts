@@ -116,51 +116,37 @@ export abstract class Color {
 
     if (getDigitsRegex("rgb", 3).test(input)) {
       // parse: rgb(R,G,B)
-      const items = input
+      const [r, g, b] = input
         .replace(/^rgb\(/, "")
         .replace(/\)$/, "")
         .split(",");
-      const r = items[0];
-      const g = items[1];
-      const b = items[2];
       return new ColorRGBA(r, g, b);
     }
 
     if (getDigitsRegex("rgba", 4).test(input)) {
       // parse: rgba(R,G,B,A)
-      const items = input
+      const [r, g, b, a] = input
         .replace(/^rgba\(/, "")
         .replace(/\)$/, "")
         .split(",");
-      const r = items[0];
-      const g = items[1];
-      const b = items[2];
-      const a = items[3];
       return new ColorRGBA(r, g, b, a);
     }
 
     if (getDigitsRegex("hsl", 3).test(input)) {
       // parse: hsl(H,S,L)
-      const items = input
+      const [h, s, l] = input
         .replace(/^hsl\(/, "")
         .replace(/\)$/, "")
         .split(",");
-      const h = items[0];
-      const s = items[1];
-      const l = items[2];
       return new ColorHSLA(h, s, l);
     }
 
     if (getDigitsRegex("hsla", 4).test(input)) {
       // parse: hsla(H,S,L,A)
-      const items = input
+      const [h, s, l, a] = input
         .replace(/^hsla\(/, "")
         .replace(/\)$/, "")
         .split(",");
-      const h = items[0];
-      const s = items[1];
-      const l = items[2];
-      const a = items[3];
       return new ColorHSLA(h, s, l, a);
     }
 
