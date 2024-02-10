@@ -109,11 +109,7 @@ setDefaultColors();
         <div
           id="notifications-backdrop"
           :style="`z-index: ${Z_INDEX.NOTIFICATIONS}`"
-        >
-          <p>test</p>
-          <p>test</p>
-          <p>test test test test test test test test</p>
-        </div>
+        ></div>
         <main :style="`z-index: ${Z_INDEX.MAIN_CONTENT}`">
           <router-view v-slot="{ Component }">
             <transition name="fade" mode="out-in" appear>
@@ -127,7 +123,8 @@ setDefaultColors();
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
+// The <style> element is not scoped so that notifications also get the style.
 .layout {
   display: flex;
   flex-direction: column;
@@ -324,6 +321,7 @@ header > * {
         background-color: var(--default-bg-color);
         margin: 1em;
         pointer-events: auto;
+        border-radius: var(--notification-border-radius);
       }
     }
   }

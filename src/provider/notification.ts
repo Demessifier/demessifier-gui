@@ -4,8 +4,15 @@ import { createVNode, render, VNode } from "vue";
 type StatusBoxProps = InstanceType<typeof StatusBox>["$props"];
 type ChildrenType = string | VNode | VNode[];
 
-function getNotificationsParentElement(): HTMLElement {
-  return document.getElementById("notifications-backdrop") as HTMLElement;
+function getNewNotificationDiv(): HTMLElement {
+  const parent = document.createElement("div");
+  const notificationsArea = document.getElementById("notifications-backdrop");
+  if (notificationsArea) {
+    notificationsArea.appendChild(parent);
+  } else {
+    console.error("Notifications area not found.");
+  }
+  return parent;
 }
 
 function getLogItems(
@@ -25,9 +32,10 @@ function getLogItems(
 export function createNotification(
   props: StatusBoxProps,
   children: ChildrenType,
-) {
+): HTMLElement {
   const box = createVNode(StatusBox, props, () => children);
-  render(box, getNotificationsParentElement());
+  const notificationDiv = getNewNotificationDiv();
+  render(box, notificationDiv);
 
   switch (props.boxFlavorName) {
     case "warn":
@@ -37,4 +45,6 @@ export function createNotification(
       console.error(...getLogItems(props, children));
       break;
   }
+
+  return notificationDiv;
 }

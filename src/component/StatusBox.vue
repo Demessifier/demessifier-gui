@@ -71,7 +71,7 @@ function unMinimize() {
 
   padding: 1em;
   border: 2px solid v-bind(boxBgColor);
-  border-radius: 0.5rem;
+  border-radius: var(--notification-border-radius);
   height: fit-content;
   width: fit-content;
   transition:
