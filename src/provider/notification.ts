@@ -1,5 +1,6 @@
 import StatusBox from "../component/StatusBox.vue";
 import { createVNode, render, VNode } from "vue";
+import { StatusBoxFlavorName } from "./status-box";
 
 type StatusBoxProps = InstanceType<typeof StatusBox>["$props"];
 type ChildrenType = string | VNode | VNode[];
@@ -30,11 +31,19 @@ function getLogItems(
 }
 
 export function createNotification(
-  props: StatusBoxProps,
+  boxFlavorName: StatusBoxFlavorName,
+  headlineText: string,
   children: ChildrenType,
 ): HTMLElement {
-  const box = createVNode(StatusBox, props, () => children);
   const notificationDiv = getNewNotificationDiv();
+  const props: StatusBoxProps = {
+    boxFlavorName,
+    headlineText,
+    parentDiv: notificationDiv,
+    removeInSeconds: 10,
+    closable: true,
+  };
+  const box = createVNode(StatusBox, props, () => children);
   render(box, notificationDiv);
 
   switch (props.boxFlavorName) {

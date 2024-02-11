@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ComputedRef, Ref, ref, watch } from "vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
   statusBoxFlavor,
   StatusBoxFlavorItem,
   StatusBoxFlavorName,
 } from "../provider/status-box";
+import { faCircleXmark, faThumbTack } from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
   /**
@@ -18,10 +19,22 @@ interface Props {
    */
   boxFlavorName: StatusBoxFlavorName;
   initializeMinimized?: boolean;
+  /**
+   * After this time, the box is removed.
+   */
+  removeInSeconds?: false | number;
+  /**
+   * This div contains only the box.
+   */
+  parentDiv?: HTMLElement;
+  closable?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   initializeMinimized: false,
+  removeInSeconds: false,
+  parentDiv: undefined,
+  closable: false,
 });
 
 const boxType: StatusBoxFlavorItem = statusBoxFlavor[props.boxFlavorName];
@@ -37,6 +50,63 @@ function switchMinimized() {
 function unMinimize() {
   minimized.value = false;
 }
+
+const parentDiv: Ref<HTMLElement> = ref(
+  props.parentDiv ?? document.createElement("div"),
+);
+
+function destroyComponent() {
+  parentDiv.value.remove();
+}
+
+const maxTimeSeconds: Ref<number> = ref(
+  props.removeInSeconds === false
+    ? Infinity
+    : Math.max(props.removeInSeconds, 0),
+);
+const fadeOutDurationSeconds = 5;
+const stepDurationMs = 500;
+const remainingTimeSeconds: Ref<number> = ref(maxTimeSeconds.value);
+const pinned: ComputedRef<boolean> = computed(
+  () => remainingTimeSeconds.value === Infinity,
+);
+const opacityFraction: ComputedRef<number> = computed(() =>
+  remainingTimeSeconds.value > fadeOutDurationSeconds
+    ? 1
+    : remainingTimeSeconds.value /
+      Math.min(maxTimeSeconds.value, fadeOutDurationSeconds),
+);
+
+type Interval = ReturnType<typeof setInterval>;
+const interval: Interval | null =
+  maxTimeSeconds.value === Infinity
+    ? null
+    : setInterval(() => {
+        if (remainingTimeSeconds.value > 0) {
+          remainingTimeSeconds.value -= stepDurationMs / 1000;
+          return;
+        }
+        clearInterval(interval as Interval);
+        destroyComponent();
+      }, stepDurationMs);
+
+function resetTimer() {
+  remainingTimeSeconds.value = maxTimeSeconds.value;
+}
+
+function interruptCountDown() {
+  if (interval !== null) clearInterval(interval);
+  maxTimeSeconds.value = Infinity;
+  resetTimer();
+}
+
+const parentStyle = parentDiv.value.style;
+watch(opacityFraction, async (newOpacity: number, _oldOpacity: number) => {
+  parentStyle.opacity = newOpacity.toFixed(2);
+});
+const borderRadius = "0.5rem";
+parentStyle.borderRadius = borderRadius;
+parentStyle.transition = `opacity ${stepDurationMs}ms linear`;
 </script>
 
 <template>
@@ -45,7 +115,25 @@ function unMinimize() {
     :class="{ minimized: minimized, full: !minimized }"
     :title="minimized ? unMinimizeTooltip : ''"
     @click="unMinimize"
+    @mousemove="resetTimer"
   >
+    <div class="buttons" v-if="!minimized && (closable || !pinned)">
+      <span
+        ><FontAwesomeIcon
+          v-if="!pinned"
+          :icon="faThumbTack"
+          @click="interruptCountDown"
+        ></FontAwesomeIcon
+      ></span>
+      <span class="spring"></span>
+      <span
+        ><FontAwesomeIcon
+          v-if="closable"
+          :icon="faCircleXmark"
+          @click="destroyComponent"
+        ></FontAwesomeIcon
+      ></span>
+    </div>
     <div
       class="header"
       @click.stop="switchMinimized"
@@ -69,9 +157,10 @@ function unMinimize() {
   flex-direction: column;
   flex-wrap: nowrap;
 
+  gap: 1em;
   padding: 1em;
   border: 2px solid v-bind(boxBgColor);
-  border-radius: var(--notification-border-radius);
+  border-radius: v-bind(borderRadius);
   height: fit-content;
   width: fit-content;
   transition:
@@ -103,6 +192,22 @@ function unMinimize() {
     }
   }
 
+  div.buttons {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+
+    color: v-bind(boxBgColor);
+
+    span {
+      padding: -1em 0 0 0;
+    }
+
+    span.spring {
+      width: 100%;
+    }
+  }
+
   div.header {
     color: v-bind(boxColor);
     background-color: v-bind(boxBgColor);
@@ -116,10 +221,6 @@ function unMinimize() {
         padding: 0 1em;
       }
     }
-  }
-
-  div.content {
-    padding-top: 1em;
   }
 }
 </style>

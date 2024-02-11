@@ -76,7 +76,8 @@ const MENU_ICON_BUTTON: MenuItem = {
     icon: faCircleDot,
     onClick: () => {
       createNotification(
-        { headlineText: "Notification example", boxFlavorName: "warn" },
+        "warn",
+        "Notification example",
         "Example text.",
         // createVNode(ButtonWithIcon, { text: "Text", icon: faCircleDot }),
       );

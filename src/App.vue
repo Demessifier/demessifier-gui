@@ -321,7 +321,6 @@ header > * {
         background-color: var(--default-bg-color);
         margin: 1em;
         pointer-events: auto;
-        border-radius: var(--notification-border-radius);
       }
     }
   }
