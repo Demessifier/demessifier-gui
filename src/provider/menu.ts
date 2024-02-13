@@ -9,6 +9,8 @@ import ColorSchemeSwitch from "../component/global-controller/ColorSchemeSwitch.
 import StatusBox from "../component/StatusBox.vue";
 import ColorPalette from "../component/global-controller/ColorPalette.vue";
 import ButtonWithIcon from "../component/global-controller/ButtonWithIcon.vue";
+import { createNotification } from "./notification";
+import { createVNode } from "vue";
 
 type Path = `/${string}`;
 type PathsList = { [key: string]: Path };
@@ -25,8 +27,8 @@ export type ClientPath = (typeof clientPaths)[Keys];
 
 export type MenuItem = {
   name: string;
-  component: () => any; // TODO: remove any
-  componentProps: any; // TODO: remove any
+  component: () => Promise<any>; // TODO: replace any with Vue component type
+  componentProps: any; // TODO: replace any with the Props type of the given component
   path: ClientPath;
   title: string;
   fa: IconDefinition;
@@ -35,8 +37,8 @@ export type MenuItem = {
 
 const MENU_COLORS: MenuItem = {
   name: "ColorPalette",
-  component: () => ColorPalette,
-  componentProps: {},
+  component: async () => ColorPalette,
+  componentProps: {} as InstanceType<typeof ColorPalette>["$props"],
   path: clientPaths._,
   title: "ColorPalette",
   fa: faPalette,
@@ -45,8 +47,8 @@ const MENU_COLORS: MenuItem = {
 
 const MENU_SCHEME: MenuItem = {
   name: "ColorSchemeSwitch",
-  component: () => ColorSchemeSwitch,
-  componentProps: {},
+  component: async () => ColorSchemeSwitch,
+  componentProps: {} as InstanceType<typeof ColorSchemeSwitch>["$props"],
   path: clientPaths.scheme,
   title: "ColorSchemeSwitch",
   fa: faCircleHalfStroke,
@@ -55,11 +57,11 @@ const MENU_SCHEME: MenuItem = {
 
 const MENU_STATUS: MenuItem = {
   name: "StatusBox",
-  component: () => StatusBox,
+  component: async () => StatusBox,
   componentProps: {
     headlineText: "StatusBox",
     boxFlavorName: "success",
-  },
+  } as InstanceType<typeof StatusBox>["$props"],
   path: clientPaths.status,
   title: "StatusBox",
   fa: faTable,
@@ -68,11 +70,19 @@ const MENU_STATUS: MenuItem = {
 
 const MENU_ICON_BUTTON: MenuItem = {
   name: "ButtonWithIcon",
-  component: () => ButtonWithIcon,
+  component: async () => ButtonWithIcon,
   componentProps: {
     text: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Mauris tincidunt sem sed arcu. Sed ac dolor sit amet purus malesuada congue. Etiam neque. Nullam faucibus mi quis velit. Integer rutrum, orci vestibulum ullamcorper ultricies, lacus quam ultricies odio, vitae placerat pede sem sit amet enim. Aenean placerat. Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur? Fusce dui leo, imperdiet in, aliquam sit amet, feugiat eu, orci.",
     icon: faCircleDot,
-  },
+    onClick: () => {
+      createNotification(
+        "warn",
+        "Notification example",
+        "Example text.",
+        // createVNode(ButtonWithIcon, { text: "Text", icon: faCircleDot }),
+      );
+    },
+  } as InstanceType<typeof ButtonWithIcon>["$props"],
   path: clientPaths.iconButton,
   title: "ButtonWithIcon",
   fa: faCircleDot,

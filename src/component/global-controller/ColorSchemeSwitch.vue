@@ -6,16 +6,20 @@ import {
   getColorSchemeConfiguredOrPreferred,
   Scheme,
   setColorScheme,
+  setDefaultBackgroundColor,
+  getColorSchemeDefaultBackgroundColor,
 } from "../../provider/color-scheme";
 import ButtonWithIcon from "./ButtonWithIcon.vue";
 
 const preferredColorScheme = ref(getColorSchemeConfiguredOrPreferred());
-setColorScheme(preferredColorScheme.value);
 
 function switchSchemeTo(scheme: Scheme) {
   preferredColorScheme.value = scheme;
   setColorScheme(preferredColorScheme.value);
+  setDefaultBackgroundColor(getColorSchemeDefaultBackgroundColor(scheme));
 }
+
+switchSchemeTo(preferredColorScheme.value);
 </script>
 
 <template>

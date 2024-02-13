@@ -105,19 +105,26 @@ setDefaultColors();
       >
         <MenuLeft :menu-items="JSON.parse(JSON.stringify(MENU))" />
       </nav>
-      <main>
-        <router-view v-slot="{ Component }">
-          <transition name="fade" mode="out-in" appear>
-            <component :is="Component" />
-          </transition>
-        </router-view>
-      </main>
+      <div class="main-and-notifications">
+        <div
+          id="notifications-backdrop"
+          :style="`z-index: ${Z_INDEX.NOTIFICATIONS}`"
+        ></div>
+        <main :style="`z-index: ${Z_INDEX.MAIN_CONTENT}`">
+          <router-view v-slot="{ Component }">
+            <transition name="fade" mode="out-in" appear>
+              <component :is="Component" />
+            </transition>
+          </router-view>
+        </main>
+      </div>
     </div>
     <!-- <footer> </footer> -->
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
+// The <style> element is not scoped so that notifications also get the style.
 .layout {
   display: flex;
   flex-direction: column;
@@ -275,21 +282,46 @@ header > * {
     flex-wrap: nowrap;
   }
 
-  main {
-    padding: 1em;
+  .main-and-notifications {
+    position: relative;
     width: 100%;
-    box-sizing: border-box;
-    max-height: calc(100vh - $headerHeight - $headerBorderBottom);
-    overflow: auto;
+    height: calc(100vh - $headerHeight - $headerBorderBottom);
 
-    .fade-enter-active,
-    .fade-leave-active {
-      transition: all 300ms ease;
+    main {
+      padding: 1em;
+      box-sizing: border-box;
+      overflow: auto;
+      max-height: calc(100vh - $headerHeight - $headerBorderBottom);
+
+      .fade-enter-active,
+      .fade-leave-active {
+        transition: all 300ms ease;
+      }
+
+      .fade-enter-from,
+      .fade-leave-to {
+        opacity: 0;
+      }
     }
 
-    .fade-enter-from,
-    .fade-leave-to {
-      opacity: 0;
+    #notifications-backdrop {
+      position: absolute;
+      top: 0;
+      right: 1em;
+
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      align-content: flex-end;
+      justify-content: flex-start;
+
+      pointer-events: none;
+
+      & > * {
+        background-color: var(--default-bg-color);
+        margin: 1em;
+        pointer-events: auto;
+      }
     }
   }
 }

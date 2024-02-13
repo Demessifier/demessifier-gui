@@ -1,32 +1,21 @@
 import ColorPalette from "./ColorPalette.vue";
 import {
-  computeColorsContrastRatio,
   defaultColors,
   getColorNameComplementFromPlainColorName,
   getColorNameFromPlainColorName,
   getCurrentColor,
-  HexColorApproximation,
-  hexToRgb,
   selectByContrastRatio,
   setDefaultColors,
 } from "../../provider/color-palette";
 import { StatusBoxFlavorName } from "../../provider/status-box";
-
-export function getRandomColor(): HexColorApproximation {
-  // Returns a random integer from 0 to 255:
-  const bytes: string[] = [];
-  while (bytes.length < 3) {
-    const byte = Math.floor(Math.random() * 256).toString(16);
-    bytes.push(byte.length === 2 ? byte : `0${byte}`);
-  }
-  return `#${bytes.join("")}`;
-}
+import { Color, ColorRGBA } from "../../model/color";
+import { getRandomInteger } from "../../provider/randomness";
 
 function testColorOrComplement(
   colorName: string,
   complement: boolean,
-  colorValue: HexColorApproximation,
-  complementValue: HexColorApproximation,
+  colorValue: Color,
+  complementValue: Color,
 ) {
   const labelPrefix = complement ? "color complement for " : "";
   const labelSuffix = complement ? "" : " color";
@@ -35,11 +24,11 @@ function testColorOrComplement(
       expect(item).to.have.length(1);
       expect(item).to.have.css(
         `${complement ? "background-" : ""}color`,
-        hexToRgb(colorValue),
+        colorValue.rgbString,
       );
       expect(item).to.have.css(
         `${complement ? "" : "background-"}color`,
-        hexToRgb(complementValue),
+        complementValue.rgbString,
       );
     })
     .find("label")
@@ -48,15 +37,17 @@ function testColorOrComplement(
     })
     .find("input[type=color]")
     .should((input) => {
-      expect(input).to.have.value(complement ? complementValue : colorValue);
+      expect(input).to.have.value(
+        (complement ? complementValue : colorValue).hexStringNoAlpha,
+      );
     });
 }
 
 function testColorOrComplementSetting(
   colorName: string,
   complement: boolean,
-): HexColorApproximation {
-  const randomColor = getRandomColor();
+): Color {
+  const randomColor = Color.randomColor;
   const fullColorName = complement
     ? getColorNameComplementFromPlainColorName(colorName)
     : getColorNameFromPlainColorName(colorName);
@@ -66,7 +57,7 @@ function testColorOrComplementSetting(
     })
     .each((i) => {
       const input = i.get()[0] as HTMLInputElement;
-      input.value = randomColor; // doesn't trigger onChange event
+      input.value = randomColor.hexStringNoAlpha; // doesn't trigger onChange event
     })
     .trigger("change");
   return randomColor;
@@ -84,7 +75,7 @@ function testContrasts() {
       const colorComplement = getCurrentColor(
         getColorNameComplementFromPlainColorName(colorName),
       );
-      const contrast = computeColorsContrastRatio(colorValue, colorComplement);
+      const contrast = colorValue.colorsContrastRatio(colorComplement);
       const contrastStatus: StatusBoxFlavorName = selectByContrastRatio(
         contrast,
         "success",
@@ -103,9 +94,8 @@ function testContrasts() {
           expect(contrast).to.have.length(3);
           expect(contrast).to.have.css(
             "background-color",
-            hexToRgb(
-              getCurrentColor(getColorNameFromPlainColorName(contrastStatus)),
-            ),
+            getCurrentColor(getColorNameFromPlainColorName(contrastStatus))
+              .rgbString,
           );
           expect(contrast).to.have.class(contrastStatus);
         })
@@ -113,11 +103,9 @@ function testContrasts() {
         .should((span) => {
           expect(span).to.have.css(
             "color",
-            hexToRgb(
-              getCurrentColor(
-                getColorNameComplementFromPlainColorName(contrastStatus),
-              ),
-            ),
+            getCurrentColor(
+              getColorNameComplementFromPlainColorName(contrastStatus),
+            ).rgbString,
           );
           expect(span).to.contain.text(contrast.toFixed(2));
         })
@@ -155,14 +143,14 @@ describe("ColorPalette component", () => {
           expect(td).to.have.length.at.least(1);
           expect(td).to.have.css(
             "background-color",
-            hexToRgb(defaultColors[colorName].value),
+            defaultColors[colorName].value.rgbString,
           );
         })
         .find("span")
         .should((span) => {
           expect(span).to.have.css(
             "color",
-            hexToRgb(defaultColors[colorName].complementValue),
+            defaultColors[colorName].complementValue.rgbString,
           );
         });
     }

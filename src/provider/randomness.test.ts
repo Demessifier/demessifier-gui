@@ -1,7 +1,11 @@
 import { test, expect } from "vitest";
-import { getRandomItem } from "./randomness";
+import {
+  getRandomInteger,
+  getRandomIntegers,
+  getRandomItem,
+} from "./randomness";
 
-test("Randomness tools", async () => {
+test("Randomness tools: getRandomItem", async () => {
   const bigger = ["cheese", "vegetables", "apple", "water", "carrot"];
   const smaller = ["apple", "carrot"];
   const overlap = ["vegetables", "brick", "mug"];
@@ -24,5 +28,41 @@ test("Randomness tools", async () => {
   expect(() => getRandomItem(smaller, bigger)).to.throw("No allowed item.");
   for (const array of [bigger, smaller, overlap, different]) {
     expect(() => getRandomItem(array, array)).to.throw("No allowed item.");
+  }
+});
+
+test("Randomness tools: getRandomInteger", async () => {
+  const bot = 1;
+  const top = 1000;
+  for (let _ = 0; _ < 30; _++) {
+    const randomMaximum = getRandomInteger(top) + bot;
+    expect(randomMaximum).to.be.greaterThanOrEqual(bot);
+    expect(randomMaximum).to.be.lessThan(top + bot);
+    expect(randomMaximum % 1).to.be.equal(0);
+
+    const randomValue = getRandomInteger(randomMaximum);
+    expect(randomValue).to.be.greaterThanOrEqual(0);
+    expect(randomValue).to.be.lessThan(randomMaximum);
+    expect(randomValue % 1).to.be.equal(0);
+  }
+});
+
+test("Randomness tools: getRandomIntegers", async () => {
+  const LENGTH = 30;
+  const bot = 1;
+  const top = 1000;
+  const randomMaximums = [];
+  for (let _ = 0; _ < LENGTH; _++) {
+    randomMaximums.push(getRandomInteger(top) + bot);
+  }
+  const randomValues = getRandomIntegers(randomMaximums);
+  expect(randomMaximums).to.have.length(LENGTH);
+  expect(randomValues).to.have.length(LENGTH);
+  for (let i = 0; i < LENGTH; i++) {
+    const randomValue = randomValues[i];
+    const randomMaximum = randomMaximums[i];
+    expect(randomValue).to.be.greaterThanOrEqual(0);
+    expect(randomValue).to.be.lessThan(randomMaximum);
+    expect(randomValue % 1).to.be.equal(0);
   }
 });

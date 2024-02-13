@@ -8,7 +8,6 @@ import {
   getColorNameComplementFromPlainColorName,
   getColorNameFromPlainColorName,
   getCurrentColor,
-  hexToRgb,
 } from "../provider/color-palette";
 
 function test(
@@ -26,13 +25,12 @@ function test(
   cy.get("div.status-box div.header").should((statusBoxHeader) => {
     expect(statusBoxHeader).to.have.css(
       "color",
-      hexToRgb(
-        getCurrentColor(getColorNameComplementFromPlainColorName(flavor)),
-      ),
+      getCurrentColor(getColorNameComplementFromPlainColorName(flavor))
+        .rgbString,
     );
     expect(statusBoxHeader).to.have.css(
       "background-color",
-      hexToRgb(getCurrentColor(getColorNameFromPlainColorName(flavor))),
+      getCurrentColor(getColorNameFromPlainColorName(flavor)).rgbString,
     );
     expect(statusBoxHeader).to.have.attr(
       "title",

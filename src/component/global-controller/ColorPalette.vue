@@ -4,18 +4,18 @@ import {
   getColorNameComplementFromPlainColorName,
   getColorNameFromPlainColorName,
   getCurrentColor,
-  HexColorApproximation,
   setColor,
   ValidColorName,
 } from "../../provider/color-palette";
 import StatusBox from "../StatusBox.vue";
 import ColorPaletteTdContrast from "./ColorPaletteTdContrast.vue";
 import { Ref, ref } from "vue";
+import { Color } from "../../model/color";
 
 const COLOR_NAME = "color_name";
 
 type ColorValue = {
-  [key: string]: Ref<HexColorApproximation>;
+  [key: string]: Ref<Color>;
 };
 const colorValues: ColorValue = {};
 for (const colorName of Object.keys(defaultColors)) {
@@ -29,7 +29,7 @@ for (const colorName of Object.keys(defaultColors)) {
 
 function applyColor(event: Event) {
   const input = event.target as HTMLInputElement;
-  const colorValue = input.value as HexColorApproximation;
+  const colorValue = Color.parse(input.value);
   const colorName = input.dataset[COLOR_NAME] as ValidColorName;
   if (!colorName)
     throw new Error(`Data field '${COLOR_NAME}' not found in input element.`);
@@ -63,7 +63,10 @@ function createDataAttribute(name: string, value: ValidColorName) {
                 getColorNameFromPlainColorName(colorName),
               )
             "
-            :value="getCurrentColor(getColorNameFromPlainColorName(colorName))"
+            :value="
+              getCurrentColor(getColorNameFromPlainColorName(colorName))
+                .hexStringNoAlpha
+            "
             @change="applyColor"
           />
         </label>
@@ -84,7 +87,7 @@ function createDataAttribute(name: string, value: ValidColorName) {
             :value="
               getCurrentColor(
                 getColorNameComplementFromPlainColorName(colorName),
-              )
+              ).hexStringNoAlpha
             "
             @change="applyColor"
           />
@@ -133,7 +136,7 @@ function createDataAttribute(name: string, value: ValidColorName) {
               :color-value="
                 colorValues[getColorNameFromPlainColorName(colorName)].value
               "
-              other-color-value="#000"
+              :other-color-value="Color.parse('#000')"
             ></ColorPaletteTdContrast>
             <td>
               <span :class="`${colorName}-white`">X</span>
@@ -144,7 +147,7 @@ function createDataAttribute(name: string, value: ValidColorName) {
               :color-value="
                 colorValues[getColorNameFromPlainColorName(colorName)].value
               "
-              other-color-value="#FFF"
+              :other-color-value="Color.parse('#FFF')"
             ></ColorPaletteTdContrast>
           </tr>
         </tbody>

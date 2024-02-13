@@ -1,22 +1,19 @@
 <script setup lang="ts">
-import {
-  computeColorsContrastRatio,
-  HexColorApproximation,
-  selectByContrastRatio,
-} from "../../provider/color-palette";
+import { selectByContrastRatio } from "../../provider/color-palette";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { computed, ComputedRef } from "vue";
 import { getFlavorItem, StatusBoxFlavorItem } from "../../provider/status-box";
+import { Color } from "../../model/color";
 
 interface Props {
-  colorValue: HexColorApproximation;
-  otherColorValue: HexColorApproximation;
+  colorValue: Color;
+  otherColorValue: Color;
 }
 
 const props = defineProps<Props>();
 
 const contrast: ComputedRef<number> = computed(() =>
-  computeColorsContrastRatio(props.colorValue, props.otherColorValue),
+  props.colorValue.colorsContrastRatio(props.otherColorValue),
 );
 const flavor: ComputedRef<StatusBoxFlavorItem> = computed(() =>
   getFlavorItem(

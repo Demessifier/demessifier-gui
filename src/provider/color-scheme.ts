@@ -1,15 +1,20 @@
 import { ensureMetaTagContent, getMetaTagContent } from "./html-meta-tag";
+import { Color, ColorRGBA } from "../model/color";
+import { setColor } from "./color-palette";
 
-const colorSchemesDefinition = ["dark", "light"];
+const colorSchemesDefinition = {
+  dark: { backgroundColor: new ColorRGBA(0, 0, 0) },
+  light: { backgroundColor: new ColorRGBA(255, 255, 255) },
+};
 /**
  * Supported values of color scheme names.
  */
-export type Scheme = (typeof colorSchemesDefinition)[number];
+export type Scheme = keyof typeof colorSchemesDefinition;
 /**
  * List of supported color schemes.
  */
 export const supportedColorSchemes = Object.freeze(
-  colorSchemesDefinition,
+  Object.keys(colorSchemesDefinition),
 ) as Scheme[];
 
 /**
@@ -32,7 +37,7 @@ export function getColorSchemeConfigured(): Scheme | undefined {
 
   // found one of the supported - exactly
   if (supportedColorSchemes.some((o) => o === configuredScheme))
-    return configuredScheme;
+    return configuredScheme as Scheme;
 
   // found one of the supported - substring whole word
   for (const supportedScheme of supportedColorSchemes) {
@@ -70,4 +75,30 @@ export function getColorSchemePreferredOrDefault(): Scheme {
  */
 export function getColorSchemeConfiguredOrPreferred(): Scheme {
   return getColorSchemeConfigured() ?? getColorSchemePreferredOrDefault();
+}
+
+export function getDefaultBackgroundColor(bgColorIfNotFound?: Color): Color {
+  for (const element of [
+    document.documentElement, // background of the document
+    document.body, // background of the body
+  ]) {
+    const result = Color.parse(getComputedStyle(element).backgroundColor);
+    if (result.alpha100 > 50) return result;
+  }
+
+  // color not found
+  return (
+    bgColorIfNotFound ?? // pre-selected
+    new ColorRGBA(127, 127, 127) // grey
+  );
+}
+
+export function setDefaultBackgroundColor(bgColorIfNotFound?: Color): Color {
+  const bgColor = getDefaultBackgroundColor(bgColorIfNotFound);
+  setColor("default-bg-color", bgColor);
+  return bgColor;
+}
+
+export function getColorSchemeDefaultBackgroundColor(scheme: Scheme): Color {
+  return colorSchemesDefinition[scheme].backgroundColor;
 }

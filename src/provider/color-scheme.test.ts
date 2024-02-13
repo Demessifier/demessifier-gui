@@ -5,10 +5,16 @@ import {
   getColorSchemeConfiguredOrPreferred,
   getColorSchemePreferredOrDefault,
   setColorScheme,
+  getDefaultBackgroundColor,
+  Scheme,
+  setDefaultBackgroundColor,
+  getColorSchemeDefaultBackgroundColor,
 } from "./color-scheme";
 import { getRandomItem } from "./randomness";
 import { ensureMetaTagContent, getMetaTagContent } from "./html-meta-tag";
 import MatchMediaMock from "vitest-matchmedia-mock";
+import { Color } from "../model/color";
+import { getCurrentColor } from "./color-palette";
 
 function testSchemeName(schemeName: string | null, expectedResult: string) {
   const META_TAG_COLOR_SCHEME = "color-scheme";
@@ -45,7 +51,7 @@ test("Color scheme", async () => {
   for (let _i = 0; _i < 10 * supportedColorSchemes.length; _i++) {
     const randomScheme = getRandomItem(supportedColorSchemes, [previousScheme]);
     expect(randomScheme).to.be.ok;
-    setColorScheme(randomScheme as string);
+    setColorScheme(randomScheme as Scheme);
     const activeScheme = getColorSchemeConfigured();
     const schemeCP = getColorSchemeConfiguredOrPreferred();
     expect(activeScheme).to.be.equal(randomScheme);
@@ -53,6 +59,40 @@ test("Color scheme", async () => {
     expect(supportedColorSchemes).to.contain(activeScheme);
     previousScheme = randomScheme;
   }
+});
+
+test("DefaultBackgroundColor", async () => {
+  const DEFAULT_COLOR_NAME = "default-bg-color";
+
+  expect(getCurrentColor).to.be.ok;
+  expect(getDefaultBackgroundColor).to.be.ok;
+  expect(getColorSchemeDefaultBackgroundColor).to.be.ok;
+
+  for (const scheme of supportedColorSchemes) {
+    expect(getColorSchemeDefaultBackgroundColor(scheme)).to.be.ok; // TODO: to have class Color
+  }
+
+  setDefaultBackgroundColor();
+  expect(getCurrentColor(DEFAULT_COLOR_NAME)).to.be.ok; // TODO: to have class Color
+  expect(getDefaultBackgroundColor()).to.be.ok; // TODO: to have class Color
+
+  const randomBg = Color.randomColor;
+  setDefaultBackgroundColor(randomBg);
+  expect(getCurrentColor(DEFAULT_COLOR_NAME).equals(randomBg)).to.be.true;
+
+  const randomBodyBg = Color.randomColor;
+  document.body.style.backgroundColor = randomBodyBg.hexStringNoAlpha;
+  expect(getDefaultBackgroundColor().equals(randomBodyBg)).to.be.true;
+  setDefaultBackgroundColor();
+  expect(getCurrentColor(DEFAULT_COLOR_NAME).equals(randomBodyBg)).to.be.true;
+
+  const randomDocumentBg = Color.randomColor;
+  document.documentElement.style.backgroundColor =
+    randomDocumentBg.hexStringNoAlpha;
+  expect(getDefaultBackgroundColor().equals(randomDocumentBg)).to.be.true;
+  setDefaultBackgroundColor();
+  expect(getCurrentColor(DEFAULT_COLOR_NAME).equals(randomDocumentBg)).to.be
+    .true;
 });
 
 // TODO: test actually getting a real value from getPreferredColorScheme().
