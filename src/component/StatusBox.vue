@@ -118,19 +118,21 @@ parentStyle.transition = `opacity ${stepDurationMs}ms linear`;
     @mousemove="resetTimer"
   >
     <div class="buttons" v-if="!minimized && (closable || !pinned)">
-      <span
+      <span class="icon-button"
         ><FontAwesomeIcon
           v-if="!pinned"
           :icon="faThumbTack"
           @click="interruptCountDown"
+          title="Pin"
         ></FontAwesomeIcon
       ></span>
       <span class="spring"></span>
-      <span
+      <span class="icon-button"
         ><FontAwesomeIcon
           v-if="closable"
           :icon="faCircleXmark"
           @click="destroyComponent"
+          title="Close"
         ></FontAwesomeIcon
       ></span>
     </div>
@@ -201,10 +203,18 @@ parentStyle.transition = `opacity ${stepDurationMs}ms linear`;
 
     span {
       padding: -1em 0 0 0;
-    }
 
-    span.spring {
-      width: 100%;
+      &.spring {
+        width: 100%;
+      }
+
+      &.icon-button {
+        cursor: pointer;
+
+        &:hover {
+          color: initial;
+        }
+      }
     }
   }
 
