@@ -32,7 +32,8 @@
     "npm:publish-dry": "npm publish --dry-run --access public",
     "npm:publish-public": "npm publish --access public",
     "semantic-release": "semantic-release",
-    "checklist": "npm run packages:install && npm run packages:audit && npm run generate && npm run lint && npm run test && npm run build && npm run npm:publish-dry",
+    "checklist:without-install": "npm run generate && npm run lint && npm run test && npm run build && npm run npm:publish-dry",
+    "checklist": "npm run packages:install && npm run packages:audit && npm run checklist:without-install",
     "checklist:clean": "npm run clean && npm run checklist"
   },
   "type": "module",
