@@ -30,11 +30,12 @@ Demessifier GUI is a minimalistic GUI framework for Vue.
 
 ## Project setup
 
-* Install dependencies
-  * [NodeJS LTS](https://nodejs.org/en/download/package-manager) 
-    * Windows: `winget install -e --id OpenJS.NodeJS.LTS`
-  <!--  * `pnpm` TODO: eaten by Avast
-      * Windows: `winget install -e --id pnpm.pnpm` -->
+- Install dependencies
+  - [NodeJS LTS](https://nodejs.org/en/download/package-manager)
+    - Windows: `winget install -e --id OpenJS.NodeJS.LTS`
+  - `pnpm`
+    - NodeJS: `npm install -g pnpm`
+    - Windows: `winget install -e --id pnpm.pnpm`
 
 <!-- ---------------------------------------------------------------- -->
 
