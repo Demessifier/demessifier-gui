@@ -36,6 +36,9 @@
     "checklist": "npm run packages:install && npm run packages:audit && npm run checklist:without-install",
     "checklist:clean": "npm run clean && npm run checklist"
   },
+  "engines": {
+    "node": "18.x || 20.x"
+  },
   "type": "module",
   "files": [
     "build"
