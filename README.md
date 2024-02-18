@@ -1,8 +1,9 @@
 # Demessifier GUI
 
 [![NPM version][npm-version-image]][npm-url]
-[![NPM install size][npm-install-size-image]][npm-install-size-url]
 [![NodeJs version][npm-node-image]][npm-url]
+[![Vue version][vue-version-image]][vue-url]
+[![NPM install size][npm-install-size-image]][npm-install-size-url]
 [![NPM types][npm-types-image]][npm-url]
 [![License][npm-license-image]][npm-url]
 
@@ -20,6 +21,19 @@
 
 Demessifier GUI is a minimalistic GUI framework for Vue.
 
+## Philosophy
+
+- Aims to contain everything that could be needed to create a GUI application in Vue.
+- As little customizations as possible -
+  aims to provide the default look and feel of the used browser.
+  The goals are to provide a well-known UI of the user's device and
+  (in the future) to look only as outdated as the browser does.
+- As little dependencies as possible.
+- Covered by tests and type checks.
+- If there are multiple equivalent choices for implementation of a feature,
+  the first applicable from this list should be selected:
+  HTML, CSS, another declarative approach, TypeScript, JavaScript.
+
 ## License
 
 [![License (GitHub)][github-license-local-image]](LICENSE)
@@ -30,11 +44,13 @@ Demessifier GUI is a minimalistic GUI framework for Vue.
 
 ## Project setup
 
-* Install dependencies
-  * [NodeJS LTS](https://nodejs.org/en/download/package-manager) 
-    * Windows: `winget install -e --id OpenJS.NodeJS.LTS`
-  <!--  * `pnpm` TODO: eaten by Avast
-      * Windows: `winget install -e --id pnpm.pnpm` -->
+- Install dependencies
+  - [NodeJS LTS](https://nodejs.org/en/download/package-manager)
+    - Windows: `winget install -e --id OpenJS.NodeJS.LTS`
+
+<!--  - `pnpm`
+        - NodeJS: `npm install -g pnpm`
+        - Windows: `winget install -e --id pnpm.pnpm` TODO: eaten by Avast  -->
 
 <!-- ---------------------------------------------------------------- -->
 
@@ -59,3 +75,5 @@ Demessifier GUI is a minimalistic GUI framework for Vue.
 [npm-types-image]: https://badgen.net/npm/types/@demessifier/demessifier-gui?icon=typescript
 [npm-url]: https://www.npmjs.com/package/@demessifier/demessifier-gui
 [npm-version-image]: https://badgen.net/npm/v/@demessifier/demessifier-gui
+[vue-url]: https://vuejs.org/
+[vue-version-image]: https://badgen.net/static/Vue/3
