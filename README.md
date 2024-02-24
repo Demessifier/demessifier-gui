@@ -3,7 +3,8 @@
 [![NPM version][npm-version-image]][npm-url]
 [![NodeJs version][npm-node-image]][npm-url]
 [![Vue version][vue-version-image]][vue-url]
-[![NPM install size][npm-install-size-image]][npm-install-size-url]
+[![NPM install size][npm-size-install-image]][package-phobia-url]
+[![NPM publish size][npm-size-publish-image]][package-phobia-url]
 [![NPM types][npm-types-image]][npm-url]
 [![License][npm-license-image]][npm-url]
 
@@ -69,13 +70,14 @@ Demessifier GUI is a minimalistic GUI framework for Vue.
 [npm-downloads-total-image]: https://badgen.net/npm/dt/@demessifier/demessifier-gui
 [npm-downloads-yearly-image]: https://badgen.net/npm/dy/@demessifier/demessifier-gui
 [npm-downloads-url]: https://npmcharts.com/compare/@demessifier/demessifier-gui?minimal=true
-[npm-install-size-image]: https://badgen.net/packagephobia/install/@demessifier/demessifier-gui
-[npm-install-size-url]: https://packagephobia.com/result?p=@demessifier/demessifier-gui
+[npm-size-publish-image]: https://badgen.net/packagephobia/publish/@demessifier/demessifier-gui
+[npm-size-install-image]: https://badgen.net/packagephobia/install/@demessifier/demessifier-gui
 [npm-license-image]: https://badgen.net/npm/license/@demessifier/demessifier-gui
 [npm-license-npm-image]: https://badgen.net/npm/license/@demessifier/demessifier-gui?icon=npm&label=license%20%28npm%29
 [npm-node-image]: https://badgen.net/npm/node/@demessifier/demessifier-gui
 [npm-types-image]: https://badgen.net/npm/types/@demessifier/demessifier-gui?icon=typescript
 [npm-url]: https://www.npmjs.com/package/@demessifier/demessifier-gui
 [npm-version-image]: https://badgen.net/npm/v/@demessifier/demessifier-gui
+[package-phobia-url]: https://packagephobia.com/result?p=@demessifier/demessifier-gui
 [vue-url]: https://vuejs.org/
 [vue-version-image]: https://badgen.net/static/Vue/3
