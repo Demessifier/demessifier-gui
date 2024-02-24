@@ -8,8 +8,7 @@ import {
   setDefaultColors,
 } from "../../provider/color-palette";
 import { StatusBoxFlavorName } from "../../provider/status-box";
-import { Color, ColorRGBA } from "../../model/color";
-import { getRandomInteger } from "../../provider/randomness";
+import { Color } from "../../model/color";
 
 function testColorOrComplement(
   colorName: string,
