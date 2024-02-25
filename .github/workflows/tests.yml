@@ -16,10 +16,20 @@ jobs:
         node-version: [ 18.x, 20.x ] # node.js LTS versions - see https://endoflife.date/nodejs
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Use pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm ci
-      - run: npm test
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Install also Cypress binaries (not cached)
+        run: ./node_modules/.bin/cypress install --force
+      - name: Execute tests
+        run: pnpm test

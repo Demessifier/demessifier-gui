@@ -13,11 +13,10 @@
     "clean:build": "npx rimraf --glob build/*",
     "clean:generate": "npx rimraf src/css/default-css-variables.css",
     "clean": "npm-run-all --print-label --parallel clean:node:lock clean:cache clean:test clean:build clean:generate && npm run clean:node:modules",
-    "packages:install": "npm install --package-lock-only --ignore-scripts",
-    "packages:update": "npm update --package-lock-only --ignore-scripts",
-    "packages:audit": "npm audit --package-lock-only --ignore-scripts",
-    "packages:audit-fix": "npm audit fix --package-lock-only --ignore-scripts",
-    "packages:pnpm": "pnpm import package-lock.json && pnpm install",
+    "packages:install": "pnpm install",
+    "packages:update": "pnpm update",
+    "packages:audit": "pnpm audit",
+    "packages:audit-fix": "pnpm audit --fix",
     "generate:default-css-variables": "npx tsx src/css/default-css-variables.ts",
     "generate": "npm-run-all --print-label --parallel generate:*",
     "dev": "vite --host 0.0.0.0",
@@ -39,7 +38,7 @@
     "npm:publish-public": "npm publish --access public",
     "semantic-release": "semantic-release",
     "checklist:without-install": "npm-run-all --serial generate lint test build npm:publish-dry",
-    "checklist": "npm-run-all --serial clean:node:modules packages:install packages:audit packages:pnpm checklist:without-install",
+    "checklist": "npm-run-all --serial clean:node:modules packages:install packages:audit checklist:without-install",
     "checklist:clean": "npm-run-all --serial clean checklist"
   },
   "engines": {
@@ -117,9 +116,9 @@
     "vue-router": "^4.2.5"
   },
   "devDependencies": {
+    "@types/node": "^20.11.20",
     "@typescript-eslint/eslint-plugin": "^6.9.1",
     "@typescript-eslint/parser": "^6.9.1",
-    "@types/node": "^20.11.20",
     "@vitejs/plugin-vue": "^4.4.0",
     "@vitest/coverage-v8": "^0.34.6",
     "cypress": "^13.4.0",
