@@ -29,6 +29,8 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+      - name: Install build process dependencies
+        run: npm install --global rimraf
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
