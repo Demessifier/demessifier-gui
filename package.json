@@ -16,7 +16,7 @@
     "packages:install": "pnpm install",
     "packages:update": "pnpm update",
     "packages:audit": "pnpm audit",
-    "packages:audit-fix": "pnpm audit fix",
+    "packages:audit-fix": "pnpm audit --fix",
     "generate:default-css-variables": "npx tsx src/css/default-css-variables.ts",
     "generate": "npm-run-all --print-label --parallel generate:*",
     "dev": "vite --host 0.0.0.0",
