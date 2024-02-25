@@ -30,6 +30,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Install also Cypress binaries (not cached)
-        run: cypress install --force
+        run: ./node_modules/.bin/cypress install --force
       - name: Execute tests
         run: pnpm test
