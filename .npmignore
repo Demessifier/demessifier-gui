@@ -1,5 +1,5 @@
-*.cy.ts
-*.test.ts
+**/*.cy.ts
+**/*.test.ts
 
 /.browserslistrc
 /.eslintrc.json
@@ -8,9 +8,7 @@
 /.prettierignore
 /.prettierrc
 /.idea/
-/.package-lock.json
 /auxiliary/
-/build/
 /cypress.config.ts
 /node_modules/
 /test/cypress/

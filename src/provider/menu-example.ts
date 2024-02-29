@@ -88,9 +88,9 @@ const MENU_ICON_BUTTON: MenuItem = {
   metaTitle: "ButtonWithIcon",
 };
 
-export const MENU = Object.freeze([
+export const menuExample: MenuItem[] = [
   MENU_COLORS,
   MENU_SCHEME,
   MENU_STATUS,
   MENU_ICON_BUTTON,
-] as MenuItem[]);
+];
