@@ -10,7 +10,6 @@ import StatusBox from "../component/StatusBox.vue";
 import ColorPalette from "../component/global-controller/ColorPalette.vue";
 import ButtonWithIcon from "../component/global-controller/ButtonWithIcon.vue";
 import { createNotification } from "./notification";
-import { createVNode } from "vue";
 
 type Path = `/${string}`;
 type PathsList = { [key: string]: Path };
@@ -89,9 +88,9 @@ const MENU_ICON_BUTTON: MenuItem = {
   metaTitle: "ButtonWithIcon",
 };
 
-export const MENU = Object.freeze([
+export const menuExample: MenuItem[] = [
   MENU_COLORS,
   MENU_SCHEME,
   MENU_STATUS,
   MENU_ICON_BUTTON,
-] as MenuItem[]);
+];
