@@ -40,7 +40,6 @@ export function mountApp(
   appPlugins: any[] = [],
 ): ReturnType<typeof createApp> {
   const mountToElement = getElementBySelector(targetElementSelector);
-  mountToElement.style.position = "relative";
   const app = createApp(rootAppComponent);
   app.use(router);
   for (const plugin of appPlugins) {
