@@ -1,4 +1,4 @@
-import { Component, createApp } from "vue";
+import { createApp } from "vue";
 import { createPinia } from "pinia";
 import { Router } from "vue-router";
 import "./css/default-css-variables.css";
@@ -21,6 +21,8 @@ import {
   getElementBySelector,
   HtmlElementSelector,
 } from "./provider/html-element";
+import { DEVELOPMENT } from "./provider/development-environment";
+import { LogoSection, headerLogoExample } from "./model/logo-section";
 
 export {
   ButtonWithIcon,
@@ -29,7 +31,6 @@ export {
   StatusBox,
   model,
   provider,
-  App,
 };
 
 const routerExample = getRouterForMenu(menuExample);
@@ -37,13 +38,13 @@ const routerExample = getRouterForMenu(menuExample);
 export const pinia = createPinia();
 
 export function mountApp(
-  rootAppComponent: Component = App,
   targetElementSelector: HtmlElementSelector = { element: document.body },
   router: Router = routerExample,
   appPlugins: any[] = [],
+  headerLogoProps: LogoSection[] = headerLogoExample,
 ): ReturnType<typeof createApp> {
   const mountToElement = getElementBySelector(targetElementSelector);
-  const app = createApp(rootAppComponent);
+  const app = createApp(App, { mainHeaderLogo: headerLogoProps });
   app.use(pinia);
   app.use(router);
   for (const plugin of appPlugins) {
@@ -55,4 +56,6 @@ export function mountApp(
   return app;
 }
 
-// const app = mountApp(App, { elementId: "app" }, routerExample, []); // FOR TESTING ONLY
+if (DEVELOPMENT) {
+  const app = mountApp({ elementId: "app" });
+}

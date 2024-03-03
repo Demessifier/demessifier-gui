@@ -5,7 +5,9 @@ export type HtmlElementSelector = {
   elementTag?: string;
 };
 
-export function getElementBySelector(selector: HtmlElementSelector): HTMLElement {
+export function getElementBySelector(
+  selector: HtmlElementSelector,
+): HTMLElement {
   if (selector.element) return selector.element;
   if (selector.elementId) {
     const result = document.getElementById(selector.elementId);
