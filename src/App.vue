@@ -131,6 +131,7 @@ setDefaultColors();
   flex-wrap: nowrap;
   align-items: center;
   height: 100vh;
+  position: relative;
 }
 
 $headerHeight: 3rem;
