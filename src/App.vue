@@ -5,9 +5,10 @@ import * as Z_INDEX from "./provider/z-index";
 import MenuLeft from "./component/layout/MenuLeft.vue";
 import { menuExample } from "./provider/menu-example";
 import MenuTopRight from "./component/layout/MenuTopRight.vue";
-import BrandLogo from "./component/layout/BrandLogo.vue";
+import MainHeaderLogo from "./component/layout/MainHeaderLogo.vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faBars, faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { LogoSection } from "./model/logo-section";
 
 // window size for responsiveness
 const windowSize = ref(window.innerWidth);
@@ -55,6 +56,12 @@ function hideLeftMenuIfCompact() {
 }
 
 setDefaultColors();
+
+interface Props {
+  mainHeaderLogo: LogoSection[];
+}
+
+const props = defineProps<Props>();
 </script>
 
 <template>
@@ -67,7 +74,7 @@ setDefaultColors();
         />
       </span>
       <div class="logo">
-        <BrandLogo />
+        <MainHeaderLogo v-bind="{ logoSections: props.mainHeaderLogo }" />
       </div>
       <span class="icon-button" @click="toggleRightMenu">
         <FontAwesomeIcon
@@ -175,8 +182,6 @@ header {
   }
 
   .logo {
-    margin-left: 20px;
-    margin-right: 20px;
     width: 100%;
     height: 80%;
     font-size: calc($headerHeight * 0.8);
