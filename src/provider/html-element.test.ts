@@ -25,6 +25,12 @@ test("HTML element selector", async () => {
   mainAppDivElement.appendChild(secondAnotherSpanElement);
   expect(document.body.children.length).to.be.equal(1);
 
+  const twinAnotherSpanElement = document.createElement("span");
+  twinAnotherSpanElement.className = "another";
+  mainAppDivElement.id = "twin";
+  mainAppDivElement.appendChild(twinAnotherSpanElement);
+  expect(document.body.children.length).to.be.equal(1);
+
   const elements: HTMLElement[] = [mainAppDivElement, secondAnotherSpanElement];
 
   function getTestElementById(elementId?: string) {
