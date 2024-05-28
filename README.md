@@ -58,12 +58,12 @@ Demessifier GUI is a minimalistic GUI framework for Vue.
   - `pnpm`
     - NodeJS: `npm install -g pnpm`
     - ~~Windows: `winget install -e --id pnpm.pnpm` (gets eaten by Avast)~~
+  - `rimraf`
+    - NodeJS: `npm install -g rimraf`
 
 <!--
   - `npm-run-all2`
     - NodeJS: `npm install -g npm-run-all2`
-  - `rimraf`
-    - NodeJS: `npm install -g rimraf`
 -->
 
 ## Workflow
