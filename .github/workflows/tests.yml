@@ -13,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [ 18.x, 20.x ] # node.js LTS versions - see https://endoflife.date/nodejs
+        node-version: [ 18.x, 20.x, 22.x ] # node.js LTS versions - see https://endoflife.date/nodejs
 
     steps:
       - name: Checkout
@@ -21,7 +21,7 @@ jobs:
       - name: Use pnpm
         uses: pnpm/action-setup@v3
         with:
-          version: 8
+          version: 9
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:

@@ -24,7 +24,7 @@ Demessifier GUI is a minimalistic GUI framework for Vue.
 
 ## Philosophy
 
-- Aims to contain everything that could be needed to create a GUI application in Vue.
+- Aims to contain everything that could be needed to create a GUI for an application in Vue.
 - As little customizations as possible -
   aims to provide the default look and feel of the used browser.
   The goals are to provide a well-known UI of the user's device and
@@ -34,6 +34,13 @@ Demessifier GUI is a minimalistic GUI framework for Vue.
 - If there are multiple equivalent choices for implementation of a feature,
   the first applicable from this list should be selected:
   HTML, CSS, another declarative approach, TypeScript, JavaScript.
+  - If there is a way of doing it with what modern browsers natively provide,
+    don't use dependencies for it and don't code it yourself.
+  - If there is a way of doing it in plain HTML, don't use nunecessary CSS or JS or dependencies.
+  - If there is a way of doing it declaratively, don't code.
+  - Of course, there are exceptions, but keep them at the minimum.
+    Valid reasons for an exception are (huge difference in) developer experience
+    or (noticable difference in) user experience. (Don't confuse user experience with GUI.)
 
 ## License
 
@@ -54,10 +61,14 @@ Demessifier GUI is a minimalistic GUI framework for Vue.
     - NodeJS: `npm install -g npm-run-all2`
   - `pnpm`
     - NodeJS: `npm install -g pnpm`
-    - Windows: `winget install -e --id pnpm.pnpm` (gets eaten by Avast)
+    - ~~Windows: `winget install -e --id pnpm.pnpm` (gets eaten by Avast)~~
   - `rimraf`
     - NodeJS: `npm install -g rimraf`
 -->
+
+## Workflow
+
+- Before committing, execute `npm run checklist`
 
 <!-- ---------------------------------------------------------------- -->
 
