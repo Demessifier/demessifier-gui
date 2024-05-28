@@ -13,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [ 18.x, 20.x ] # node.js LTS versions - see https://endoflife.date/nodejs
+        node-version: [ 18.x, 20.x, 22.x ] # node.js LTS versions - see https://endoflife.date/nodejs
 
     steps:
       - name: Checkout
