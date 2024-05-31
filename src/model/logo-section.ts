@@ -1,4 +1,4 @@
-import LogoSvg from "../graphics/sbrul-shad-svg-v1.svg";
+import TheDemessifierLogoSvg from "../graphics/sbrul-shad-svg-v1.svg";
 import { DEVELOPMENT } from "../provider/development-environment";
 
 export type LogoSection = {
@@ -10,10 +10,12 @@ export type LogoSection = {
 export const headerLogoExample: LogoSection[] = [
   {
     logoSectionType: "svg-mask-square",
-    logoSectionSvgMask: LogoSvg, // TODO: this is not available externally
+    logoSectionSvgMask: TheDemessifierLogoSvg,
   },
   {
     logoSectionType: "text-title",
     logoSectionText: DEVELOPMENT ? "Demessifier GUI" : "My Demessifier App",
   },
 ];
+
+export { TheDemessifierLogoSvg };

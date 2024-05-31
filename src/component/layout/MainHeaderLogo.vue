@@ -13,7 +13,7 @@ function getSvgMaskStyle(svgMask?: string): CSSProperties | undefined {
     console.warn("No SVG mask specified in the logo component.");
     return undefined;
   }
-  const urlSvgMask = `url(${svgMask})`;
+  const urlSvgMask = `url("${svgMask}")`; // use double quotes to work with both path (/src/graphics/logo.svg) and data: (data:image/svg+xml,%3c?xml...)
   return {
     "-webkit-mask-image": urlSvgMask,
     "mask-image": urlSvgMask,
