@@ -26,11 +26,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
-          cache: 'pnpm'
+#          cache: 'pnpm'
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-      - name: Install build process dependencies
-        run: npm install --global rimraf
+        run: npx --yes pnpm install --frozen-lockfile
+#      - name: Install build process dependencies
+#        run: npm install --global rimraf
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
