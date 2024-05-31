@@ -32,4 +32,4 @@ jobs:
       - name: Install also Cypress binaries (they are not cached)
         run: npx cypress install --force
       - name: Execute tests
-        run: pnpm test
+        run: npx --yes pnpm test
