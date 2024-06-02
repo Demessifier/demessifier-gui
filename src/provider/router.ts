@@ -16,7 +16,7 @@ export function getRouterForMenu(
     routes.push({
       path: menuItem.path,
       name: menuItem.name,
-      component: () => menuItem.component, // using this should cause generating separate chunks and lazy loading them: component: () => import('../views/ExampleView.vue')
+      component: menuItem.component, // Using a Promise<COMPONENT> should cause generating separate chunks and lazy loading them. Example: component: () => import('../views/ExampleView.vue')
       props: menuItem.componentProps,
       meta: {
         title: menuItem.metaTitle,
