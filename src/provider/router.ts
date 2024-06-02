@@ -16,7 +16,7 @@ export function getRouterForMenu(
     routes.push({
       path: menuItem.path,
       name: menuItem.name,
-      component: menuItem.component,
+      component: () => menuItem.component, // using this should cause generating separate chunks and lazy loading them: component: () => import('../views/ExampleView.vue')
       props: menuItem.componentProps,
       meta: {
         title: menuItem.metaTitle,
@@ -48,7 +48,7 @@ export function getRouterForMenu(
   });
 
   router.beforeEach((to, _, next) => {
-    document.title = `Vue App ${to.meta.title ?? ""}`;
+    document.title = `${to.meta.title ?? ""}`;
     next();
   });
 
