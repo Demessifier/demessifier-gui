@@ -5,7 +5,7 @@ import "./css/global.css";
 import "./css/table.css";
 import "./css/form.css";
 import { getRouterForMenu } from "./provider/router";
-import { menuExample } from "./provider/menu-example";
+import { menuExample, MenuItem } from "./provider/menu-example";
 
 import {
   ButtonWithIcon,
@@ -37,11 +37,12 @@ const routerExample = getRouterForMenu(menuExample);
 export function mountApp(
   targetElementSelector: HtmlElementSelector = { element: document.body },
   router: Router = routerExample,
+  menu: MenuItem[] = menuExample,
   appPlugins: any[] = [],
   headerLogoProps: LogoSection[] = headerLogoExample,
 ): ReturnType<typeof createApp> {
   const mountToElement = getElementBySelector(targetElementSelector);
-  const app = createApp(App, { mainHeaderLogo: headerLogoProps });
+  const app = createApp(App, { mainHeaderLogo: headerLogoProps, menu: menu });
   app.use(router);
   for (const plugin of appPlugins) {
     app.use(plugin);
