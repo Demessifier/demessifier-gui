@@ -175,5 +175,11 @@ function unMinimize() {
       }
     }
   }
+
+  div.content {
+    hr {
+      border-color: v-bind(boxBgColor);
+    }
+  }
 }
 </style>
