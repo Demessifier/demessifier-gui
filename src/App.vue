@@ -3,7 +3,7 @@ import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { setDefaultColors } from "./provider/color-palette";
 import * as Z_INDEX from "./provider/z-index";
 import MenuLeft from "./component/layout/MenuLeft.vue";
-import { menuExample } from "./provider/menu-example";
+import type { MenuItem } from "./provider/menu-example";
 import MenuTopRight from "./component/layout/MenuTopRight.vue";
 import MainHeaderLogo from "./component/layout/MainHeaderLogo.vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
@@ -60,6 +60,7 @@ setDefaultColors();
 
 interface Props {
   mainHeaderLogo: LogoSection[];
+  menu: MenuItem[];
 }
 
 const props = defineProps<Props>();
@@ -111,7 +112,7 @@ const props = defineProps<Props>();
         :style="`z-index: ${Z_INDEX.LEFT_MENU}`"
         @click="hideLeftMenuIfCompact"
       >
-        <MenuLeft :menu-items="JSON.parse(JSON.stringify(menuExample))" />
+        <MenuLeft :menu-items="menu" />
       </nav>
       <div class="main-and-notifications">
         <NotificationsArea :style="`z-index: ${Z_INDEX.NOTIFICATIONS}`" />

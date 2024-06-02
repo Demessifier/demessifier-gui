@@ -11,13 +11,17 @@ const props = defineProps<Props>();
 
 <template>
   <menu>
-    <li v-for="(menuItem, index) in menuItems" :key="index">
+    <li
+      v-for="(menuItem, index) in menuItems"
+      :key="index"
+      :title="menuItem.name"
+    >
       <router-link
         :to="menuItem.path"
         :class="{ current: menuItem.path === $route?.path }"
       >
         <FontAwesomeIcon :icon="menuItem.fa" class="square menu-icon" />
-        <span class="menu-title">{{ menuItem.title }}</span>
+        <span class="menu-title">{{ menuItem.name }}</span>
       </router-link>
     </li>
   </menu>
