@@ -26,7 +26,7 @@ export type ClientPath = (typeof clientPaths)[Keys];
 
 export type MenuItem = {
   name: string;
-  component: () => Promise<any>; // TODO: replace any with Vue component type
+  component: () => Promise<any>; // using this should cause generating separate chunks and lazy loading them: component: () => import('../views/ExampleView.vue') // TODO: replace any with Vue component type
   componentProps: any; // TODO: replace any with the Props type of the given component
   path: ClientPath;
   title: string;
