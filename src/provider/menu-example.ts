@@ -10,8 +10,8 @@ import StatusBox from "../component/StatusBox.vue";
 import ColorPalette from "../component/global-controller/ColorPalette.vue";
 import ButtonWithIconShowcase from "../component/layout/ButtonWithIconShowcase.vue";
 
-type Path = `/${string}`;
-type PathsList = { [key: string]: Path };
+export type Path = `/${string}`;
+export type PathsList = { [key: string]: Path };
 
 const clientPaths: PathsList = {
   _: "/",

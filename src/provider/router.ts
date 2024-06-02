@@ -4,7 +4,7 @@ import {
   Router,
   RouteRecordRaw,
 } from "vue-router";
-import { MenuItem } from "./menu-example";
+import type { MenuItem } from "./menu-example";
 import NotFound from "../component/layout/NotFound.vue";
 
 export function getRouterForMenu(

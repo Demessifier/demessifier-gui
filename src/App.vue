@@ -9,7 +9,7 @@ import MainHeaderLogo from "./component/layout/MainHeaderLogo.vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faBars, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import NotificationsArea from "./component/layout/NotificationsArea.vue";
-import { LogoSection } from "./model/logo-section";
+import { type LogoSection } from "./model/logo-section";
 
 // window size for responsiveness
 const windowSize = ref(window.innerWidth);
