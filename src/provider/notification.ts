@@ -1,6 +1,6 @@
 import StatusBox from "../component/StatusBox.vue";
 import { createVNode, render, VNode } from "vue";
-import { StatusBoxFlavorName } from "./status-box";
+import type { StatusBoxFlavorName } from "./status-box";
 
 type StatusBoxProps = InstanceType<typeof StatusBox>["$props"];
 type ChildrenType = string | VNode | VNode[];

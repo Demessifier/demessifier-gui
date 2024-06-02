@@ -11,8 +11,8 @@ import ColorPalette from "../component/global-controller/ColorPalette.vue";
 import ButtonWithIcon from "../component/global-controller/ButtonWithIcon.vue";
 import { createNotification } from "./notification";
 
-type Path = `/${string}`;
-type PathsList = { [key: string]: Path };
+export type Path = `/${string}`;
+export type PathsList = { [key: string]: Path };
 
 const clientPaths: PathsList = {
   _: "/",
