@@ -232,5 +232,11 @@ parentStyle.transition = `opacity ${stepDurationMs}ms linear`;
       }
     }
   }
+
+  div.content {
+    hr {
+      border-color: v-bind(boxBgColor);
+    }
+  }
 }
 </style>
