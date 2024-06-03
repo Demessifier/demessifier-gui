@@ -9,6 +9,7 @@ import { menuExample, MenuItem } from "./provider/menu-example";
 
 import {
   ButtonWithIcon,
+  ButtonWithIconLink,
   ColorSchemeSwitch,
   ColorPalette,
   StatusBox,
@@ -25,6 +26,7 @@ import { LogoSection, headerLogoExample } from "./model/logo-section";
 
 export {
   ButtonWithIcon,
+  ButtonWithIconLink,
   ColorSchemeSwitch,
   ColorPalette,
   StatusBox,
