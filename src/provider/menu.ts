@@ -4,7 +4,7 @@ import {
   faPalette,
   faTable,
 } from "@fortawesome/free-solid-svg-icons";
-import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import ColorSchemeSwitch from "../component/global-controller/ColorSchemeSwitch.vue";
 import StatusBox from "../component/StatusBox.vue";
 import ColorPalette from "../component/global-controller/ColorPalette.vue";
@@ -24,50 +24,56 @@ const clientPaths: PathsList = {
 type Keys = keyof typeof clientPaths;
 export type ClientPath = (typeof clientPaths)[Keys];
 
-export type MenuItem = {
+export type MenuItemComponentDefinition = {
+  new (...args: any[]): { $props: any };
+};
+
+export type MenuItem<C extends MenuItemComponentDefinition> = {
   name: string;
-  component: () => Promise<any>; // using this should cause generating separate chunks and lazy loading them: component: () => import('../views/ExampleView.vue') // TODO: replace any with Vue component type
-  componentProps: any; // TODO: replace any with the Props type of the given component
+  component: () => Promise<C>; // using this should cause generating separate chunks and lazy loading them: component: () => import('../views/ExampleView.vue')
+  componentProps: InstanceType<C>["$props"];
   path: ClientPath;
   title: string;
   fa: IconDefinition;
   metaTitle: string;
 };
 
-const MENU_COLORS: MenuItem = {
+export type MenuItemAny = MenuItem<MenuItemComponentDefinition>;
+
+const MENU_COLORS: MenuItem<typeof ColorPalette> = {
   name: "ColorPalette",
   component: async () => ColorPalette,
-  componentProps: {} as InstanceType<typeof ColorPalette>["$props"],
+  componentProps: {},
   path: clientPaths._,
   title: "ColorPalette",
   fa: faPalette,
   metaTitle: "ColorPalette",
 };
 
-const MENU_SCHEME: MenuItem = {
+const MENU_SCHEME: MenuItem<typeof ColorSchemeSwitch> = {
   name: "ColorSchemeSwitch",
   component: async () => ColorSchemeSwitch,
-  componentProps: {} as InstanceType<typeof ColorSchemeSwitch>["$props"],
+  componentProps: {},
   path: clientPaths.scheme,
   title: "ColorSchemeSwitch",
   fa: faCircleHalfStroke,
   metaTitle: "ColorSchemeSwitch",
 };
 
-const MENU_STATUS: MenuItem = {
+const MENU_STATUS: MenuItem<typeof StatusBox> = {
   name: "StatusBox",
   component: async () => StatusBox,
   componentProps: {
     headlineText: "StatusBox",
     boxFlavorName: "success",
-  } as InstanceType<typeof StatusBox>["$props"],
+  },
   path: clientPaths.status,
   title: "StatusBox",
   fa: faTable,
   metaTitle: "StatusBox",
 };
 
-const MENU_ICON_BUTTON: MenuItem = {
+const MENU_ICON_BUTTON: MenuItem<typeof ButtonWithIcon> = {
   name: "ButtonWithIcon",
   component: async () => ButtonWithIcon,
   componentProps: {
@@ -81,14 +87,14 @@ const MENU_ICON_BUTTON: MenuItem = {
         // createVNode(ButtonWithIcon, { text: "Text", icon: faCircleDot }),
       );
     },
-  } as InstanceType<typeof ButtonWithIcon>["$props"],
+  },
   path: clientPaths.iconButton,
   title: "ButtonWithIcon",
   fa: faCircleDot,
   metaTitle: "ButtonWithIcon",
 };
 
-export const menuExample: MenuItem[] = [
+export const menuExample: MenuItemAny[] = [
   MENU_COLORS,
   MENU_SCHEME,
   MENU_STATUS,

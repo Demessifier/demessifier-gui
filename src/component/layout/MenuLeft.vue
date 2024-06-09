@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import type { MenuItem } from "../../provider/menu-example";
+import type { MenuItemAny } from "../../provider/menu";
 
 interface Props {
-  menuItems: MenuItem[];
+  menuItems: MenuItemAny[];
 }
 
 const props = defineProps<Props>();

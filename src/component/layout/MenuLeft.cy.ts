@@ -1,5 +1,5 @@
 import MenuLeft from "./MenuLeft.vue";
-import { menuExample } from "../../provider/menu-example";
+import { menuExample } from "../../provider/menu";
 
 describe("MenuLeft component", () => {
   it(`renders`, () => {
