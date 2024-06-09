@@ -4,11 +4,11 @@ import {
   Router,
   RouteRecordRaw,
 } from "vue-router";
-import type { MenuItem } from "./menu-example";
+import type { MenuItemAny } from "./menu";
 import NotFound from "../component/layout/NotFound.vue";
 
 export function getRouterForMenu(
-  menu: MenuItem[],
+  menu: MenuItemAny[],
   useDefault404: boolean = true,
 ): Router {
   const routes: RouteRecordRaw[] = [];

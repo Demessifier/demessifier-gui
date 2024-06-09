@@ -1,12 +1,13 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
-import { Router } from "vue-router";
+import { type Router } from "vue-router";
 import "./css/default-css-variables.css";
 import "./css/global.css";
 import "./css/table.css";
 import "./css/form.css";
 import { getRouterForMenu } from "./provider/router";
-import { menuExample, MenuItem } from "./provider/menu-example";
+import { menuExample } from "./provider/menu";
+import type { MenuItemAny } from "./provider/menu";
 
 import {
   ButtonWithIcon,
@@ -42,7 +43,7 @@ export const pinia = createPinia();
 export function mountApp(
   targetElementSelector: HtmlElementSelector = { element: document.body },
   router: Router = routerExample,
-  menu: MenuItem[] = menuExample,
+  menu: MenuItemAny[] = menuExample,
   appPlugins: any[] = [],
   headerLogoProps: LogoSection[] = headerLogoExample,
 ): ReturnType<typeof createApp> {
