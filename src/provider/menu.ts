@@ -2,7 +2,7 @@ import {
   faCircleHalfStroke,
   faIcons,
   faPalette,
-  faTable,
+  faTable
 } from "@fortawesome/free-solid-svg-icons";
 import { type IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import ColorSchemeSwitch from "../component/global-controller/ColorSchemeSwitch.vue";
@@ -72,7 +72,7 @@ const MENU_STATUS: MenuItem<typeof StatusBox> = {
   metaTitle: "StatusBox",
 };
 
-const MENU_ICON_BUTTON: MenuItem<typeof ButtonWithIcon> = {
+const MENU_ICON_BUTTON: MenuItem<typeof ButtonWithIconShowcase> = {
   name: "ButtonWithIcon",
   component: async () => ButtonWithIconShowcase,
   componentProps: {} as InstanceType<typeof ButtonWithIconShowcase>["$props"],
