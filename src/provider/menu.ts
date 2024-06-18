@@ -2,7 +2,7 @@ import {
   faCircleHalfStroke,
   faIcons,
   faPalette,
-  faTable
+  faTable,
 } from "@fortawesome/free-solid-svg-icons";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import ColorSchemeSwitch from "../component/global-controller/ColorSchemeSwitch.vue";
