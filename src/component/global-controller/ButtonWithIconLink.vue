@@ -20,9 +20,9 @@ interface Props {
    */
   disabled: boolean;
   /**
-   * Optional on-click redirect address.
+   * Whether the target address will be open in a new browser tab or the same one.
    */
-  openInNewTab?: boolean;
+  openInNewTab: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {

@@ -37,6 +37,7 @@ const hideText: ComputedRef<boolean> = computed(() => !props.text?.length);
       v-if="!hideIcon"
       :icon="props.icon as IconDefinition"
     />
+    <span v-if="hideIcon && hideText">&nbsp;</span>
     <span v-if="!hideText">{{ props.text }}</span>
   </button>
 </template>
