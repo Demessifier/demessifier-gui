@@ -99,13 +99,13 @@ function createDataAttribute(name: string, value: ValidColorName) {
       <table>
         <thead>
           <tr>
-            <th>Example</th>
-            <th>Name</th>
-            <th>Contrast ratio</th>
-            <th>Example black</th>
-            <th>Contrast black</th>
-            <th>Example white</th>
-            <th>Contrast white</th>
+            <th scope="col">Example</th>
+            <th scope="col">Name</th>
+            <th scope="col">Contrast ratio</th>
+            <th scope="col">Example black</th>
+            <th scope="col">Contrast black</th>
+            <th scope="col">Example white</th>
+            <th scope="col">Contrast white</th>
           </tr>
         </thead>
         <tbody>
@@ -153,13 +153,13 @@ function createDataAttribute(name: string, value: ValidColorName) {
         </tbody>
         <tfoot>
           <tr>
-            <th>Example</th>
-            <th>Name</th>
-            <th>Contrast ratio</th>
-            <th>Example black</th>
-            <th>Contrast black</th>
-            <th>Example white</th>
-            <th>Contrast white</th>
+            <th scope="col">Example</th>
+            <th scope="col">Name</th>
+            <th scope="col">Contrast ratio</th>
+            <th scope="col">Example black</th>
+            <th scope="col">Contrast black</th>
+            <th scope="col">Example white</th>
+            <th scope="col">Contrast white</th>
           </tr>
         </tfoot>
       </table>
