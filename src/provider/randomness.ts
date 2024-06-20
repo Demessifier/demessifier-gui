@@ -22,6 +22,7 @@ export function getRandomIntegers(maximums: number[]): number[] {
  */
 export function getRandomItem<T>(array: T[], notTheseItems: T[] = []): T {
   const allowedItems = array.filter((x) => !notTheseItems.includes(x));
+  console.log("TODO: Remove me. I'm here just for coverage testing");
   if (allowedItems.length === 0) throw new Error("No allowed item.");
   return allowedItems[getRandomInteger(allowedItems.length)];
 }
