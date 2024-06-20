@@ -2,9 +2,8 @@ import { test, expect } from "vitest";
 import * as htmlUtils from "./html-meta-tag";
 
 function getMetaTags(name: string): HTMLMetaElement[] {
-  const metasCollection = document.head.getElementsByTagName(
-    "meta",
-  ) as HTMLCollectionOf<HTMLMetaElement>;
+  const metasCollection: HTMLCollectionOf<HTMLMetaElement> =
+    document.head.getElementsByTagName("meta");
   const metasArray = [...metasCollection];
   return metasArray.filter((meta) => meta.name === name);
 }

@@ -144,5 +144,11 @@ export function selectByContrastRatio<T>(
 ): T {
   if (contrastRatio < 1 || 21 < contrastRatio)
     throw new Error(`Invalid contrast ration value: ${contrastRatio}`);
-  return contrastRatio > 7 ? ok : contrastRatio < 4.5 ? bad : meh;
+  if (contrastRatio > 7) {
+    return ok;
+  }
+  if (contrastRatio < 4.5) {
+    return bad;
+  }
+  return meh;
 }

@@ -1,4 +1,3 @@
-import crypto from "crypto";
 import { getRandomInteger } from "../provider/randomness";
 
 export abstract class Color {
@@ -193,7 +192,7 @@ export abstract class Color {
   colorsContrastRatio(other: Color): number {
     const luminances = [this.rgba, other.rgba]
       .map((c) => c.relativeLuminance)
-      .sort();
+      .sort((a, b) => a - b); // the default .sort() would be alphabetical: [1, 10, 2, 30, 5]
     // Contrast ratio = (Y_lighter + 0.05) / (Y_darker + 0.05)
     return (luminances[1] + 0.05) / (luminances[0] + 0.05);
   }
