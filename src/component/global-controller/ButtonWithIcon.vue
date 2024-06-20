@@ -26,5 +26,3 @@ const props = defineProps<Props>();
     <span>{{ props.text }}</span>
   </button>
 </template>
-
-<style lang="scss" scoped></style>
