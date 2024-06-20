@@ -15,9 +15,8 @@ import { Color } from "../model/color";
 function checkMetaThemeColor(colorName: ValidColorName, colorValue: Color) {
   if (colorName !== "color-primary") return;
 
-  const metasCollection = document.head.getElementsByTagName(
-    "meta",
-  ) as HTMLCollectionOf<HTMLMetaElement>;
+  const metasCollection: HTMLCollectionOf<HTMLMetaElement> =
+    document.head.getElementsByTagName("meta");
   const metasArray = [...metasCollection];
   const metas = metasArray.filter((meta) => meta.name === "theme-color");
   expect(metas.length).to.be.equal(1);
