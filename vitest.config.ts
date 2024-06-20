@@ -7,6 +7,7 @@ import viteConfig from "./vite.config";
 const customization: UserConfig = {
   test: {
     coverage: {
+      reporter: ['lcov'],
       reportsDirectory: "./test/vitest/coverage",
     },
     setupFiles: "./test/vitest-setup/setup.ts", // to have matchMedia in "window" object in tests
