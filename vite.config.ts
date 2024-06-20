@@ -16,13 +16,7 @@ export default defineConfig({
         index: "src/index.ts",
       },
       // What shouldn't be bundled into the library: dependencies, tests
-      external: [
-        "vue",
-        "@vueuse/core",
-        new RegExp(".*.test.ts"),
-        new RegExp(".*.cy.ts"),
-        "/test",
-      ],
+      external: ["vue", "@vueuse/core", /\.test\.ts$/, /\.cy\.ts$/, "/test"],
       output: {
         globals: {
           vue: "Vue",

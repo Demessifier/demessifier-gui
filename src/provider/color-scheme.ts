@@ -41,13 +41,13 @@ export function getColorSchemeConfigured(): Scheme | undefined {
 
   // found one of the supported - substring whole word
   for (const supportedScheme of supportedColorSchemes) {
-    if (configuredScheme.match(`\\b${supportedScheme}\\b`))
+    if (RegExp(`\\b${supportedScheme}\\b`).exec(configuredScheme))
       return supportedScheme;
   }
 
   // found one of the supported - substring
   for (const supportedScheme of supportedColorSchemes) {
-    if (configuredScheme.match(supportedScheme)) return supportedScheme;
+    if (configuredScheme.includes(supportedScheme)) return supportedScheme;
   }
 
   // nothing useful found
