@@ -10,7 +10,6 @@ import StatusBox from "../component/StatusBox.vue";
 import ColorPalette from "../component/global-controller/ColorPalette.vue";
 import ButtonWithIcon from "../component/global-controller/ButtonWithIcon.vue";
 import { createNotification } from "./notification";
-import { createVNode } from "vue";
 
 type Path = `/${string}`;
 type PathsList = { [key: string]: Path };
