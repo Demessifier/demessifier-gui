@@ -10,8 +10,6 @@ import {
   getCurrentColor,
 } from "../provider/color-palette";
 
-console.log("TODO: Remove me. I'm here just for coverage testing");
-
 function test(
   flavor: StatusBoxFlavorName,
   testingBodyText: string,
