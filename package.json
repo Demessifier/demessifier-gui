@@ -146,5 +146,10 @@
     "vitest": "^0.34.6",
     "vitest-matchmedia-mock": "^1.0.5",
     "vue-tsc": "^1.8.27"
+  },
+  "pnpm": {
+    "overrides": {
+      "ws@>=8.0.0 <8.17.1": ">=8.17.1"
+    }
   }
 }
