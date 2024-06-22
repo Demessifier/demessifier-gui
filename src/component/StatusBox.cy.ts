@@ -38,16 +38,16 @@ function test(
     );
   });
   if (expectMinimized) {
-    cy.get("div.status-box div.content").should((statusBoxDiv) => {
-      expect(statusBoxDiv).to.not.exist;
+    cy.get("div.status-box div.content").should((statusBoxDivContent) => {
+      expect(statusBoxDivContent).to.not.exist;
     });
     cy.get("h3 span").should((h3Span) => {
       expect(h3Span).to.not.exist;
     });
   } else {
-    cy.get("div.status-box div.content").should((statusBoxDiv) => {
-      expect(statusBoxDiv).to.have.length(1);
-      expect(statusBoxDiv).to.contain.text(testingBodyText);
+    cy.get("div.status-box div.content").should((statusBoxDivContent) => {
+      expect(statusBoxDivContent).to.have.length(1);
+      expect(statusBoxDivContent).to.contain.text(testingBodyText);
     });
     cy.get("h3 span").should((h3Span) => {
       expect(h3Span).to.have.length(1);
@@ -99,4 +99,40 @@ describe("StatusBox component", () => {
       });
     });
   }
+  /* TODO: How to test disappearing? We need to pass a parentDiv for that.
+  describe("Disappears in time", () => {
+    const timeoutSeconds = 2;
+    it(`${timeoutSeconds} seconds`, () => {
+      cy.mount(StatusBox, {
+        props: {
+          headlineText: `Gonna disappear in ${timeoutSeconds} seconds`,
+          boxFlavorName: getAllStatusBoxFlavors()[0],
+          removeInSeconds: timeoutSeconds,
+        },
+        slots: { default: "Our time is running out..." },
+      });
+      cy.get("div.status-box").trigger("mouseleave");
+      const endTimeMillis = Date.now() + timeoutSeconds * 1000;
+
+      const multiplier = 2;
+      for (let i = timeoutSeconds * multiplier + 2; i > 0; i--) {
+        cy.get("div.status-box").should((statusBox) => {
+          const nowMilliSeconds = Date.now();
+          if (nowMilliSeconds + 250 < endTimeMillis) {
+            // it should still exist
+            expect(statusBox).to.exist;
+          } else if (nowMilliSeconds > endTimeMillis) {
+            // it shouldn't exist anymore
+            expect(statusBox).not.to.exist;
+          }
+        });
+        cy.wait(1000 / multiplier);
+      }
+      // it shouldn't exist anymore
+      cy.get("div.status-box").should((statusBox) => {
+        expect(statusBox).to.not.exist;
+      });
+    });
+  });
+  */
 });

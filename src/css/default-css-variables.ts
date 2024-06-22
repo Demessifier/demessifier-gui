@@ -18,8 +18,9 @@ export function generateDefaultCssVariables(): string {
   return result;
 }
 
+export const fileName = "src/css/default-css-variables.css";
+
 export function writeDefaultCssVariables() {
-  const fileName = "src/css/default-css-variables.css";
   const content = generateDefaultCssVariables();
   fs.writeFileSync(fileName, content);
 }
