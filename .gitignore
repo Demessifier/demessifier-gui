@@ -4,4 +4,5 @@
 /test/cypress/downloads/
 /test/cypress/screenshots/
 /test/cypress/videos/
+/test/nyc/
 /test/vitest/

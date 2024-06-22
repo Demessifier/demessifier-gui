@@ -1,10 +1,15 @@
 import vue from "@vitejs/plugin-vue";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
+import istanbul from "vite-plugin-istanbul";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue(), dts({ rollupTypes: true })],
+  plugins: [
+    vue(),
+    dts({ rollupTypes: true }),
+    istanbul({ cypress: true, requireEnv: false }),
+  ],
   build: {
     lib: {
       entry: "src/index.ts",
