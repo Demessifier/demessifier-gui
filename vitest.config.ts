@@ -7,7 +7,7 @@ import viteConfig from "./vite.config";
 const customization: UserConfig = defineConfig({
   test: {
     coverage: {
-      provider: "istanbul",
+      provider: "v8",
       reporter: ["lcov"],
       reportsDirectory: "./test/vitest/coverage",
     },
