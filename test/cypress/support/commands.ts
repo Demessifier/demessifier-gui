@@ -37,6 +37,7 @@
 // }
 
 import { mount } from "cypress/vue";
+import "@cypress/code-coverage/support";
 
 Cypress.Commands.add("mount", (component, options = {}) => {
   // Setup options object
