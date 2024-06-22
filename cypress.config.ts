@@ -1,6 +1,5 @@
 import { defineConfig } from "cypress";
 import coverageTask from "@cypress/code-coverage/task";
-import useBabelRc from "@cypress/code-coverage/use-babelrc";
 
 export default defineConfig({
   component: {
@@ -14,11 +13,6 @@ export default defineConfig({
       // on("task", registerCodeCoverageTasks);
       coverageTask(on, config);
 
-      //   // tell Cypress to use .babelrc file
-      //   // and instrument the specs files
-      //   // only the extra application files will be instrumented
-      //   // not the spec files themselves
-        on('file:preprocessor', useBabelRc)
       //   // include any other plugin code...
 
       // It's IMPORTANT to return the config object
