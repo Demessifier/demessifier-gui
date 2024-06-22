@@ -1,24 +1,37 @@
 # Demessifier GUI
 
-[![NPM version][npm-version-image]][npm-url]
-[![NodeJs version][npm-node-image]][npm-url]
-[![Vue version][vue-version-image]][vue-url]
-[![NPM install size][npm-size-install-image]][package-phobia-url]
-[![NPM publish size][npm-size-publish-image]][package-phobia-url]
-[![NPM types][npm-types-image]][npm-url]
-[![License][npm-license-image]][npm-url]
+[![NPM version](https://badgen.net/npm/v/@demessifier/demessifier-gui)][npm-url]
+[![NodeJs version](https://badgen.net/npm/node/@demessifier/demessifier-gui)][npm-url]
+[![Vue version](https://badgen.net/static/Vue/3)](https://vuejs.org/)
+[![NPM install size](https://badgen.net/packagephobia/install/@demessifier/demessifier-gui)][package-phobia-url]
+[![NPM publish size](https://badgen.net/packagephobia/publish/@demessifier/demessifier-gui)][package-phobia-url]
+[![NPM types](https://badgen.net/npm/types/@demessifier/demessifier-gui?icon=typescript)][npm-url]
+[![License](https://badgen.net/npm/license/@demessifier/demessifier-gui)][npm-url]
 
-[![Last commit][github-last-commit-image]][github-url]
-[![Known Vulnerabilities][github-snyk-image]][github-snyk-url]
-[![Test coverage][coveralls-coverage-image]][coveralls-coverage-url]
+[![Last commit](https://badgen.net/github/last-commit/demessifier/demessifier-gui?icon=git)](github-urlhttps://github.com/Demessifier/demessifier-gui)
+[![Known Vulnerabilities](https://snyk.io/test/github/demessifier/demessifier-gui/badge.svg)](https://snyk.io/test/github/demessifier/demessifier-gui)
+[![Test coverage](https://coveralls.io/repos/github/Demessifier/demessifier-gui/badge.svg?branch=main)](https://coveralls.io/github/Demessifier/demessifier-gui)
 
-<!--[![Dependabot][github-dependabot-image]][github-url] TODO: broken: https://github.com/dependabot/dependabot-core/issues/1912 -->
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Demessifier_demessifier-gui&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=Demessifier_demessifier-gui)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Demessifier_demessifier-gui&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Demessifier_demessifier-gui)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=Demessifier_demessifier-gui&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=Demessifier_demessifier-gui)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Demessifier_demessifier-gui&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Demessifier_demessifier-gui)
+
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Demessifier_demessifier-gui&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=Demessifier_demessifier-gui)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Demessifier_demessifier-gui&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Demessifier_demessifier-gui)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Demessifier_demessifier-gui&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=Demessifier_demessifier-gui)
+
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Demessifier_demessifier-gui&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=Demessifier_demessifier-gui)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Demessifier_demessifier-gui&metric=bugs)](https://sonarcloud.io/summary/new_code?id=Demessifier_demessifier-gui)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=Demessifier_demessifier-gui&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=Demessifier_demessifier-gui)
+
+<!--[![Dependabot](https://badgen.net/github/dependabot/demessifier/demessifier-gui)](github-urlhttps://github.com/Demessifier/demessifier-gui) TODO: broken: https://github.com/dependabot/dependabot-core/issues/1912 -->
 
 <!--
-[![NPM downloads monthly][npm-downloads-monthly-image]][npm-downloads-url]
-[![NPM downloads yearly][npm-downloads-yearly-image]][npm-downloads-url]
-[![NPM downloads total][npm-downloads-total-image]][npm-downloads-url]
-[![NPM dependents][npm-dependents-image]][npm-downloads-url]
+[![NPM downloads monthly](https://badgen.net/npm/dm/@demessifier/demessifier-gui)][npm-downloads-url]
+[![NPM downloads yearly](https://badgen.net/npm/dy/@demessifier/demessifier-gui)][npm-downloads-url]
+[![NPM downloads total](https://badgen.net/npm/dt/@demessifier/demessifier-gui)][npm-downloads-url]
+[![NPM dependents](https://badgen.net/npm/dependents/@demessifier/demessifier-gui)][npm-downloads-url]
 -->
 
 Demessifier GUI is a minimalistic GUI framework for Vue.
@@ -45,11 +58,11 @@ Demessifier GUI is a minimalistic GUI framework for Vue.
 
 ## License
 
-[![License (GitHub)][github-license-local-image]](LICENSE)
+[![License (GitHub)](https://badgen.net/github/license/demessifier/demessifier-gui?icon=git&label=license%20%28GitHub%20local%29)](LICENSE)
 
-[![License (GitHub)][github-license-main-image]][github-license-url]
+[![License (GitHub)](https://badgen.net/github/license/demessifier/demessifier-gui?icon=github&label=license%20%28GitHub%20main%29)](https://github.com/Demessifier/demessifier-gui/blob/main/LICENSE)
 
-[![License (npm)][npm-license-npm-image]][npm-url]
+[![License (npm)](https://badgen.net/npm/license/@demessifier/demessifier-gui?icon=npm&label=license%20%28npm%29)][npm-url]
 
 ## Project setup
 
@@ -73,29 +86,6 @@ Demessifier GUI is a minimalistic GUI framework for Vue.
 
 <!-- ---------------------------------------------------------------- -->
 
-[coveralls-coverage-image]: https://coveralls.io/repos/github/Demessifier/demessifier-gui/badge.svg?branch=main
-[coveralls-coverage-url]: https://coveralls.io/github/Demessifier/demessifier-gui
-[github-dependabot-image]: https://badgen.net/github/dependabot/demessifier/demessifier-gui
-[github-last-commit-image]: https://badgen.net/github/last-commit/demessifier/demessifier-gui?icon=git
-[github-license-local-image]: https://badgen.net/github/license/demessifier/demessifier-gui?icon=git&label=license%20%28GitHub%20local%29
-[github-license-main-image]: https://badgen.net/github/license/demessifier/demessifier-gui?icon=github&label=license%20%28GitHub%20main%29
-[github-license-url]: https://github.com/Demessifier/demessifier-gui/blob/main/LICENSE
-[github-snyk-image]: https://snyk.io/test/github/demessifier/demessifier-gui/badge.svg
-[github-snyk-url]: https://snyk.io/test/github/demessifier/demessifier-gui
-[github-url]: https://github.com/Demessifier/demessifier-gui
-[npm-dependents-image]: https://badgen.net/npm/dependents/@demessifier/demessifier-gui
-[npm-downloads-monthly-image]: https://badgen.net/npm/dm/@demessifier/demessifier-gui
-[npm-downloads-total-image]: https://badgen.net/npm/dt/@demessifier/demessifier-gui
-[npm-downloads-yearly-image]: https://badgen.net/npm/dy/@demessifier/demessifier-gui
 [npm-downloads-url]: https://npmcharts.com/compare/@demessifier/demessifier-gui?minimal=true
-[npm-size-publish-image]: https://badgen.net/packagephobia/publish/@demessifier/demessifier-gui
-[npm-size-install-image]: https://badgen.net/packagephobia/install/@demessifier/demessifier-gui
-[npm-license-image]: https://badgen.net/npm/license/@demessifier/demessifier-gui
-[npm-license-npm-image]: https://badgen.net/npm/license/@demessifier/demessifier-gui?icon=npm&label=license%20%28npm%29
-[npm-node-image]: https://badgen.net/npm/node/@demessifier/demessifier-gui
-[npm-types-image]: https://badgen.net/npm/types/@demessifier/demessifier-gui?icon=typescript
 [npm-url]: https://www.npmjs.com/package/@demessifier/demessifier-gui
-[npm-version-image]: https://badgen.net/npm/v/@demessifier/demessifier-gui
 [package-phobia-url]: https://packagephobia.com/result?p=@demessifier/demessifier-gui
-[vue-url]: https://vuejs.org/
-[vue-version-image]: https://badgen.net/static/Vue/3
