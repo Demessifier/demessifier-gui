@@ -1,0 +1,12 @@
+{
+  "extends": "@istanbuljs/nyc-config-typescript",
+  "report-dir": "./test/nyc/coverage",
+  "temp-dir": "./test/nyc/nyc_output",
+  "include": [
+    "src/**"
+  ],
+  "exclude": [
+    "**/*.cy.ts",
+    "**/*.test.ts"
+  ]
+}
