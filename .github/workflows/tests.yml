@@ -7,8 +7,8 @@ on:
     branches: [ 'main', 'versions/*' ]
 
 jobs:
-  sonarcloud:
-    name: SonarCloud
+  code-quality:
+    name: Code quality
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -23,6 +23,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Coveralls
+        uses: coverallsapp/github-action@v2
+        with:
+          files: test/vitest/coverage/lcov.info test/nyc/coverage/lcov.info
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+
   tests:
     name: Run tests
     runs-on: ubuntu-latest

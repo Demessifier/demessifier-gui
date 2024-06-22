@@ -10,6 +10,7 @@
 
 [![Last commit][github-last-commit-image]][github-url]
 [![Known Vulnerabilities][github-snyk-image]][github-snyk-url]
+[![Test coverage][coveralls-coverage-image]][coveralls-coverage-url]
 
 <!--[![Dependabot][github-dependabot-image]][github-url] TODO: broken: https://github.com/dependabot/dependabot-core/issues/1912 -->
 
@@ -72,6 +73,8 @@ Demessifier GUI is a minimalistic GUI framework for Vue.
 
 <!-- ---------------------------------------------------------------- -->
 
+[coveralls-coverage-image]: https://coveralls.io/repos/github/Demessifier/demessifier-gui/badge.svg?branch=main
+[coveralls-coverage-url]: https://coveralls.io/github/Demessifier/demessifier-gui
 [github-dependabot-image]: https://badgen.net/github/dependabot/demessifier/demessifier-gui
 [github-last-commit-image]: https://badgen.net/github/last-commit/demessifier/demessifier-gui?icon=git
 [github-license-local-image]: https://badgen.net/github/license/demessifier/demessifier-gui?icon=git&label=license%20%28GitHub%20local%29
