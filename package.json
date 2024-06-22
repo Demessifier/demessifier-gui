@@ -26,7 +26,7 @@
     "test:vitest-coverage": "vitest run --coverage",
     "test:vitest-coverage-viewer": "start test/vitest/coverage/lcov-report/index.html",
     "test:cypress-open": "cypress open",
-    "test:cypress-component-coverage": "nyc cypress run --component --env coverage=true",
+    "test:cypress-component-coverage": "cypress run --component --env coverage=true",
     "test:cypress-component-coverage-viewer": "start test/nyc/coverage/lcov-report/index.html",
     "test:cypress-e2e-run": "cypress run --e2e",
     "test": "npm-run-all --print-label --parallel test:vitest-coverage test:cypress-component-coverage",
