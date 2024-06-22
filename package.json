@@ -30,7 +30,6 @@
     "test:cypress-component-coverage-viewer": "start test/nyc/coverage/lcov-report/index.html",
     "test:cypress-e2e-run": "cypress run --e2e",
     "test": "npm-run-all --print-label --parallel test:vitest-coverage test:cypress-component-coverage",
-    "coverage": "nyc --reporter=lcov npm run test",
     "build:vue-tsc": "vue-tsc --noEmit --project ./tsconfig.build.json",
     "build:vite": "vite build --config vite.config.ts",
     "build": "npm-run-all --serial clean:build build:vue-tsc build:vite",
