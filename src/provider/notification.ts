@@ -70,7 +70,7 @@ export const useDemessifierGuiNotificationsList = defineStore({
           notification.remainingTimeSeconds -= stepDurationMs / 1000;
           return;
         }
-        clearInterval(interval as Interval);
+        clearInterval(interval);
         delete this.notificationsList[notificationId];
       }, stepDurationMs);
 
