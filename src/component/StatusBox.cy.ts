@@ -99,6 +99,66 @@ describe("StatusBox component", () => {
       });
     });
   }
+  describe("Buttons row", () => {
+    for (const closable of [true, false]) {
+      for (const fading of [true, false]) {
+        it(`Works for closable=${closable} fading=${fading}`, () => {
+          cy.mount(StatusBox, {
+            props: {
+              headlineText: "Buttons test",
+              boxFlavorName: getAllStatusBoxFlavors()[0],
+              closable: closable,
+              fading: fading,
+            },
+            slots: { default: `closable=${closable} fading=${fading}` },
+          });
+          cy.get("div.buttons").should((buttonsDiv) => {
+            expect(buttonsDiv).to.have.length(closable || fading ? 1 : 0);
+          });
+          cy.get("div.buttons span.icon-button").should((buttonIcons) => {
+            expect(buttonIcons).to.have.length(closable || fading ? 2 : 0);
+          });
+          cy.get("div.buttons span.icon-button.pin > *").should(
+            (buttonIcons) => {
+              expect(buttonIcons).to.have.length(fading ? 1 : 0);
+            },
+          );
+          cy.get("div.buttons span.icon-button.close > *").should(
+            (buttonIcons) => {
+              expect(buttonIcons).to.have.length(closable ? 1 : 0);
+            },
+          );
+
+          let closeCount = 0;
+          let pinCount = 0;
+
+          cy.expectEmitCount("interrupt-count-down", pinCount);
+          cy.expectEmitCount("close-status-box", closeCount);
+
+          if (fading) {
+            cy.get("div.buttons span.icon-button.pin > *").click();
+            cy.expectEmitCount("interrupt-count-down", ++pinCount);
+
+            cy.expectEmitCount("close-status-box", closeCount);
+
+            cy.get("div.buttons span.icon-button.pin > *").click();
+            cy.expectEmitCount("interrupt-count-down", ++pinCount);
+          }
+
+          if (closable) {
+            cy.get("div.buttons span.icon-button.close > *").click();
+            cy.expectEmitCount("close-status-box", ++closeCount);
+
+            cy.expectEmitCount("interrupt-count-down", pinCount);
+
+            cy.get("div.buttons span.icon-button.close > *").click();
+            cy.expectEmitCount("close-status-box", ++closeCount);
+          }
+        });
+      }
+    }
+  });
+  /* TODO: move to Notifications Area tests
   describe("Disappears in time", () => {
     const timeoutSeconds = 2;
     it(`${timeoutSeconds} seconds`, () => {
@@ -133,4 +193,5 @@ describe("StatusBox component", () => {
       });
     });
   });
+  */
 });

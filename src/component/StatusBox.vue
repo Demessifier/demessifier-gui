@@ -62,7 +62,7 @@ function unMinimize() {
     @click="unMinimize"
   >
     <div class="buttons" v-if="!minimized && (closable || fading)">
-      <span class="icon-button"
+      <span class="icon-button pin"
         ><FontAwesomeIcon
           v-if="fading"
           :icon="faThumbTack"
@@ -71,7 +71,7 @@ function unMinimize() {
         ></FontAwesomeIcon
       ></span>
       <span class="spring"></span>
-      <span class="icon-button"
+      <span class="icon-button close"
         ><FontAwesomeIcon
           v-if="closable"
           :icon="faCircleXmark"
