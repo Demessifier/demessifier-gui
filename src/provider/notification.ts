@@ -89,6 +89,7 @@ export const useDemessifierGuiNotificationsList = defineStore({
     ): StatusBoxProps | null {
       if (notificationId in this.notificationsList) {
         const toBeDeleted = this.notificationsList[notificationId];
+        clearInterval(toBeDeleted.interval);
         delete this.notificationsList[notificationId];
         return toBeDeleted.statusBoxProps;
       }
@@ -100,9 +101,10 @@ export const useDemessifierGuiNotificationsList = defineStore({
     interruptCountDown(notificationId: string) {
       const notification = this.notificationsList[notificationId];
       if (notification.interval !== null) {
-        clearInterval(notificationId);
+        clearInterval(notification.interval);
       }
       notification.maxTimeSeconds = Infinity;
+      notification.statusBoxProps.fading = false;
       this.resetTimer(notificationId);
     },
     resetTimer(notificationId: string) {
@@ -112,10 +114,11 @@ export const useDemessifierGuiNotificationsList = defineStore({
     getOpacityFraction(notificationId: string) {
       const notification = this.notificationsList[notificationId];
       const remainingTimeSeconds = notification.remainingTimeSeconds;
-      return remainingTimeSeconds > fadeOutDurationSeconds
-        ? 1
-        : remainingTimeSeconds /
-            Math.min(notification.maxTimeSeconds, fadeOutDurationSeconds);
+      if (remainingTimeSeconds > fadeOutDurationSeconds) return 1;
+      return (
+        remainingTimeSeconds /
+        Math.min(notification.maxTimeSeconds, fadeOutDurationSeconds)
+      );
     },
   },
 });
