@@ -1,6 +1,6 @@
 import { test, expect } from "vitest";
 import { Color, ColorHSLA, ColorRGBA } from "./color";
-import { getRandomIntegers } from "../provider/randomness";
+import { getPseudoRandomIntegers } from "../provider/randomness";
 import { getPairs } from "../provider/combinations";
 import { defaultColors } from "../provider/color-palette";
 
@@ -62,7 +62,7 @@ test("color rgbHexString", async () => {
 test("color: RGB -> HSL -> RGB", async () => {
   const DELTA = 0.001;
   for (let _ = 0; _ < 30; _++) {
-    const [r, g, b, a] = getRandomIntegers([255, 255, 255, 100]);
+    const [r, g, b, a] = getPseudoRandomIntegers([255, 255, 255, 100]);
     const msg = `RGBA=[${r},${g},${b},${a}]`;
     const rgba = new ColorRGBA(r, g, b, a);
     const rgb = new ColorRGBA(r, g, b);
@@ -155,7 +155,7 @@ test("color: RGB -> HSL -> RGB", async () => {
 
 test("color: HSL -> RGB -> HSL", async () => {
   for (let _ = 0; _ < 30; _++) {
-    const [h, s, l, a] = getRandomIntegers([360, 100, 100, 100]);
+    const [h, s, l, a] = getPseudoRandomIntegers([360, 100, 100, 100]);
     const msg = `HSLA=[${h},${s},${l},${a}]`;
     const hsla = new ColorHSLA(h, s, l, a);
     const hsl = new ColorHSLA(h, s, l);

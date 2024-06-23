@@ -10,7 +10,7 @@ import {
   setDefaultBackgroundColor,
   getColorSchemeDefaultBackgroundColor,
 } from "./color-scheme";
-import { getRandomItem } from "./randomness";
+import { getPseudoRandomItem } from "./randomness";
 import { ensureMetaTagContent, getMetaTagContent } from "./html-meta-tag";
 import MatchMediaMock from "vitest-matchmedia-mock";
 import { Color } from "../model/color";
@@ -49,7 +49,7 @@ test("Color scheme", async () => {
 
   let previousScheme = getColorSchemeConfigured();
   for (let _i = 0; _i < 10 * supportedColorSchemes.length; _i++) {
-    const randomScheme = getRandomItem(supportedColorSchemes, [previousScheme]);
+    const randomScheme = getPseudoRandomItem(supportedColorSchemes, [previousScheme]);
     expect(randomScheme).to.be.ok;
     setColorScheme(randomScheme as Scheme);
     const activeScheme = getColorSchemeConfigured();

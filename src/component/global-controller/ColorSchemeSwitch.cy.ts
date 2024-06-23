@@ -5,7 +5,7 @@ import {
   getColorSchemeConfiguredOrPreferred,
   Scheme,
 } from "../../provider/color-scheme";
-import { getRandomItem } from "../../provider/randomness";
+import { getPseudoRandomItem } from "../../provider/randomness";
 
 describe("ColorSchemeSwitch component", () => {
   for (const scheme of supportedColorSchemes) {
@@ -30,7 +30,7 @@ describe("ColorSchemeSwitch component", () => {
     cy.mount(ColorSchemeSwitch);
     let activeScheme: Scheme = getColorSchemeConfiguredOrPreferred();
     for (let _i = 0; _i < 10 * supportedColorSchemes.length; _i++) {
-      const randomScheme: Scheme = getRandomItem(supportedColorSchemes, [
+      const randomScheme: Scheme = getPseudoRandomItem(supportedColorSchemes, [
         activeScheme,
       ]);
 

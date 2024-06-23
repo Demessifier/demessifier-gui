@@ -2,7 +2,7 @@ import StatusBox from "../component/StatusBox.vue";
 import { defineStore } from "pinia";
 import { type VNode } from "vue";
 import { type StatusBoxFlavorName } from "./status-box";
-import { getRandomString } from "./randomness";
+import { getPseudoRandomString } from "./randomness";
 
 type StatusBoxProps = InstanceType<typeof StatusBox>["$props"];
 type ChildrenType = string | VNode | VNode[];
@@ -53,7 +53,7 @@ export const useDemessifierGuiNotificationsList = defineStore({
         fading: true,
         closable: true,
       };
-      const notificationId = getRandomString(32);
+      const notificationId = getPseudoRandomString(32);
 
       switch (props.boxFlavorName) {
         case "warn":

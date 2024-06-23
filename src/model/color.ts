@@ -1,4 +1,4 @@
-import { getRandomInteger } from "../provider/randomness";
+import { getPseudoRandomInteger } from "../provider/randomness";
 
 export abstract class Color {
   readonly alpha100: number;
@@ -199,9 +199,9 @@ export abstract class Color {
 
   static get randomColor(): Color {
     return new ColorRGBA(
-      getRandomInteger(256),
-      getRandomInteger(256),
-      getRandomInteger(256),
+      getPseudoRandomInteger(256),
+      getPseudoRandomInteger(256),
+      getPseudoRandomInteger(256),
     );
   }
 }
