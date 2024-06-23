@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { StatusBox } from "./component";
-import { useDemessifierGuiNotificationsList } from "./provider/notification";
+import { StatusBox } from "../index";
+import { useDemessifierGuiNotificationsList } from "../../provider/notification";
 
 type StatusBoxProps = InstanceType<typeof StatusBox>["$props"];
 const demessifierGuiNotificationsList = useDemessifierGuiNotificationsList();

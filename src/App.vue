@@ -8,7 +8,7 @@ import MenuTopRight from "./component/layout/MenuTopRight.vue";
 import BrandLogo from "./component/layout/BrandLogo.vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faBars, faChevronDown } from "@fortawesome/free-solid-svg-icons";
-import NotificationsArea from "./NotificationsArea.vue";
+import NotificationsArea from "./component/layout/NotificationsArea.vue";
 
 // window size for responsiveness
 const windowSize = ref(window.innerWidth);

@@ -158,40 +158,4 @@ describe("StatusBox component", () => {
       }
     }
   });
-  /* TODO: move to Notifications Area tests
-  describe("Disappears in time", () => {
-    const timeoutSeconds = 2;
-    it(`${timeoutSeconds} seconds`, () => {
-      cy.mount(StatusBox, {
-        props: {
-          headlineText: `Gonna disappear in ${timeoutSeconds} seconds`,
-          boxFlavorName: getAllStatusBoxFlavors()[0],
-          removeInSeconds: timeoutSeconds,
-        },
-        slots: { default: "Our time is running out..." },
-      });
-      cy.get("div.status-box").trigger("mouseleave");
-      const endTimeMillis = Date.now() + timeoutSeconds * 1000;
-
-      const multiplier = 2;
-      for (let i = timeoutSeconds * multiplier + 2; i > 0; i--) {
-        cy.get("div.status-box").should((statusBox) => {
-          const nowMilliSeconds = Date.now();
-          if (nowMilliSeconds + 250 < endTimeMillis) {
-            // it should still exist
-            expect(statusBox).to.exist;
-          } else if (nowMilliSeconds > endTimeMillis) {
-            // it shouldn't exist anymore
-            expect(statusBox).not.to.exist;
-          }
-        });
-        cy.wait(1000 / multiplier);
-      }
-      // it shouldn't exist anymore
-      cy.get("div.status-box").should((statusBox) => {
-        expect(statusBox).to.not.exist;
-      });
-    });
-  });
-  */
 });

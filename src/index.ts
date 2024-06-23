@@ -14,7 +14,8 @@ import App from "./App.vue";
 export { component, model, provider, App };
 
 const app = createApp(App);
-app.use(createPinia());
+export const pinia = createPinia();
+app.use(pinia);
 app.use(router);
 
 router.isReady().then(() => {

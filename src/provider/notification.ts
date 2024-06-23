@@ -122,3 +122,6 @@ export const useDemessifierGuiNotificationsList = defineStore({
     },
   },
 });
+
+export type DemessifierGuiNotificationsList =
+  ReturnType<typeof useDemessifierGuiNotificationsList>;
