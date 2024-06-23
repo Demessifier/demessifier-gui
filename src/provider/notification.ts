@@ -1,20 +1,16 @@
 import StatusBox from "../component/StatusBox.vue";
-import { createVNode, render, VNode } from "vue";
-import { StatusBoxFlavorName } from "./status-box";
+import { defineStore } from "pinia";
+import { type VNode } from "vue";
+import { type StatusBoxFlavorName } from "./status-box";
+import { getRandomBase64String } from "./randomness";
 
 type StatusBoxProps = InstanceType<typeof StatusBox>["$props"];
 type ChildrenType = string | VNode | VNode[];
 
-function getNewNotificationDiv(): HTMLElement {
-  const parent = document.createElement("div");
-  const notificationsArea = document.getElementById("notifications-backdrop");
-  if (notificationsArea) {
-    notificationsArea.appendChild(parent);
-  } else {
-    console.error("Notifications area not found.");
-  }
-  return parent;
-}
+type Notification = {
+  statusBoxProps: StatusBoxProps;
+};
+type NotificationsList = { [key: string]: Notification };
 
 function getLogItems(
   props: StatusBoxProps,
@@ -30,30 +26,54 @@ function getLogItems(
   ];
 }
 
-export function createNotification(
-  boxFlavorName: StatusBoxFlavorName,
-  headlineText: string,
-  children: ChildrenType,
-): HTMLElement {
-  const notificationDiv = getNewNotificationDiv();
-  const props: StatusBoxProps = {
-    boxFlavorName,
-    headlineText,
-    parentDiv: notificationDiv,
-    removeInSeconds: 10,
-    closable: true,
-  };
-  const box = createVNode(StatusBox, props, () => children);
-  render(box, notificationDiv);
+export const useDemessifierGuiNotificationsList = defineStore({
+  id: "demessifier-gui:notifications-list",
+  state: () => {
+    return {
+      notificationsList: {} as NotificationsList,
+    };
+  },
+  actions: {
+    addNewNotification(
+      boxFlavorName: StatusBoxFlavorName,
+      headlineText: string,
+      children: ChildrenType,
+    ): string {
+      const props: StatusBoxProps = {
+        boxFlavorName,
+        headlineText,
+        removeInSeconds: 10,
+        closable: true,
+      };
+      const randomId = getRandomBase64String(24);
 
-  switch (props.boxFlavorName) {
-    case "warn":
-      console.warn(...getLogItems(props, children));
-      break;
-    case "error":
-      console.error(...getLogItems(props, children));
-      break;
-  }
+      switch (props.boxFlavorName) {
+        case "warn":
+          console.warn(...getLogItems(props, children));
+          break;
+        case "error":
+          console.error(...getLogItems(props, children));
+          break;
+      }
 
-  return notificationDiv;
-}
+      this.notificationsList[randomId] = {
+        statusBoxProps: props,
+      };
+      return randomId;
+    },
+    removeNotification(
+      idToDelete: string,
+      ignoreMissing: boolean = false,
+    ): StatusBoxProps | null {
+      if (idToDelete in this.notificationsList) {
+        const toBeDeleted = this.notificationsList[idToDelete];
+        delete this.notificationsList[idToDelete];
+        return toBeDeleted.statusBoxProps;
+      }
+      if (ignoreMissing) return null;
+      throw new Error(
+        `Notification ID ${idToDelete} is not in the notifications list.`,
+      );
+    },
+  },
+});

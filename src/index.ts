@@ -1,4 +1,5 @@
 import { createApp } from "vue";
+import { createPinia } from "pinia";
 import "./css/default-css-variables.css";
 import "./css/global.css";
 import "./css/table.css";
@@ -13,6 +14,7 @@ import App from "./App.vue";
 export { component, model, provider, App };
 
 const app = createApp(App);
+app.use(createPinia());
 app.use(router);
 
 router.isReady().then(() => {

@@ -15,6 +15,22 @@ export function getRandomIntegers(maximums: number[]): number[] {
 }
 
 /**
+ * Get random bytes: 0 <= results < 256
+ * @param count number of bytes to be generated
+ */
+export function getRandomBytes(count: number): number[] {
+  return getRandomIntegers(Array(count).fill(256));
+}
+
+/**
+ * Get random Base64 string of length 4/3 of bytesCount (3 bytes ~ 4 characters).
+ * @param bytesCount number of bytes to be generated. Use multiples of 3 to avoid the tailing '=' signs
+ */
+export function getRandomBase64String(bytesCount: number): string {
+  return btoa(String.fromCharCode(...getRandomBytes(bytesCount)));
+}
+
+/**
  * Get a random item from the first array that is not in the second array.
  * @param array One of these items will be randomly selected.
  * @param notTheseItems None of these items will be selected.

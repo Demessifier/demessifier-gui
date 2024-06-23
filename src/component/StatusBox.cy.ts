@@ -99,7 +99,6 @@ describe("StatusBox component", () => {
       });
     });
   }
-  /* TODO: How to test disappearing? We need to pass a parentDiv for that.
   describe("Disappears in time", () => {
     const timeoutSeconds = 2;
     it(`${timeoutSeconds} seconds`, () => {
@@ -134,5 +133,4 @@ describe("StatusBox component", () => {
       });
     });
   });
-  */
 });

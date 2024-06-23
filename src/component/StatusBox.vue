@@ -24,18 +24,18 @@ interface Props {
    */
   removeInSeconds?: false | number;
   /**
-   * This div contains only the box.
+   * Whether it can be closed.
    */
-  parentDiv?: HTMLElement;
   closable?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   initializeMinimized: false,
   removeInSeconds: false,
-  parentDiv: undefined,
   closable: false,
 });
+
+const emit = defineEmits(["close-status-box"]);
 
 const boxType: StatusBoxFlavorItem = statusBoxFlavor[props.boxFlavorName];
 const unMinimizeTooltip = `Expand: \n${props.headlineText}`;
@@ -51,12 +51,9 @@ function unMinimize() {
   minimized.value = false;
 }
 
-const parentDiv: Ref<HTMLElement> = ref(
-  props.parentDiv ?? document.createElement("div"),
-);
-
 function destroyComponent() {
-  parentDiv.value.remove();
+  // has to be handled by the parent
+  emit("close-status-box");
 }
 
 const maxTimeSeconds: Ref<number> = ref(
@@ -100,13 +97,10 @@ function interruptCountDown() {
   resetTimer();
 }
 
-const parentStyle = parentDiv.value.style;
+const opacity: Ref<number> = ref(1);
 watch(opacityFraction, async (newOpacity: number, _oldOpacity: number) => {
-  parentStyle.opacity = newOpacity.toFixed(2);
+  opacity.value = newOpacity;
 });
-const borderRadius = "0.5rem";
-parentStyle.borderRadius = borderRadius;
-parentStyle.transition = `opacity ${stepDurationMs}ms linear`;
 </script>
 
 <template>
@@ -162,12 +156,12 @@ parentStyle.transition = `opacity ${stepDurationMs}ms linear`;
   gap: 1em;
   padding: 1em;
   border: 2px solid v-bind(boxBgColor);
-  border-radius: v-bind(borderRadius);
   height: fit-content;
   width: fit-content;
   transition:
     width 300ms ease,
     height 300ms ease; /* doesn't work with fit-content */
+  opacity: v-bind(opacity);
 
   &.minimized {
     width: fit-content;

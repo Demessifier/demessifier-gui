@@ -8,6 +8,7 @@ import MenuTopRight from "./component/layout/MenuTopRight.vue";
 import BrandLogo from "./component/layout/BrandLogo.vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faBars, faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import NotificationsArea from "./NotificationsArea.vue";
 
 // window size for responsiveness
 const windowSize = ref(window.innerWidth);
@@ -106,10 +107,7 @@ setDefaultColors();
         <MenuLeft :menu-items="JSON.parse(JSON.stringify(MENU))" />
       </nav>
       <div class="main-and-notifications">
-        <div
-          id="notifications-backdrop"
-          :style="`z-index: ${Z_INDEX.NOTIFICATIONS}`"
-        ></div>
+        <NotificationsArea :style="`z-index: ${Z_INDEX.NOTIFICATIONS}`" />
         <main :style="`z-index: ${Z_INDEX.MAIN_CONTENT}`">
           <router-view v-slot="{ Component }">
             <transition name="fade" mode="out-in" appear>
@@ -123,8 +121,7 @@ setDefaultColors();
   </div>
 </template>
 
-<style lang="scss">
-// The <style> element is not scoped so that notifications also get the style.
+<style lang="scss" scoped>
 .layout {
   display: flex;
   flex-direction: column;
@@ -301,26 +298,6 @@ header > * {
       .fade-enter-from,
       .fade-leave-to {
         opacity: 0;
-      }
-    }
-
-    #notifications-backdrop {
-      position: absolute;
-      top: 0;
-      right: 1em;
-
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      align-content: flex-end;
-      justify-content: flex-start;
-
-      pointer-events: none;
-
-      & > * {
-        background-color: var(--default-bg-color);
-        margin: 1em;
-        pointer-events: auto;
       }
     }
   }
