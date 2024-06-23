@@ -65,6 +65,7 @@ export const useDemessifierGuiNotificationsList = defineStore({
       }
       const interval = setInterval(() => {
         const notification = this.notificationsList[notificationId];
+        if (!notification) return; // TODO: when does this happen?
         if (notification.remainingTimeSeconds > 0) {
           notification.remainingTimeSeconds -= stepDurationMs / 1000;
           return;
@@ -123,5 +124,6 @@ export const useDemessifierGuiNotificationsList = defineStore({
   },
 });
 
-export type DemessifierGuiNotificationsList =
-  ReturnType<typeof useDemessifierGuiNotificationsList>;
+export type DemessifierGuiNotificationsList = ReturnType<
+  typeof useDemessifierGuiNotificationsList
+>;

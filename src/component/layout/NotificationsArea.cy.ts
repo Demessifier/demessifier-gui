@@ -1,8 +1,5 @@
 import NotificationsArea from "./NotificationsArea.vue";
-import {
-  type DemessifierGuiNotificationsList,
-  useDemessifierGuiNotificationsList,
-} from "../../provider/notification";
+import { useDemessifierGuiNotificationsList } from "../../provider/notification";
 import { pinia } from "../../index";
 
 type NotificationInfo = {
@@ -10,180 +7,165 @@ type NotificationInfo = {
   timeoutSeconds: number;
   endTimeMillis: number;
 };
-const notificationRegister = {} as { [key: string]: NotificationInfo };
+type NotificationRegister = { [key: string]: NotificationInfo };
 
-function addNotification(
-  store: DemessifierGuiNotificationsList,
-  timeoutSeconds: number | false,
-): string {
-  const id = store.addNewNotification(
-    "success",
-    "headline",
-    "body",
-    timeoutSeconds,
-  );
-  if (timeoutSeconds === false) timeoutSeconds = Infinity;
-  const endTimeMillis = Date.now() + timeoutSeconds * 1000;
-  notificationRegister[id] = { id, timeoutSeconds, endTimeMillis };
-  return id;
-}
-
-function removeNotification(
-  store: DemessifierGuiNotificationsList,
-  id: string,
-) {
-  store.removeNotification(id);
-  notificationRegister[id].endTimeMillis = 0;
-}
-
-function testNotifications(store: DemessifierGuiNotificationsList) {
-  const gracePeriodMillis = 500; // increase if tests are running on a slow machine
-  const now = Date.now();
-  const shouldExist = Object.values(notificationRegister).filter(
-    (n) => n.endTimeMillis > now,
-  );
-  const mightExist = shouldExist.filter(
-    (n) => n.endTimeMillis > now + gracePeriodMillis,
-  );
-  const lengthOfPinia = Object.keys(store.notificationsList).length;
-  expect(
-    lengthOfPinia,
-    "pinia store " + Object.keys(store.notificationsList),
-  ).to.be.at.least(mightExist.length);
-  expect(
-    lengthOfPinia,
-    "pinia store " + Object.keys(store.notificationsList),
-  ).to.be.at.most(shouldExist.length);
-  cy.get("div#notifications-backdrop > *").should((notifications) => {
-    console.log(notifications.length, mightExist.length);
-    expect(notifications.length, "gui component").to.be.at.least(
-      mightExist.length,
-    );
-  });
-  cy.get("div#notifications-backdrop > *").should((notifications) => {
-    expect(notifications.length, "gui component").to.be.at.most(
-      shouldExist.length,
-    );
-  });
-}
-
-describe("NotificationsArea component", () => {
-  it("Adds and removes notifications", () => {
+describe("NotificationsArea component", function () {
+  beforeEach(function () {
     cy.mount(NotificationsArea, {
       global: { plugins: [pinia] },
     });
-    const demessifierGuiNotificationsList =
-      useDemessifierGuiNotificationsList();
+    this.demessifierGuiNotificationsList = useDemessifierGuiNotificationsList();
+    this.demessifierGuiNotificationsList.$reset();
+    // Object.keys(this.demessifierGuiNotificationsList.notificationsList).forEach(
+    //   (k) => delete this.demessifierGuiNotificationsList.notificationsList[k],
+    // );
 
-    const specialNotifications = { idToBeClosed: "", idToBeRenewed: "" };
+    this.notificationRegister = {} as NotificationRegister;
 
-    cy.then(() => {
-      expect(
-        Object.keys(demessifierGuiNotificationsList.notificationsList),
-        "pinia store - init",
-      ).to.have.length(0);
-    })
-      .then(() => {
+    this.addNotification = function (timeoutSeconds: number | false): string {
+      const id = this.demessifierGuiNotificationsList.addNewNotification(
+        "success",
+        "headline",
+        "body",
+        timeoutSeconds,
+      );
+      if (timeoutSeconds === false) timeoutSeconds = Infinity;
+      const endTimeMillis = Date.now() + timeoutSeconds * 1000;
+      this.notificationRegister[id] = { id, timeoutSeconds, endTimeMillis };
+      return id;
+    };
+
+    this.removeNotification = function (id: string) {
+      this.demessifierGuiNotificationsList.removeNotification(id);
+      this.notificationRegister[id].endTimeMillis = 0;
+    };
+
+    this.testNotifications = function () {
+      const gracePeriodMillis = 500; // increase if tests are running on a slow machine
+      cy.then(() => {
+        const now = Date.now();
+        const shouldExist = (
+          Object.values(this.notificationRegister) as NotificationInfo[]
+        ).filter((n) => n.endTimeMillis > now);
+        const mightExist = shouldExist.filter(
+          (n) => n.endTimeMillis > now + gracePeriodMillis,
+        );
+        const lengthOfPinia = Object.keys(
+          this.demessifierGuiNotificationsList.notificationsList,
+        ).length;
+        expect(
+          lengthOfPinia,
+          "pinia store " +
+            Object.keys(this.demessifierGuiNotificationsList.notificationsList),
+        ).to.be.at.least(mightExist.length);
+        expect(
+          lengthOfPinia,
+          "pinia store " +
+            Object.keys(this.demessifierGuiNotificationsList.notificationsList),
+        ).to.be.at.most(shouldExist.length);
         cy.get("div#notifications-backdrop > *").should((notifications) => {
-          expect(notifications, "gui component - init").to.have.length(0);
+          console.log(notifications.length, mightExist.length);
+          expect(notifications.length, "gui component").to.be.at.least(
+            mightExist.length,
+          );
         });
-      })
-      .then(() => {
-        testNotifications(demessifierGuiNotificationsList);
-      })
-      .then(() => {
-        addNotification(demessifierGuiNotificationsList, 1);
-      })
-      .then(() => {
-        testNotifications(demessifierGuiNotificationsList);
-      })
-      .then(() => {
-        addNotification(demessifierGuiNotificationsList, 2);
-      })
-      .then(() => {
-        testNotifications(demessifierGuiNotificationsList);
-      })
-      .then(() => {
-        addNotification(demessifierGuiNotificationsList, false);
-      })
-      .then(() => {
-        testNotifications(demessifierGuiNotificationsList);
-      })
-      .then(() => {
-        specialNotifications.idToBeClosed = addNotification(
-          demessifierGuiNotificationsList,
-          2,
-        );
-      })
-      .then(() => {
-        testNotifications(demessifierGuiNotificationsList);
-      })
-      .then(() => {
-        specialNotifications.idToBeRenewed = addNotification(
-          demessifierGuiNotificationsList,
-          1,
-        );
-      })
-      .then(() => {
-        testNotifications(demessifierGuiNotificationsList);
-      })
-      .then(() => {
-        // This wil wait until the condition is met
         cy.get("div#notifications-backdrop > *").should((notifications) => {
-          expect(
-            notifications.length,
-            "Waiting for half of the notifications to disappear",
-          ).to.be.at.most(3);
+          expect(notifications.length, "gui component").to.be.at.most(
+            shouldExist.length,
+          );
         });
-      })
-      .then(() => {
-        testNotifications(demessifierGuiNotificationsList);
-      })
-      .then(() => {
-        removeNotification(
-          demessifierGuiNotificationsList,
-          specialNotifications.idToBeClosed,
-        );
-      })
-      .then(() => {
-        testNotifications(demessifierGuiNotificationsList);
       });
+    };
+  });
+
+  it("Is empty in the beginning", function () {
+    expect(
+      Object.keys(this.demessifierGuiNotificationsList.notificationsList),
+      "pinia store - init",
+    ).to.have.length(0);
+    cy.get("div#notifications-backdrop > *").should((notifications) => {
+      expect(notifications, "gui component - init").to.have.length(0);
+    });
+    this.testNotifications();
+  });
+
+  describe("Add notification", function () {
+    beforeEach(function () {
+      this.addNotification(1);
+    });
+
+    it("Renders all added notifications", function () {
+      this.testNotifications();
+    });
+
+    describe("Add notification", function () {
+      beforeEach(function () {
+        this.addNotification(2);
+      });
+
+      it("Renders all added notifications", function () {
+        this.testNotifications();
+      });
+
+      describe("Add notification", function () {
+        beforeEach(function () {
+          this.addNotification(false);
+        });
+
+        it("Renders all added notifications", function () {
+          this.testNotifications();
+        });
+
+        describe("Add notification", function () {
+          beforeEach(function () {
+            this.idToBeClosed = this.addNotification(2);
+          });
+
+          it("Renders all added notifications", function () {
+            this.testNotifications();
+          });
+
+          describe("Add notification", function () {
+            beforeEach(function () {
+              this.idToBeRenewed = this.addNotification(1);
+              // TODO: mouse over this one and reset its endTimeMillis:
+              // const notification = this.notificationRegister[this.idToBeRenewed];
+              // notification.endTimeMillis = Date.now() + notification.timeoutSeconds * 1000;
+            });
+
+            it("Renders all added notifications", function () {
+              this.testNotifications();
+            });
+
+            describe("Waiting for half of the notifications to disappear", function () {
+              beforeEach(function () {
+                cy.get("div#notifications-backdrop > *").should(
+                  (notifications) => {
+                    expect(
+                      notifications.length,
+                      "Waiting for half of the notifications to disappear",
+                    ).to.be.at.most(3);
+                  },
+                );
+              });
+
+              it("Renders all remaining notifications", function () {
+                this.testNotifications();
+              });
+
+              describe("Remove notification", function () {
+                beforeEach(function () {
+                  this.removeNotification(this.idToBeClosed);
+                });
+
+                it("Renders all remaining notifications", function () {
+                  this.testNotifications();
+                });
+              });
+            });
+          });
+        });
+      });
+    });
   });
 });
-
-/* TODO: move to Notifications Area tests
-describe("Disappears in time", () => {
-  const timeoutSeconds = 2;
-  it(`${timeoutSeconds} seconds`, () => {
-    cy.mount(StatusBox, {
-      props: {
-        headlineText: `Gonna disappear in ${timeoutSeconds} seconds`,
-        boxFlavorName: getAllStatusBoxFlavors()[0],
-        removeInSeconds: timeoutSeconds,
-      },
-      slots: { default: "Our time is running out..." },
-    });
-    cy.get("div.status-box").trigger("mouseleave");
-    const endTimeMillis = Date.now() + timeoutSeconds * 1000;
-
-    const multiplier = 2;
-    for (let i = timeoutSeconds * multiplier + 2; i > 0; i--) {
-      cy.get("div.status-box").should((statusBox) => {
-        const nowMilliSeconds = Date.now();
-        if (nowMilliSeconds + 250 < endTimeMillis) {
-          // it should still exist
-          expect(statusBox).to.exist;
-        } else if (nowMilliSeconds > endTimeMillis) {
-          // it shouldn't exist anymore
-          expect(statusBox).not.to.exist;
-        }
-      });
-      cy.wait(1000 / multiplier);
-    }
-    // it shouldn't exist anymore
-    cy.get("div.status-box").should((statusBox) => {
-      expect(statusBox).to.not.exist;
-    });
-  });
-});
-*/
