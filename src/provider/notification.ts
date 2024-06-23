@@ -6,9 +6,13 @@ import { getRandomBase64String } from "./randomness";
 
 type StatusBoxProps = InstanceType<typeof StatusBox>["$props"];
 type ChildrenType = string | VNode | VNode[];
+type Interval = ReturnType<typeof setInterval>;
 
 type Notification = {
   statusBoxProps: StatusBoxProps;
+  interval: Interval;
+  maxTimeSeconds: number;
+  remainingTimeSeconds: number;
 };
 type NotificationsList = { [key: string]: Notification };
 
@@ -26,6 +30,9 @@ function getLogItems(
   ];
 }
 
+const fadeOutDurationSeconds = 5;
+const stepDurationMs = 500;
+
 export const useDemessifierGuiNotificationsList = defineStore({
   id: "demessifier-gui:notifications-list",
   state: () => {
@@ -38,14 +45,15 @@ export const useDemessifierGuiNotificationsList = defineStore({
       boxFlavorName: StatusBoxFlavorName,
       headlineText: string,
       children: ChildrenType,
+      removeInSeconds: number | false = 10,
     ): string {
       const props: StatusBoxProps = {
         boxFlavorName,
         headlineText,
-        removeInSeconds: 10,
+        fading: true,
         closable: true,
       };
-      const randomId = getRandomBase64String(24);
+      const notificationId = getRandomBase64String(24);
 
       switch (props.boxFlavorName) {
         case "warn":
@@ -55,25 +63,59 @@ export const useDemessifierGuiNotificationsList = defineStore({
           console.error(...getLogItems(props, children));
           break;
       }
+      const interval = setInterval(() => {
+        const notification = this.notificationsList[notificationId];
+        if (notification.remainingTimeSeconds > 0) {
+          notification.remainingTimeSeconds -= stepDurationMs / 1000;
+          return;
+        }
+        clearInterval(interval as Interval);
+        delete this.notificationsList[notificationId];
+      }, stepDurationMs);
 
-      this.notificationsList[randomId] = {
+      const maxTimeSeconds =
+        removeInSeconds === false ? Infinity : Math.max(removeInSeconds, 0);
+      this.notificationsList[notificationId] = {
         statusBoxProps: props,
+        interval: interval,
+        maxTimeSeconds: maxTimeSeconds,
+        remainingTimeSeconds: maxTimeSeconds,
       };
-      return randomId;
+      return notificationId;
     },
     removeNotification(
-      idToDelete: string,
+      notificationId: string,
       ignoreMissing: boolean = false,
     ): StatusBoxProps | null {
-      if (idToDelete in this.notificationsList) {
-        const toBeDeleted = this.notificationsList[idToDelete];
-        delete this.notificationsList[idToDelete];
+      if (notificationId in this.notificationsList) {
+        const toBeDeleted = this.notificationsList[notificationId];
+        delete this.notificationsList[notificationId];
         return toBeDeleted.statusBoxProps;
       }
       if (ignoreMissing) return null;
       throw new Error(
-        `Notification ID ${idToDelete} is not in the notifications list.`,
+        `Notification ID ${notificationId} is not in the notifications list.`,
       );
+    },
+    interruptCountDown(notificationId: string) {
+      const notification = this.notificationsList[notificationId];
+      if (notification.interval !== null) {
+        clearInterval(notificationId);
+      }
+      notification.maxTimeSeconds = Infinity;
+      this.resetTimer(notificationId);
+    },
+    resetTimer(notificationId: string) {
+      const notification = this.notificationsList[notificationId];
+      notification.remainingTimeSeconds = notification.maxTimeSeconds;
+    },
+    getOpacityFraction(notificationId: string) {
+      const notification = this.notificationsList[notificationId];
+      const remainingTimeSeconds = notification.remainingTimeSeconds;
+      return remainingTimeSeconds > fadeOutDurationSeconds
+        ? 1
+        : remainingTimeSeconds /
+            Math.min(notification.maxTimeSeconds, fadeOutDurationSeconds);
     },
   },
 });

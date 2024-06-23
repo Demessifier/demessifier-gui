@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ComputedRef, Ref, ref, watch } from "vue";
+import { computed, ref } from "vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
   statusBoxFlavor,
@@ -20,22 +20,24 @@ interface Props {
   boxFlavorName: StatusBoxFlavorName;
   initializeMinimized?: boolean;
   /**
-   * After this time, the box is removed.
+   * Whether the box is fading (and can be pinned).
+   * Pinning emits and event that has to be handled by the parent component.
    */
-  removeInSeconds?: false | number;
+  fading?: boolean;
   /**
    * Whether it can be closed.
+   * Closing emits an event that has to be handled by the parent component.
    */
   closable?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   initializeMinimized: false,
-  removeInSeconds: false,
+  fading: false,
   closable: false,
 });
 
-const emit = defineEmits(["close-status-box"]);
+const emit = defineEmits(["close-status-box", "interrupt-count-down"]);
 
 const boxType: StatusBoxFlavorItem = statusBoxFlavor[props.boxFlavorName];
 const unMinimizeTooltip = `Expand: \n${props.headlineText}`;
@@ -50,57 +52,6 @@ function switchMinimized() {
 function unMinimize() {
   minimized.value = false;
 }
-
-function destroyComponent() {
-  // has to be handled by the parent
-  emit("close-status-box");
-}
-
-const maxTimeSeconds: Ref<number> = ref(
-  props.removeInSeconds === false
-    ? Infinity
-    : Math.max(props.removeInSeconds, 0),
-);
-const fadeOutDurationSeconds = 5;
-const stepDurationMs = 500;
-const remainingTimeSeconds: Ref<number> = ref(maxTimeSeconds.value);
-const pinned: ComputedRef<boolean> = computed(
-  () => remainingTimeSeconds.value === Infinity,
-);
-const opacityFraction: ComputedRef<number> = computed(() =>
-  remainingTimeSeconds.value > fadeOutDurationSeconds
-    ? 1
-    : remainingTimeSeconds.value /
-      Math.min(maxTimeSeconds.value, fadeOutDurationSeconds),
-);
-
-type Interval = ReturnType<typeof setInterval>;
-const interval: Interval | null =
-  maxTimeSeconds.value === Infinity
-    ? null
-    : setInterval(() => {
-        if (remainingTimeSeconds.value > 0) {
-          remainingTimeSeconds.value -= stepDurationMs / 1000;
-          return;
-        }
-        clearInterval(interval as Interval);
-        destroyComponent();
-      }, stepDurationMs);
-
-function resetTimer() {
-  remainingTimeSeconds.value = maxTimeSeconds.value;
-}
-
-function interruptCountDown() {
-  if (interval !== null) clearInterval(interval);
-  maxTimeSeconds.value = Infinity;
-  resetTimer();
-}
-
-const opacity: Ref<number> = ref(1);
-watch(opacityFraction, async (newOpacity: number, _oldOpacity: number) => {
-  opacity.value = newOpacity;
-});
 </script>
 
 <template>
@@ -109,14 +60,13 @@ watch(opacityFraction, async (newOpacity: number, _oldOpacity: number) => {
     :class="{ minimized: minimized, full: !minimized }"
     :title="minimized ? unMinimizeTooltip : ''"
     @click="unMinimize"
-    @mousemove="resetTimer"
   >
-    <div class="buttons" v-if="!minimized && (closable || !pinned)">
+    <div class="buttons" v-if="!minimized && (closable || fading)">
       <span class="icon-button"
         ><FontAwesomeIcon
-          v-if="!pinned"
+          v-if="fading"
           :icon="faThumbTack"
-          @click="interruptCountDown"
+          @click="emit('interrupt-count-down')"
           title="Pin"
         ></FontAwesomeIcon
       ></span>
@@ -125,7 +75,7 @@ watch(opacityFraction, async (newOpacity: number, _oldOpacity: number) => {
         ><FontAwesomeIcon
           v-if="closable"
           :icon="faCircleXmark"
-          @click="destroyComponent"
+          @click="emit('close-status-box')"
           title="Close"
         ></FontAwesomeIcon
       ></span>
@@ -161,7 +111,6 @@ watch(opacityFraction, async (newOpacity: number, _oldOpacity: number) => {
   transition:
     width 300ms ease,
     height 300ms ease; /* doesn't work with fit-content */
-  opacity: v-bind(opacity);
 
   &.minimized {
     width: fit-content;

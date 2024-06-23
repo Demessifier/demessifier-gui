@@ -1,16 +1,10 @@
 <script setup lang="ts">
-import { ref, type Ref } from "vue";
 import { StatusBox } from "./component";
 import { useDemessifierGuiNotificationsList } from "./provider/notification";
+import * as Z_INDEX from "./provider/z-index";
 
 type StatusBoxProps = InstanceType<typeof StatusBox>["$props"];
 const demessifierGuiNotificationsList = useDemessifierGuiNotificationsList();
-
-type NotificationDefinition = {
-  statusBoxProps: StatusBoxProps;
-};
-
-const notificationsList: Ref<NotificationDefinition[]> = ref([]);
 </script>
 
 <template>
@@ -24,6 +18,11 @@ const notificationsList: Ref<NotificationDefinition[]> = ref([]);
       @close-status-box="
         () => demessifierGuiNotificationsList.removeNotification(id as string)
       "
+      @interrupt-count-down="
+        () => demessifierGuiNotificationsList.interruptCountDown(id as string)
+      "
+      @mousemove="demessifierGuiNotificationsList.resetTimer(id as string)"
+      :style="`opacity: ${demessifierGuiNotificationsList.getOpacityFraction(id as string)}`"
     ></StatusBox>
   </div>
 </template>
