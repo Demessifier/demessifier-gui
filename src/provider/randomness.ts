@@ -23,11 +23,20 @@ export function getRandomBytes(count: number): number[] {
 }
 
 /**
- * Get random Base64 string of length 4/3 of bytesCount (3 bytes ~ 4 characters).
- * @param bytesCount number of bytes to be generated. Use multiples of 3 to avoid the tailing '=' signs
+ * Get random string of the specified characters.
+ * @param charsCount number of characters to be returned
+ * @param alphabet the characters to select uniformly from
  */
-export function getRandomBase64String(bytesCount: number): string {
-  return btoa(String.fromCharCode(...getRandomBytes(bytesCount)));
+export function getRandomString(
+  charsCount: number = 32,
+  alphabet: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+): string {
+  let result = "";
+  const alphabetLength = alphabet.length;
+  for (let i = 0; i < charsCount; i++) {
+    result += alphabet.charAt(Math.floor(Math.random() * alphabetLength));
+  }
+  return result;
 }
 
 /**

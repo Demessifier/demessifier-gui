@@ -1,6 +1,6 @@
 import { test, expect } from "vitest";
 import {
-  getRandomBase64String,
+  getRandomString,
   getRandomBytes,
   getRandomInteger,
   getRandomIntegers,
@@ -82,30 +82,16 @@ test("Randomness tools: getRandomBytes", async () => {
   }
 });
 
-test("Randomness tools: getRandomBase64String", async () => {
-  const validB64Chars = [
-    ..."ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-    ..."abcdefghijklmnopqrstuvwxyz",
-    ..."0123456789",
-    ..."+/",
-  ];
-  for (const bytesLength3 of [0, 3, 30, 9, 99]) {
-    const stringLength4 = (bytesLength3 / 3) * 4;
-    for (let offset = 0; offset < 3; offset++) {
-      const bytesLength = bytesLength3 + offset;
-      const equalSigns = (3 - offset) % 3;
-      const stringLength = stringLength4 + (offset == 0 ? 0 : 4);
+test("Randomness tools: getRandomString", async () => {
+  for (const charsLength of [0, 3, 8, 99]) {
+    const alphabetLength = 20;
+    const alphabet = getRandomString(alphabetLength);
+    expect(alphabet).to.have.length(alphabetLength);
 
-      const randomString = getRandomBase64String(bytesLength);
-      expect(randomString).to.have.length(stringLength);
-      const characters = [...randomString];
-      characters.forEach((c, i) => {
-        if (i < stringLength - equalSigns) {
-          expect(validB64Chars).to.include(c);
-        } else {
-          expect(c).to.be.equal("=");
-        }
-      });
+    const randomString = getRandomString(charsLength, alphabet);
+    expect(randomString).to.have.length(charsLength);
+    for (const c of randomString) {
+      expect(alphabet).to.contain(c);
     }
   }
 });
