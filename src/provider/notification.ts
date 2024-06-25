@@ -65,7 +65,11 @@ export const useDemessifierGuiNotificationsList = defineStore({
       }
       const interval = setInterval(() => {
         const notification = this.notificationsList[notificationId];
-        if (!notification) return; // TODO: when does this happen?
+        if (!notification) {
+          // notification already removed, but the interval is still ticking
+          clearInterval(interval);
+          return;
+        }
         if (notification.remainingTimeSeconds > 0) {
           notification.remainingTimeSeconds -= stepDurationMs / 1000;
           return;
