@@ -7,6 +7,13 @@ declare global {
         component: Component,
         options?: ComponentMountingOptions<Component>,
       ): Chainable<any>;
+
+      vueWrap<Component extends Vue>(): Chainable<any>;
+
+      expectEmitCount<Component extends Vue>(
+        eventName: string,
+        count: number,
+      ): Chainable<any>;
     }
   }
 }

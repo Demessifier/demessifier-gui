@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ComputedRef, Ref, ref, watch } from "vue";
+import { computed, ref } from "vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
   statusBoxFlavor,
@@ -20,22 +20,24 @@ interface Props {
   boxFlavorName: StatusBoxFlavorName;
   initializeMinimized?: boolean;
   /**
-   * After this time, the box is removed.
+   * Whether the box is fading (and can be pinned).
+   * Pinning emits and event that has to be handled by the parent component.
    */
-  removeInSeconds?: false | number;
+  fading?: boolean;
   /**
-   * This div contains only the box.
+   * Whether it can be closed.
+   * Closing emits an event that has to be handled by the parent component.
    */
-  parentDiv?: HTMLElement;
   closable?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   initializeMinimized: false,
-  removeInSeconds: false,
-  parentDiv: undefined,
+  fading: false,
   closable: false,
 });
+
+const emit = defineEmits(["close-status-box", "interrupt-count-down"]);
 
 const boxType: StatusBoxFlavorItem = statusBoxFlavor[props.boxFlavorName];
 const unMinimizeTooltip = `Expand: \n${props.headlineText}`;
@@ -50,63 +52,6 @@ function switchMinimized() {
 function unMinimize() {
   minimized.value = false;
 }
-
-const parentDiv: Ref<HTMLElement> = ref(
-  props.parentDiv ?? document.createElement("div"),
-);
-
-function destroyComponent() {
-  parentDiv.value.remove();
-}
-
-const maxTimeSeconds: Ref<number> = ref(
-  props.removeInSeconds === false
-    ? Infinity
-    : Math.max(props.removeInSeconds, 0),
-);
-const fadeOutDurationSeconds = 5;
-const stepDurationMs = 500;
-const remainingTimeSeconds: Ref<number> = ref(maxTimeSeconds.value);
-const pinned: ComputedRef<boolean> = computed(
-  () => remainingTimeSeconds.value === Infinity,
-);
-const opacityFraction: ComputedRef<number> = computed(() =>
-  remainingTimeSeconds.value > fadeOutDurationSeconds
-    ? 1
-    : remainingTimeSeconds.value /
-      Math.min(maxTimeSeconds.value, fadeOutDurationSeconds),
-);
-
-type Interval = ReturnType<typeof setInterval>;
-const interval: Interval | null =
-  maxTimeSeconds.value === Infinity
-    ? null
-    : setInterval(() => {
-        if (remainingTimeSeconds.value > 0) {
-          remainingTimeSeconds.value -= stepDurationMs / 1000;
-          return;
-        }
-        clearInterval(interval as Interval);
-        destroyComponent();
-      }, stepDurationMs);
-
-function resetTimer() {
-  remainingTimeSeconds.value = maxTimeSeconds.value;
-}
-
-function interruptCountDown() {
-  if (interval !== null) clearInterval(interval);
-  maxTimeSeconds.value = Infinity;
-  resetTimer();
-}
-
-const parentStyle = parentDiv.value.style;
-watch(opacityFraction, async (newOpacity: number, _oldOpacity: number) => {
-  parentStyle.opacity = newOpacity.toFixed(2);
-});
-const borderRadius = "0.5rem";
-parentStyle.borderRadius = borderRadius;
-parentStyle.transition = `opacity ${stepDurationMs}ms linear`;
 </script>
 
 <template>
@@ -115,23 +60,22 @@ parentStyle.transition = `opacity ${stepDurationMs}ms linear`;
     :class="{ minimized: minimized, full: !minimized }"
     :title="minimized ? unMinimizeTooltip : ''"
     @click="unMinimize"
-    @mousemove="resetTimer"
   >
-    <div class="buttons" v-if="!minimized && (closable || !pinned)">
-      <span class="icon-button"
+    <div class="buttons" v-if="!minimized && (closable || fading)">
+      <span class="icon-button pin"
         ><FontAwesomeIcon
-          v-if="!pinned"
+          v-if="fading"
           :icon="faThumbTack"
-          @click="interruptCountDown"
+          @click="emit('interrupt-count-down')"
           title="Pin"
         ></FontAwesomeIcon
       ></span>
       <span class="spring"></span>
-      <span class="icon-button"
+      <span class="icon-button close"
         ><FontAwesomeIcon
           v-if="closable"
           :icon="faCircleXmark"
-          @click="destroyComponent"
+          @click="emit('close-status-box')"
           title="Close"
         ></FontAwesomeIcon
       ></span>
@@ -162,7 +106,6 @@ parentStyle.transition = `opacity ${stepDurationMs}ms linear`;
   gap: 1em;
   padding: 1em;
   border: 2px solid v-bind(boxBgColor);
-  border-radius: v-bind(borderRadius);
   height: fit-content;
   width: fit-content;
   transition:

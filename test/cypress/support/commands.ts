@@ -41,11 +41,11 @@ import "@cypress/code-coverage/support";
 
 Cypress.Commands.add("mount", (component, options = {}) => {
   // Setup options object
-  options.global = options.global || {};
-  options.global.stubs = options.global.stubs || {};
+  options.global ||= {};
+  options.global.stubs ||= {};
   options.global.stubs["transition"] = false;
-  options.global.components = options.global.components || {};
-  options.global.plugins = options.global.plugins || [];
+  options.global.components ||= {};
+  options.global.plugins ||= [];
 
   /* Add any global plugins */
   // options.global.plugins.push({
@@ -58,4 +58,22 @@ Cypress.Commands.add("mount", (component, options = {}) => {
   // options.global.components['Button'] = Button;
 
   return mount(component, options);
+});
+
+Cypress.Commands.add("vueWrap", () => {
+  // Taken from https://stackoverflow.com/a/70213943/8682210
+  return cy.wrap(Cypress.vueWrapper);
+});
+
+Cypress.Commands.add("expectEmitCount", (eventName, count) => {
+  // Inspired by https://stackoverflow.com/a/70213943/8682210
+  return cy
+    .wrap(Cypress.vueWrapper.emitted(eventName))
+    .should((wrapperEmitted) => {
+      if (count == 0) {
+        expect(wrapperEmitted).to.be.undefined;
+      } else {
+        expect(wrapperEmitted).to.have.length(count);
+      }
+    });
 });

@@ -1,15 +1,14 @@
 import {
-  faCircleDot,
   faCircleHalfStroke,
+  faIcons,
   faPalette,
   faTable,
 } from "@fortawesome/free-solid-svg-icons";
-import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import { type IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import ColorSchemeSwitch from "../component/global-controller/ColorSchemeSwitch.vue";
 import StatusBox from "../component/StatusBox.vue";
 import ColorPalette from "../component/global-controller/ColorPalette.vue";
-import ButtonWithIcon from "../component/global-controller/ButtonWithIcon.vue";
-import { createNotification } from "./notification";
+import ButtonWithIconShowcase from "../component/layout/ButtonWithIconShowcase.vue";
 
 type Path = `/${string}`;
 type PathsList = { [key: string]: Path };
@@ -69,22 +68,11 @@ const MENU_STATUS: MenuItem = {
 
 const MENU_ICON_BUTTON: MenuItem = {
   name: "ButtonWithIcon",
-  component: async () => ButtonWithIcon,
-  componentProps: {
-    text: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Mauris tincidunt sem sed arcu. Sed ac dolor sit amet purus malesuada congue. Etiam neque. Nullam faucibus mi quis velit. Integer rutrum, orci vestibulum ullamcorper ultricies, lacus quam ultricies odio, vitae placerat pede sem sit amet enim. Aenean placerat. Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur? Fusce dui leo, imperdiet in, aliquam sit amet, feugiat eu, orci.",
-    icon: faCircleDot,
-    onClick: () => {
-      createNotification(
-        "warn",
-        "Notification example",
-        "Example text.",
-        // createVNode(ButtonWithIcon, { text: "Text", icon: faCircleDot }),
-      );
-    },
-  } as InstanceType<typeof ButtonWithIcon>["$props"],
+  component: async () => ButtonWithIconShowcase,
+  componentProps: {} as InstanceType<typeof ButtonWithIconShowcase>["$props"],
   path: clientPaths.iconButton,
   title: "ButtonWithIcon",
-  fa: faCircleDot,
+  fa: faIcons,
   metaTitle: "ButtonWithIcon",
 };
 

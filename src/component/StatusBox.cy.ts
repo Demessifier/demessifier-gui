@@ -99,40 +99,63 @@ describe("StatusBox component", () => {
       });
     });
   }
-  /* TODO: How to test disappearing? We need to pass a parentDiv for that.
-  describe("Disappears in time", () => {
-    const timeoutSeconds = 2;
-    it(`${timeoutSeconds} seconds`, () => {
-      cy.mount(StatusBox, {
-        props: {
-          headlineText: `Gonna disappear in ${timeoutSeconds} seconds`,
-          boxFlavorName: getAllStatusBoxFlavors()[0],
-          removeInSeconds: timeoutSeconds,
-        },
-        slots: { default: "Our time is running out..." },
-      });
-      cy.get("div.status-box").trigger("mouseleave");
-      const endTimeMillis = Date.now() + timeoutSeconds * 1000;
+  describe("Buttons row", () => {
+    for (const closable of [true, false]) {
+      for (const fading of [true, false]) {
+        it(`Works for closable=${closable} fading=${fading}`, () => {
+          cy.mount(StatusBox, {
+            props: {
+              headlineText: "Buttons test",
+              boxFlavorName: getAllStatusBoxFlavors()[0],
+              closable: closable,
+              fading: fading,
+            },
+            slots: { default: `closable=${closable} fading=${fading}` },
+          });
+          cy.get("div.buttons").should((buttonsDiv) => {
+            expect(buttonsDiv).to.have.length(closable || fading ? 1 : 0);
+          });
+          cy.get("div.buttons span.icon-button").should((buttonIcons) => {
+            expect(buttonIcons).to.have.length(closable || fading ? 2 : 0);
+          });
+          cy.get("div.buttons span.icon-button.pin > *").should(
+            (buttonIcons) => {
+              expect(buttonIcons).to.have.length(fading ? 1 : 0);
+            },
+          );
+          cy.get("div.buttons span.icon-button.close > *").should(
+            (buttonIcons) => {
+              expect(buttonIcons).to.have.length(closable ? 1 : 0);
+            },
+          );
 
-      const multiplier = 2;
-      for (let i = timeoutSeconds * multiplier + 2; i > 0; i--) {
-        cy.get("div.status-box").should((statusBox) => {
-          const nowMilliSeconds = Date.now();
-          if (nowMilliSeconds + 250 < endTimeMillis) {
-            // it should still exist
-            expect(statusBox).to.exist;
-          } else if (nowMilliSeconds > endTimeMillis) {
-            // it shouldn't exist anymore
-            expect(statusBox).not.to.exist;
+          let closeCount = 0;
+          let pinCount = 0;
+
+          cy.expectEmitCount("interrupt-count-down", pinCount);
+          cy.expectEmitCount("close-status-box", closeCount);
+
+          if (fading) {
+            cy.get("div.buttons span.icon-button.pin > *").click();
+            cy.expectEmitCount("interrupt-count-down", ++pinCount);
+
+            cy.expectEmitCount("close-status-box", closeCount);
+
+            cy.get("div.buttons span.icon-button.pin > *").click();
+            cy.expectEmitCount("interrupt-count-down", ++pinCount);
+          }
+
+          if (closable) {
+            cy.get("div.buttons span.icon-button.close > *").click();
+            cy.expectEmitCount("close-status-box", ++closeCount);
+
+            cy.expectEmitCount("interrupt-count-down", pinCount);
+
+            cy.get("div.buttons span.icon-button.close > *").click();
+            cy.expectEmitCount("close-status-box", ++closeCount);
           }
         });
-        cy.wait(1000 / multiplier);
       }
-      // it shouldn't exist anymore
-      cy.get("div.status-box").should((statusBox) => {
-        expect(statusBox).to.not.exist;
-      });
-    });
+    }
   });
-  */
 });

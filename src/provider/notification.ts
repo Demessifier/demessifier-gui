@@ -1,20 +1,20 @@
 import StatusBox from "../component/StatusBox.vue";
-import { createVNode, render, VNode } from "vue";
-import { StatusBoxFlavorName } from "./status-box";
+import { defineStore } from "pinia";
+import { type VNode } from "vue";
+import { type StatusBoxFlavorName } from "./status-box";
+import { getPseudoRandomString } from "./randomness";
 
 type StatusBoxProps = InstanceType<typeof StatusBox>["$props"];
 type ChildrenType = string | VNode | VNode[];
+type Interval = ReturnType<typeof setInterval>;
 
-function getNewNotificationDiv(): HTMLElement {
-  const parent = document.createElement("div");
-  const notificationsArea = document.getElementById("notifications-backdrop");
-  if (notificationsArea) {
-    notificationsArea.appendChild(parent);
-  } else {
-    console.error("Notifications area not found.");
-  }
-  return parent;
-}
+type Notification = {
+  statusBoxProps: StatusBoxProps;
+  interval: Interval;
+  maxTimeSeconds: number;
+  remainingTimeSeconds: number;
+};
+type NotificationsList = { [key: string]: Notification };
 
 function getLogItems(
   props: StatusBoxProps,
@@ -30,30 +30,104 @@ function getLogItems(
   ];
 }
 
-export function createNotification(
-  boxFlavorName: StatusBoxFlavorName,
-  headlineText: string,
-  children: ChildrenType,
-): HTMLElement {
-  const notificationDiv = getNewNotificationDiv();
-  const props: StatusBoxProps = {
-    boxFlavorName,
-    headlineText,
-    parentDiv: notificationDiv,
-    removeInSeconds: 10,
-    closable: true,
-  };
-  const box = createVNode(StatusBox, props, () => children);
-  render(box, notificationDiv);
+const fadeOutDurationSeconds = 5;
+const stepDurationMs = 500;
 
-  switch (props.boxFlavorName) {
-    case "warn":
-      console.warn(...getLogItems(props, children));
-      break;
-    case "error":
-      console.error(...getLogItems(props, children));
-      break;
-  }
+export const useDemessifierGuiNotificationsList = defineStore({
+  id: "demessifier-gui:notifications-list",
+  state: () => {
+    return {
+      notificationsList: {} as NotificationsList,
+    };
+  },
+  actions: {
+    addNewNotification(
+      boxFlavorName: StatusBoxFlavorName,
+      headlineText: string,
+      children: ChildrenType,
+      removeInSeconds: number | false = 10,
+    ): string {
+      const props: StatusBoxProps = {
+        boxFlavorName,
+        headlineText,
+        fading: true,
+        closable: true,
+      };
+      const notificationId = getPseudoRandomString(32);
 
-  return notificationDiv;
-}
+      switch (props.boxFlavorName) {
+        case "warn":
+          console.warn(...getLogItems(props, children));
+          break;
+        case "error":
+          console.error(...getLogItems(props, children));
+          break;
+      }
+      const interval = setInterval(() => {
+        const notification = this.notificationsList[notificationId];
+        if (!notification) {
+          // notification already removed, but the interval is still ticking
+          clearInterval(interval);
+          return;
+        }
+        if (notification.remainingTimeSeconds > 0) {
+          notification.remainingTimeSeconds -= stepDurationMs / 1000;
+          return;
+        }
+        clearInterval(interval);
+        delete this.notificationsList[notificationId];
+      }, stepDurationMs);
+
+      const maxTimeSeconds =
+        removeInSeconds === false ? Infinity : Math.max(removeInSeconds, 0);
+      this.notificationsList[notificationId] = {
+        statusBoxProps: props,
+        interval: interval,
+        maxTimeSeconds: maxTimeSeconds,
+        remainingTimeSeconds: maxTimeSeconds,
+      };
+      return notificationId;
+    },
+    removeNotification(
+      notificationId: string,
+      ignoreMissing: boolean = false,
+    ): StatusBoxProps | null {
+      if (notificationId in this.notificationsList) {
+        const toBeDeleted = this.notificationsList[notificationId];
+        clearInterval(toBeDeleted.interval);
+        delete this.notificationsList[notificationId];
+        return toBeDeleted.statusBoxProps;
+      }
+      if (ignoreMissing) return null;
+      throw new Error(
+        `Notification ID ${notificationId} is not in the notifications list.`,
+      );
+    },
+    interruptCountDown(notificationId: string) {
+      const notification = this.notificationsList[notificationId];
+      if (notification.interval !== null) {
+        clearInterval(notification.interval);
+      }
+      notification.maxTimeSeconds = Infinity;
+      notification.statusBoxProps.fading = false;
+      this.resetTimer(notificationId);
+    },
+    resetTimer(notificationId: string) {
+      const notification = this.notificationsList[notificationId];
+      notification.remainingTimeSeconds = notification.maxTimeSeconds;
+    },
+    getOpacityFraction(notificationId: string) {
+      const notification = this.notificationsList[notificationId];
+      const remainingTimeSeconds = notification.remainingTimeSeconds;
+      if (remainingTimeSeconds > fadeOutDurationSeconds) return 1;
+      return (
+        remainingTimeSeconds /
+        Math.min(notification.maxTimeSeconds, fadeOutDurationSeconds)
+      );
+    },
+  },
+});
+
+export type DemessifierGuiNotificationsList = ReturnType<
+  typeof useDemessifierGuiNotificationsList
+>;
