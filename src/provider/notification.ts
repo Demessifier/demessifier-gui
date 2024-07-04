@@ -55,14 +55,13 @@ function getLogItems(
   ];
 }
 
-const fadeOutDurationSeconds = 5;
-const stepDurationMs = 500;
-
 export const useDemessifierGuiNotificationsList = defineStore({
   id: "demessifier-gui:notifications-list",
   state: () => {
     return {
       notificationsList: {} as NotificationsList,
+      opacityStepDurationMs: 500,
+      fadeOutDurationSeconds: 5,
     };
   },
   actions: {
@@ -96,12 +95,13 @@ export const useDemessifierGuiNotificationsList = defineStore({
           return;
         }
         if (notification.remainingTimeSeconds > 0) {
-          notification.remainingTimeSeconds -= stepDurationMs / 1000;
+          notification.remainingTimeSeconds -=
+            this.opacityStepDurationMs / 1000;
           return;
         }
         clearInterval(interval);
         delete this.notificationsList[notificationId];
-      }, stepDurationMs);
+      }, this.opacityStepDurationMs);
 
       const maxTimeSeconds =
         removeInSeconds === false ? Infinity : Math.max(removeInSeconds, 0);
@@ -145,10 +145,10 @@ export const useDemessifierGuiNotificationsList = defineStore({
     getOpacityFraction(notificationId: string) {
       const notification = this.notificationsList[notificationId];
       const remainingTimeSeconds = notification.remainingTimeSeconds;
-      if (remainingTimeSeconds > fadeOutDurationSeconds) return 1;
+      if (remainingTimeSeconds > this.fadeOutDurationSeconds) return 1;
       return (
         remainingTimeSeconds /
-        Math.min(notification.maxTimeSeconds, fadeOutDurationSeconds)
+        Math.min(notification.maxTimeSeconds, this.fadeOutDurationSeconds)
       );
     },
   },

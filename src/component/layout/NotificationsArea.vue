@@ -21,7 +21,10 @@ const demessifierGuiNotificationsList = useDemessifierGuiNotificationsList();
         () => demessifierGuiNotificationsList.interruptCountDown(id as string)
       "
       @mousemove="demessifierGuiNotificationsList.resetTimer(id as string)"
-      :style="`opacity: ${demessifierGuiNotificationsList.getOpacityFraction(id as string)}`"
+      :style="{
+        opacity: `${demessifierGuiNotificationsList.getOpacityFraction(id as string)}`,
+        transition: `opacity ${demessifierGuiNotificationsList.opacityStepDurationMs}ms linear`,
+      }"
     >
       <component v-for="child in notification.children" :is="child" />
     </StatusBox>
@@ -46,7 +49,6 @@ const demessifierGuiNotificationsList = useDemessifierGuiNotificationsList();
     margin: 1em;
     pointer-events: auto;
     border-radius: 0.5rem;
-    // TODO: transition: `opacity ${stepDurationMs}ms linear`;
     &.full {
       background-color: var(--default-bg-color);
     }
