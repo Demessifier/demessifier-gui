@@ -98,15 +98,10 @@ export const useDemessifierGuiNotificationsList = defineStore({
           return;
         }
         if (notification.remainingTimeSeconds > 0) {
-          notification.remainingTimeSeconds -=
-            OPACITY_STEP_DURATION_MS / 1000;
+          notification.remainingTimeSeconds -= OPACITY_STEP_DURATION_MS / 1000;
           return;
         }
-        clearInterval(interval);
-        notification.isGone = true;
-        setTimeout(() => {
-          delete this.notificationsList[notificationId];
-        }, HEIGHT_FADE_DURATION_MS);
+        this.removeNotification(notificationId);
       }, OPACITY_STEP_DURATION_MS);
 
       const maxTimeSeconds =
@@ -128,7 +123,10 @@ export const useDemessifierGuiNotificationsList = defineStore({
       if (notificationId in this.notificationsList) {
         const toBeDeleted = this.notificationsList[notificationId];
         clearInterval(toBeDeleted.interval);
-        delete this.notificationsList[notificationId];
+        toBeDeleted.isGone = true;
+        setTimeout(() => {
+          delete this.notificationsList[notificationId];
+        }, HEIGHT_FADE_DURATION_MS);
         return toBeDeleted.statusBoxProps;
       }
       if (ignoreMissing) return null;
