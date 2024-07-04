@@ -22,7 +22,9 @@ const demessifierGuiNotificationsList = useDemessifierGuiNotificationsList();
       "
       @mousemove="demessifierGuiNotificationsList.resetTimer(id as string)"
       :style="`opacity: ${demessifierGuiNotificationsList.getOpacityFraction(id as string)}`"
-    ></StatusBox>
+    >
+      <component v-for="child in notification.children" :is="child" />
+    </StatusBox>
   </div>
 </template>
 

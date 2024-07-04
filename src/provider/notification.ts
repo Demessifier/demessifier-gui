@@ -1,15 +1,40 @@
 import StatusBox from "../component/StatusBox.vue";
 import { defineStore } from "pinia";
-import { type VNode } from "vue";
+import { h, type VNode } from "vue";
 import { type StatusBoxFlavorName } from "./status-box";
 import { getPseudoRandomString } from "./randomness";
 
 type StatusBoxProps = InstanceType<typeof StatusBox>["$props"];
-type ChildrenType = string | VNode | VNode[];
+type ChildrenType = string | string[] | VNode | VNode[];
 type Interval = ReturnType<typeof setInterval>;
+
+function renderChildren(children?: ChildrenType): VNode[] {
+  if (!children) return [];
+  if (typeof children === "string") {
+    console.log([h("p", {}, children)]);
+    return [h("p", {}, children)];
+  }
+  if (Array.isArray(children)) {
+    if (typeof children[0] === "string") {
+      if (children.every((child) => typeof child === "string")) {
+        console.log(children.map((child) => h("p", {}, child)));
+        return children.map((child) => h("p", {}, child));
+      }
+      throw new Error(
+        "Some of the elements of this array are strings and some are not.",
+      );
+    }
+    console.log(children);
+    return children as VNode[];
+  }
+  console.log([children]);
+  return [children as VNode];
+  // throw new Error(`Unexpected type of children '${typeof children}'.`);
+}
 
 type Notification = {
   statusBoxProps: StatusBoxProps;
+  children: VNode[];
   interval: Interval;
   maxTimeSeconds: number;
   remainingTimeSeconds: number;
@@ -82,6 +107,7 @@ export const useDemessifierGuiNotificationsList = defineStore({
         removeInSeconds === false ? Infinity : Math.max(removeInSeconds, 0);
       this.notificationsList[notificationId] = {
         statusBoxProps: props,
+        children: renderChildren(children),
         interval: interval,
         maxTimeSeconds: maxTimeSeconds,
         remainingTimeSeconds: maxTimeSeconds,
