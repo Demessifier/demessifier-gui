@@ -50,8 +50,8 @@ export const useDemessifierGuiNotificationsList = defineStore({
       const props: StatusBoxProps = {
         boxFlavorName,
         headlineText,
-        fading: true,
-        closable: true,
+        canBePinned: true,
+        canBeClosed: true,
       };
       const notificationId = getPseudoRandomString(32);
 
@@ -109,7 +109,7 @@ export const useDemessifierGuiNotificationsList = defineStore({
         clearInterval(notification.interval);
       }
       notification.maxTimeSeconds = Infinity;
-      notification.statusBoxProps.fading = false;
+      notification.statusBoxProps.canBePinned = false;
       this.resetTimer(notificationId);
     },
     resetTimer(notificationId: string) {

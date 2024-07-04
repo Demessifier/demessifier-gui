@@ -20,21 +20,21 @@ interface Props {
   boxFlavorName: StatusBoxFlavorName;
   initializeMinimized?: boolean;
   /**
-   * Whether the box is fading (and can be pinned).
+   * Whether the box can be pinned.
    * Pinning emits and event that has to be handled by the parent component.
    */
-  fading?: boolean;
+  canBePinned?: boolean;
   /**
    * Whether it can be closed.
    * Closing emits an event that has to be handled by the parent component.
    */
-  closable?: boolean;
+  canBeClosed?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   initializeMinimized: false,
-  fading: false,
-  closable: false,
+  canBePinned: false,
+  canBeClosed: false,
 });
 
 const emit = defineEmits(["close-status-box", "interrupt-count-down"]);
@@ -61,10 +61,10 @@ function unMinimize() {
     :title="minimized ? unMinimizeTooltip : ''"
     @click="unMinimize"
   >
-    <div class="buttons" v-if="!minimized && (closable || fading)">
+    <div class="buttons" v-if="!minimized && (canBeClosed || canBePinned)">
       <span class="icon-button pin"
         ><FontAwesomeIcon
-          v-if="fading"
+          v-if="canBePinned"
           :icon="faThumbTack"
           @click="emit('interrupt-count-down')"
           title="Pin"
@@ -73,7 +73,7 @@ function unMinimize() {
       <span class="spring"></span>
       <span class="icon-button close"
         ><FontAwesomeIcon
-          v-if="closable"
+          v-if="canBeClosed"
           :icon="faCircleXmark"
           @click="emit('close-status-box')"
           title="Close"

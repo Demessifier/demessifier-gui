@@ -100,32 +100,38 @@ describe("StatusBox component", () => {
     });
   }
   describe("Buttons row", () => {
-    for (const closable of [true, false]) {
-      for (const fading of [true, false]) {
-        it(`Works for closable=${closable} fading=${fading}`, () => {
+    for (const canBeClosed of [true, false]) {
+      for (const canBePinned of [true, false]) {
+        it(`Works for canBeClosed=${canBeClosed} canBePinned=${canBePinned}`, () => {
           cy.mount(StatusBox, {
             props: {
               headlineText: "Buttons test",
               boxFlavorName: getAllStatusBoxFlavors()[0],
-              closable: closable,
-              fading: fading,
+              canBeClosed: canBeClosed,
+              canBePinned: canBePinned,
             },
-            slots: { default: `closable=${closable} fading=${fading}` },
+            slots: {
+              default: `canBeClosed=${canBeClosed} canBePinned=${canBePinned}`,
+            },
           });
           cy.get("div.buttons").should((buttonsDiv) => {
-            expect(buttonsDiv).to.have.length(closable || fading ? 1 : 0);
+            expect(buttonsDiv).to.have.length(
+              canBeClosed || canBePinned ? 1 : 0,
+            );
           });
           cy.get("div.buttons span.icon-button").should((buttonIcons) => {
-            expect(buttonIcons).to.have.length(closable || fading ? 2 : 0);
+            expect(buttonIcons).to.have.length(
+              canBeClosed || canBePinned ? 2 : 0,
+            );
           });
           cy.get("div.buttons span.icon-button.pin > *").should(
             (buttonIcons) => {
-              expect(buttonIcons).to.have.length(fading ? 1 : 0);
+              expect(buttonIcons).to.have.length(canBePinned ? 1 : 0);
             },
           );
           cy.get("div.buttons span.icon-button.close > *").should(
             (buttonIcons) => {
-              expect(buttonIcons).to.have.length(closable ? 1 : 0);
+              expect(buttonIcons).to.have.length(canBeClosed ? 1 : 0);
             },
           );
 
@@ -135,7 +141,7 @@ describe("StatusBox component", () => {
           cy.expectEmitCount("interrupt-count-down", pinCount);
           cy.expectEmitCount("close-status-box", closeCount);
 
-          if (fading) {
+          if (canBePinned) {
             cy.get("div.buttons span.icon-button.pin > *").click();
             cy.expectEmitCount("interrupt-count-down", ++pinCount);
 
@@ -145,7 +151,7 @@ describe("StatusBox component", () => {
             cy.expectEmitCount("interrupt-count-down", ++pinCount);
           }
 
-          if (closable) {
+          if (canBeClosed) {
             cy.get("div.buttons span.icon-button.close > *").click();
             cy.expectEmitCount("close-status-box", ++closeCount);
 
