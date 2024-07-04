@@ -138,17 +138,17 @@ describe("StatusBox component", () => {
           let closeCount = 0;
           let pinCount = 0;
 
-          cy.expectEmitCount("interrupt-count-down", pinCount);
+          cy.expectEmitCount("pin-status-box", pinCount);
           cy.expectEmitCount("close-status-box", closeCount);
 
           if (canBePinned) {
             cy.get("div.buttons span.icon-button.pin > *").click();
-            cy.expectEmitCount("interrupt-count-down", ++pinCount);
+            cy.expectEmitCount("pin-status-box", ++pinCount);
 
             cy.expectEmitCount("close-status-box", closeCount);
 
             cy.get("div.buttons span.icon-button.pin > *").click();
-            cy.expectEmitCount("interrupt-count-down", ++pinCount);
+            cy.expectEmitCount("pin-status-box", ++pinCount);
           }
 
           if (canBeClosed) {

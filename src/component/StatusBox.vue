@@ -37,7 +37,7 @@ const props = withDefaults(defineProps<Props>(), {
   canBeClosed: false,
 });
 
-const emit = defineEmits(["close-status-box", "interrupt-count-down"]);
+const emit = defineEmits(["close-status-box", "pin-status-box"]);
 
 const boxType: StatusBoxFlavorItem = statusBoxFlavor[props.boxFlavorName];
 const unMinimizeTooltip = `Expand: \n${props.headlineText}`;
@@ -66,7 +66,7 @@ function unMinimize() {
         ><FontAwesomeIcon
           v-if="canBePinned"
           :icon="faThumbTack"
-          @click="emit('interrupt-count-down')"
+          @click="emit('pin-status-box')"
           title="Pin"
         ></FontAwesomeIcon
       ></span>

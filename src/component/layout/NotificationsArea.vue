@@ -17,7 +17,7 @@ const demessifierGuiNotificationsList = useDemessifierGuiNotificationsList();
       @close-status-box="
         () => demessifierGuiNotificationsList.removeNotification(id as string)
       "
-      @interrupt-count-down="
+      @pin-status-box="
         () => demessifierGuiNotificationsList.interruptCountDown(id as string)
       "
       @mousemove="demessifierGuiNotificationsList.resetTimer(id as string)"
