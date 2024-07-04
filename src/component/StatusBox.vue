@@ -177,6 +177,8 @@ function unMinimize() {
   }
 
   div.content {
+    overflow: auto;
+
     hr {
       border-color: v-bind(boxBgColor);
     }

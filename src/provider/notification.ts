@@ -38,6 +38,7 @@ type Notification = {
   interval: Interval;
   maxTimeSeconds: number;
   remainingTimeSeconds: number;
+  isGone: boolean;
 };
 type NotificationsList = { [key: string]: Notification };
 
@@ -55,13 +56,15 @@ function getLogItems(
   ];
 }
 
+export const OPACITY_STEP_DURATION_MS = 500;
+const FADE_OUT_DURATION_S = 5;
+export const HEIGHT_FADE_DURATION_MS = 500;
+
 export const useDemessifierGuiNotificationsList = defineStore({
   id: "demessifier-gui:notifications-list",
   state: () => {
     return {
       notificationsList: {} as NotificationsList,
-      opacityStepDurationMs: 500,
-      fadeOutDurationSeconds: 5,
     };
   },
   actions: {
@@ -96,12 +99,15 @@ export const useDemessifierGuiNotificationsList = defineStore({
         }
         if (notification.remainingTimeSeconds > 0) {
           notification.remainingTimeSeconds -=
-            this.opacityStepDurationMs / 1000;
+            OPACITY_STEP_DURATION_MS / 1000;
           return;
         }
         clearInterval(interval);
-        delete this.notificationsList[notificationId];
-      }, this.opacityStepDurationMs);
+        notification.isGone = true;
+        setTimeout(() => {
+          delete this.notificationsList[notificationId];
+        }, HEIGHT_FADE_DURATION_MS);
+      }, OPACITY_STEP_DURATION_MS);
 
       const maxTimeSeconds =
         removeInSeconds === false ? Infinity : Math.max(removeInSeconds, 0);
@@ -111,6 +117,7 @@ export const useDemessifierGuiNotificationsList = defineStore({
         interval: interval,
         maxTimeSeconds: maxTimeSeconds,
         remainingTimeSeconds: maxTimeSeconds,
+        isGone: false,
       };
       return notificationId;
     },
@@ -142,14 +149,19 @@ export const useDemessifierGuiNotificationsList = defineStore({
       const notification = this.notificationsList[notificationId];
       notification.remainingTimeSeconds = notification.maxTimeSeconds;
     },
-    getOpacityFraction(notificationId: string) {
+    getOpacityFraction(notificationId: string): number {
       const notification = this.notificationsList[notificationId];
+      if (notification.isGone) return 0;
       const remainingTimeSeconds = notification.remainingTimeSeconds;
-      if (remainingTimeSeconds > this.fadeOutDurationSeconds) return 1;
+      if (remainingTimeSeconds > FADE_OUT_DURATION_S) return 1;
       return (
         remainingTimeSeconds /
-        Math.min(notification.maxTimeSeconds, this.fadeOutDurationSeconds)
+        Math.min(notification.maxTimeSeconds, FADE_OUT_DURATION_S)
       );
+    },
+    getIsGone(notificationId: string): boolean {
+      const notification = this.notificationsList[notificationId];
+      return notification.isGone;
     },
   },
 });
