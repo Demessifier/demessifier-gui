@@ -1,6 +1,7 @@
 import {
   faCircleHalfStroke,
   faIcons,
+  faLink,
   faPalette,
   faTable,
 } from "@fortawesome/free-solid-svg-icons";
@@ -9,6 +10,7 @@ import ColorSchemeSwitch from "../component/global-controller/ColorSchemeSwitch.
 import StatusBox from "../component/StatusBox.vue";
 import ColorPalette from "../component/global-controller/ColorPalette.vue";
 import ButtonWithIconShowcase from "../component/layout/ButtonWithIconShowcase.vue";
+import { ButtonWithIconLink } from "../component";
 
 export type Path = `/${string}`;
 export type PathsList = { [key: string]: Path };
@@ -18,6 +20,7 @@ const clientPaths: PathsList = {
   scheme: "/color-scheme-switch",
   status: "/status-box",
   iconButton: "/button-with-icon",
+  iconButtonLink: "/button-with-icon-link",
 };
 
 type Keys = keyof typeof clientPaths;
@@ -82,9 +85,20 @@ const MENU_ICON_BUTTON: MenuItem<typeof ButtonWithIconShowcase> = {
   metaTitle: "ButtonWithIcon",
 };
 
+const MENU_ICON_BUTTON_LINK: MenuItem<typeof ButtonWithIconLink> = {
+  name: "ButtonWithIconLink",
+  component: async () => ButtonWithIconLink,
+  componentProps: {} as InstanceType<typeof ButtonWithIconLink>["$props"],
+  path: clientPaths.iconButtonLink,
+  title: "ButtonWithIconLink",
+  fa: faLink,
+  metaTitle: "ButtonWithIcon",
+};
+
 export const menuExample: MenuItemAny[] = [
   MENU_COLORS,
   MENU_SCHEME,
   MENU_STATUS,
   MENU_ICON_BUTTON,
+  MENU_ICON_BUTTON_LINK,
 ];
