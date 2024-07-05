@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, type ComputedRef, ref, useSlots } from "vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
   statusBoxFlavor,
-  StatusBoxFlavorItem,
-  StatusBoxFlavorName,
+  type StatusBoxFlavorItem,
+  type StatusBoxFlavorName,
 } from "../provider/status-box";
 import { faCircleXmark, faThumbTack } from "@fortawesome/free-solid-svg-icons";
 
@@ -39,11 +39,13 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits(["close-status-box", "pin-status-box"]);
 
-const boxType: StatusBoxFlavorItem = statusBoxFlavor[props.boxFlavorName];
+const boxType: ComputedRef<StatusBoxFlavorItem> = computed(
+  () => statusBoxFlavor[props.boxFlavorName],
+);
 const unMinimizeTooltip = `Expand: \n${props.headlineText}`;
 const minimized = ref(props.initializeMinimized);
-const boxColor = computed(() => `var(--${boxType.color})`);
-const boxBgColor = computed(() => `var(--${boxType.bgColor})`);
+const boxColor = computed(() => `var(--${boxType.value.color})`);
+const boxBgColor = computed(() => `var(--${boxType.value.bgColor})`);
 
 function switchMinimized() {
   minimized.value = !minimized.value;
@@ -90,7 +92,7 @@ function unMinimize() {
         <span v-if="!minimized">{{ headlineText }}</span>
       </h3>
     </div>
-    <div class="content" v-if="!minimized && $slots.default">
+    <div class="content" v-if="!minimized && !!useSlots()['default']">
       <!-- @slot Contents of the box. -->
       <slot></slot>
     </div>
