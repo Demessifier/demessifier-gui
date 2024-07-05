@@ -14,7 +14,7 @@ function getStyle(id: string): CSSStyleDeclarationSubset {
   const isGone = demessifierGuiNotificationsList.getIsGone(id);
   return {
     opacity: `${demessifierGuiNotificationsList.getOpacityFraction(id)}`,
-    transition: `opacity ${OPACITY_STEP_DURATION_MS}ms linear, max-height ${HEIGHT_FADE_DURATION_MS}ms ease`,
+    transition: `opacity ${OPACITY_STEP_DURATION_MS}ms linear, max-height ${HEIGHT_FADE_DURATION_MS}ms linear`,
     maxHeight: isGone ? "0" : "100rem",
     pointerEvents: isGone ? "none" : "auto",
   };
