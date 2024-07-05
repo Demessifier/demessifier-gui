@@ -18,11 +18,11 @@ interface Props {
   /**
    * Is the button and link disabled?
    */
-  disabled: boolean;
+  disabled?: boolean;
   /**
    * Whether the target address will be open in a new browser tab or the same one.
    */
-  openInNewTab: boolean;
+  openInNewTab?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -50,6 +50,7 @@ const props = withDefaults(defineProps<Props>(), {
 <style lang="scss" scoped>
 a.button-wrapper {
   text-decoration: none;
+  display: inline-block;
 }
 
 a.disabled {

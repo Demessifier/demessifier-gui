@@ -88,7 +88,12 @@ const MENU_ICON_BUTTON: MenuItem<typeof ButtonWithIconShowcase> = {
 const MENU_ICON_BUTTON_LINK: MenuItem<typeof ButtonWithIconLink> = {
   name: "ButtonWithIconLink",
   component: async () => ButtonWithIconLink,
-  componentProps: {} as InstanceType<typeof ButtonWithIconLink>["$props"],
+  componentProps: {
+    icon: faLink,
+    text: "I'm a link, but I look like a button",
+    href: "#",
+    openInNewTab: true,
+  } as InstanceType<typeof ButtonWithIconLink>["$props"],
   path: clientPaths.iconButtonLink,
   title: "ButtonWithIconLink",
   fa: faLink,
