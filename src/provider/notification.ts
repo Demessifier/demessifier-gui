@@ -36,8 +36,8 @@ type Notification = {
   statusBoxProps: StatusBoxProps;
   children: VNode[];
   interval: Interval;
-  maxTimeSeconds: number;
-  remainingTimeSeconds: number;
+  maxTimeMilliSeconds: number;
+  remainingTimeMilliSeconds: number;
   isGone: boolean;
 };
 type NotificationsList = { [key: string]: Notification };
@@ -57,7 +57,8 @@ function getLogItems(
 }
 
 export const OPACITY_STEP_DURATION_MS = 500;
-const FADE_OUT_DURATION_S = 5;
+export const FADE_OUT_DURATION_MS = 5 * 1000;
+export const REMOVE_IN_MS = 10 * 1000;
 export const HEIGHT_FADE_DURATION_MS = 500;
 
 export const useDemessifierGuiNotificationsList = defineStore({
@@ -72,12 +73,12 @@ export const useDemessifierGuiNotificationsList = defineStore({
       boxFlavorName: StatusBoxFlavorName,
       headlineText: string,
       children: ChildrenType,
-      removeInSeconds: number | false = 10,
+      removeInMilliSeconds: number | false = REMOVE_IN_MS,
     ): string {
       const props: StatusBoxProps = {
         boxFlavorName,
         headlineText,
-        canBePinned: true,
+        canBePinned: removeInMilliSeconds !== false,
         canBeClosed: true,
       };
       const notificationId = getPseudoRandomString(32);
@@ -97,21 +98,23 @@ export const useDemessifierGuiNotificationsList = defineStore({
           clearInterval(interval);
           return;
         }
-        if (notification.remainingTimeSeconds > 0) {
-          notification.remainingTimeSeconds -= OPACITY_STEP_DURATION_MS / 1000;
+        if (notification.remainingTimeMilliSeconds > 0) {
+          notification.remainingTimeMilliSeconds -= OPACITY_STEP_DURATION_MS;
           return;
         }
         this.removeNotification(notificationId);
       }, OPACITY_STEP_DURATION_MS);
 
-      const maxTimeSeconds =
-        removeInSeconds === false ? Infinity : Math.max(removeInSeconds, 0);
+      const maxTimeMilliSeconds =
+        removeInMilliSeconds === false
+          ? Infinity
+          : Math.max(removeInMilliSeconds, 0);
       this.notificationsList[notificationId] = {
         statusBoxProps: props,
         children: renderChildren(children),
         interval: interval,
-        maxTimeSeconds: maxTimeSeconds,
-        remainingTimeSeconds: maxTimeSeconds,
+        maxTimeMilliSeconds: maxTimeMilliSeconds,
+        remainingTimeMilliSeconds: maxTimeMilliSeconds,
         isGone: false,
       };
       return notificationId;
@@ -122,6 +125,7 @@ export const useDemessifierGuiNotificationsList = defineStore({
     ): StatusBoxProps | null {
       if (notificationId in this.notificationsList) {
         const toBeDeleted = this.notificationsList[notificationId];
+        if (!toBeDeleted) return null;
         clearInterval(toBeDeleted.interval);
         toBeDeleted.isGone = true;
         setTimeout(() => {
@@ -136,29 +140,32 @@ export const useDemessifierGuiNotificationsList = defineStore({
     },
     interruptCountDown(notificationId: string) {
       const notification = this.notificationsList[notificationId];
+      if (!notification) return;
       if (notification.interval !== null) {
         clearInterval(notification.interval);
       }
-      notification.maxTimeSeconds = Infinity;
+      notification.maxTimeMilliSeconds = Infinity;
       notification.statusBoxProps.canBePinned = false;
       this.resetTimer(notificationId);
     },
     resetTimer(notificationId: string) {
       const notification = this.notificationsList[notificationId];
-      notification.remainingTimeSeconds = notification.maxTimeSeconds;
+      if (!notification) return;
+      notification.remainingTimeMilliSeconds = notification.maxTimeMilliSeconds;
     },
     getOpacityFraction(notificationId: string): number {
       const notification = this.notificationsList[notificationId];
-      if (notification.isGone) return 0;
-      const remainingTimeSeconds = notification.remainingTimeSeconds;
-      if (remainingTimeSeconds > FADE_OUT_DURATION_S) return 1;
+      if (!notification || notification.isGone) return 0;
+      const remainingTimeMilliSeconds = notification.remainingTimeMilliSeconds;
+      if (remainingTimeMilliSeconds > FADE_OUT_DURATION_MS) return 1;
       return (
-        remainingTimeSeconds /
-        Math.min(notification.maxTimeSeconds, FADE_OUT_DURATION_S)
+        remainingTimeMilliSeconds /
+        Math.min(notification.maxTimeMilliSeconds, FADE_OUT_DURATION_MS)
       );
     },
     getIsGone(notificationId: string): boolean {
       const notification = this.notificationsList[notificationId];
+      if (!notification) return true;
       return notification.isGone;
     },
   },
