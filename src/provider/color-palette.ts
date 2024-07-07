@@ -6,7 +6,7 @@ type ColorAndComplement = {
   complementValue: Color;
 };
 
-type ColorPalette = {
+export type ColorPalette = {
   [color: string]: ColorAndComplement;
 };
 
@@ -121,11 +121,18 @@ export function getColorNameComplementFromPlainColorName(
 /**
  * Set the default CSS color variables.
  */
-export function setDefaultColors() {
-  for (const [key, value] of Object.entries(defaultColors)) {
+export function setColors(colorPalette: ColorPalette) {
+  for (const [key, value] of Object.entries(colorPalette)) {
     setColor(`color-${key}`, value.value);
     setColor(`color-${key}-complement`, value.complementValue);
   }
+}
+
+/**
+ * Set the default CSS color variables.
+ */
+export function setDefaultColors() {
+  setColors(defaultColors);
 }
 
 /**

@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
-import { setDefaultColors } from "./provider/color-palette";
+import {
+  type ColorPalette,
+  setColors,
+  setDefaultColors,
+} from "./provider/color-palette";
 import * as Z_INDEX from "./provider/z-index";
 import MenuLeft from "./component/layout/MenuLeft.vue";
 import { type MenuItemAny } from "./provider/menu";
@@ -61,9 +65,12 @@ setDefaultColors();
 interface Props {
   mainHeaderLogo: LogoSection[];
   menu: MenuItemAny[];
+  colorPalette: ColorPalette;
 }
 
 const props = defineProps<Props>();
+
+setColors(props.colorPalette);
 </script>
 
 <template>

@@ -24,14 +24,14 @@ const useDemessifierGuiColorScheme = defineStore({
       setColorScheme(scheme);
       setDefaultBackgroundColor(getColorSchemeDefaultBackgroundColor(scheme));
     },
-    resetScheme() {
+    reapplyScheme() {
       this.switchSchemeTo(this.colorScheme);
     },
   },
 });
 
 const colorSchemeStore = useDemessifierGuiColorScheme();
-colorSchemeStore.resetScheme();
+colorSchemeStore.reapplyScheme();
 </script>
 
 <template>

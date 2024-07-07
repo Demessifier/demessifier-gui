@@ -24,7 +24,8 @@ import {
   type HtmlElementSelector,
 } from "./provider/html-element";
 import { DEVELOPMENT } from "./provider/development-environment";
-import { LogoSection, headerLogoExample } from "./model/logo-section";
+import { type LogoSection, headerLogoExample } from "./model/logo-section";
+import { type ColorPalette, defaultColors } from "./provider/color-palette";
 
 export {
   ButtonWithIcon,
@@ -46,9 +47,14 @@ export function mountApp(
   menu: MenuItemAny[] = menuExample,
   appPlugins: any[] = [],
   headerLogoProps: LogoSection[] = headerLogoExample,
+  colorPalette: ColorPalette = defaultColors,
 ): ReturnType<typeof createApp> {
   const mountToElement = getElementBySelector(targetElementSelector);
-  const app = createApp(App, { mainHeaderLogo: headerLogoProps, menu: menu });
+  const app = createApp(App, {
+    mainHeaderLogo: headerLogoProps,
+    menu: menu,
+    colorPalette: colorPalette,
+  });
   app.use(pinia);
   app.use(router);
   for (const plugin of appPlugins) {
