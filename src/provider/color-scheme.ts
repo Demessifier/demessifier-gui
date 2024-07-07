@@ -89,7 +89,7 @@ export function getDefaultBackgroundColor(bgColorIfNotFound?: Color): Color {
   // color not found
   return (
     bgColorIfNotFound ?? // pre-selected
-    new ColorRGBA(127, 127, 127) // grey
+    new ColorRGBA(128, 128, 128) // grey
   );
 }
 

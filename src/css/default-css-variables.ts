@@ -13,7 +13,7 @@ export function generateDefaultCssVariables(): string {
     result += `  --color-${key}: ${value.value.hexStringNoAlpha};\n`;
     result += `  --color-${key}-complement: ${value.complementValue.hexStringNoAlpha};\n`;
   }
-  result += `  --default-bg-color: grey;\n`;
+  result += `  --default-bg-color: #808080;\n`;
   result += "}\n";
   return result;
 }
