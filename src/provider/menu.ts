@@ -8,7 +8,7 @@ import {
 import { type IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import ColorSchemeSwitch from "../component/global-controller/ColorSchemeSwitch.vue";
 import StatusBox from "../component/StatusBox.vue";
-import ColorPalette from "../component/global-controller/ColorPalette.vue";
+import ColorPalette from "../component/global-controller/ColorPicker.vue";
 import ButtonWithIconShowcase from "../component/layout/ButtonWithIconShowcase.vue";
 import { ButtonWithIconLink } from "../component";
 

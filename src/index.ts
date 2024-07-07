@@ -13,7 +13,7 @@ import {
   ButtonWithIcon,
   ButtonWithIconLink,
   ColorSchemeSwitch,
-  ColorPalette,
+  ColorPicker,
   StatusBox,
 } from "./component";
 import * as model from "./model";
@@ -30,7 +30,7 @@ export {
   ButtonWithIcon,
   ButtonWithIconLink,
   ColorSchemeSwitch,
-  ColorPalette,
+  ColorPicker,
   StatusBox,
   model,
   provider,

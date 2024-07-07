@@ -1,4 +1,4 @@
-import ColorPalette from "./ColorPalette.vue";
+import ColorPalette from "./ColorPicker.vue";
 import {
   defaultColors,
   getColorNameComplementFromPlainColorName,

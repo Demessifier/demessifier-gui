@@ -2,7 +2,7 @@ import {
   ButtonWithIcon,
   ButtonWithIconLink,
   ColorSchemeSwitch,
-  ColorPalette,
+  ColorPicker,
 } from "./global-controller";
 import * as layout from "./layout";
 
@@ -11,6 +11,6 @@ export {
   ButtonWithIcon,
   ButtonWithIconLink,
   ColorSchemeSwitch,
-  ColorPalette,
+  ColorPicker,
 };
 export { default as StatusBox } from "./StatusBox.vue";
