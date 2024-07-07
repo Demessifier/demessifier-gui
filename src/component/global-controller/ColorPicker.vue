@@ -5,11 +5,11 @@ import {
   getColorNameFromPlainColorName,
   getCurrentColor,
   setColor,
-  ValidColorName,
+  type ValidColorName,
 } from "../../provider/color-palette";
 import StatusBox from "../StatusBox.vue";
 import ColorPaletteTdContrast from "./ColorPaletteTdContrast.vue";
-import { Ref, ref } from "vue";
+import { type Ref, ref } from "vue";
 import { Color } from "../../model/color";
 
 const COLOR_NAME = "color_name";

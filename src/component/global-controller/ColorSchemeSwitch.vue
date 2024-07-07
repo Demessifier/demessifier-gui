@@ -4,7 +4,7 @@ import { faCircleHalfStroke } from "@fortawesome/free-solid-svg-icons";
 import {
   supportedColorSchemes,
   getColorSchemeConfiguredOrPreferred,
-  Scheme,
+  type Scheme,
   setColorScheme,
   setDefaultBackgroundColor,
   getColorSchemeDefaultBackgroundColor,

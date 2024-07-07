@@ -3,7 +3,7 @@ import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { setDefaultColors } from "./provider/color-palette";
 import * as Z_INDEX from "./provider/z-index";
 import MenuLeft from "./component/layout/MenuLeft.vue";
-import type { MenuItemAny } from "./provider/menu";
+import { type MenuItemAny } from "./provider/menu";
 import MenuTopRight from "./component/layout/MenuTopRight.vue";
 import MainHeaderLogo from "./component/layout/MainHeaderLogo.vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";

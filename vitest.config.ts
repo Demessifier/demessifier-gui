@@ -1,5 +1,5 @@
 import { defineConfig } from "vitest/config";
-import { mergeConfig, UserConfig } from "vite";
+import { mergeConfig, type UserConfig } from "vite";
 import viteConfig from "./vite.config";
 
 // https://vitest.dev/config/

@@ -7,7 +7,7 @@ import "./css/table.css";
 import "./css/form.css";
 import { getRouterForMenu } from "./provider/router";
 import { menuExample } from "./provider/menu";
-import type { MenuItemAny } from "./provider/menu";
+import { type MenuItemAny } from "./provider/menu";
 
 import {
   ButtonWithIcon,
@@ -21,7 +21,7 @@ import * as provider from "./provider";
 import App from "./App.vue";
 import {
   getElementBySelector,
-  HtmlElementSelector,
+  type HtmlElementSelector,
 } from "./provider/html-element";
 import { DEVELOPMENT } from "./provider/development-environment";
 import { LogoSection, headerLogoExample } from "./model/logo-section";

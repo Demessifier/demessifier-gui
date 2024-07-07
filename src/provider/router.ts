@@ -1,10 +1,10 @@
 import {
   createRouter,
   createWebHistory,
-  Router,
-  RouteRecordRaw,
+  type Router,
+  type RouteRecordRaw,
 } from "vue-router";
-import type { MenuItemAny } from "./menu";
+import { type MenuItemAny } from "./menu";
 import NotFound from "../component/layout/NotFound.vue";
 
 export function getRouterForMenu(
