@@ -10,6 +10,7 @@ import {
   getColorSchemeDefaultBackgroundColor,
 } from "../../provider/color-scheme";
 import ButtonWithIcon from "./ButtonWithIcon.vue";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 const useDemessifierGuiColorScheme = defineStore({
   id: "demessifier-gui:color-scheme",
@@ -35,17 +36,18 @@ colorSchemeStore.reapplyScheme();
 </script>
 
 <template>
-  <div class="buttons">
-    <ButtonWithIcon
-      v-for="scheme in supportedColorSchemes"
-      :key="scheme"
-      :icon="faCircleHalfStroke"
-      :text="`Switch to ${scheme} scheme`"
-      @click="colorSchemeStore.switchSchemeTo(scheme)"
-      :disabled="colorSchemeStore.colorScheme == scheme"
-      :id="`scheme-switch-${scheme}`"
-    ></ButtonWithIcon>
-  </div>
+  <label>
+    <FontAwesomeIcon :icon="faCircleHalfStroke" />
+    &nbsp; Color scheme:
+    <select
+      v-model="colorSchemeStore.colorScheme"
+      @change="colorSchemeStore.reapplyScheme()"
+    >
+      <option v-for="scheme in supportedColorSchemes" :value="scheme">
+        {{ scheme }}
+      </option>
+    </select>
+  </label>
 </template>
 
 <style lang="scss" scoped>
