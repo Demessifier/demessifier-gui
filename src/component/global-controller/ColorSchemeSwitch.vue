@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { defineStore } from "pinia";
 import { faCircleHalfStroke } from "@fortawesome/free-solid-svg-icons";
 import {
   supportedColorSchemes,
@@ -11,15 +11,27 @@ import {
 } from "../../provider/color-scheme";
 import ButtonWithIcon from "./ButtonWithIcon.vue";
 
-const preferredColorScheme = ref(getColorSchemeConfiguredOrPreferred());
+const useDemessifierGuiColorScheme = defineStore({
+  id: "demessifier-gui:color-scheme",
+  state: () => {
+    return {
+      colorScheme: getColorSchemeConfiguredOrPreferred(), // share this as a global variable between all ColorSchemeSwitch instances
+    };
+  },
+  actions: {
+    switchSchemeTo(scheme: Scheme) {
+      this.colorScheme = scheme;
+      setColorScheme(scheme);
+      setDefaultBackgroundColor(getColorSchemeDefaultBackgroundColor(scheme));
+    },
+    resetScheme() {
+      this.switchSchemeTo(this.colorScheme);
+    },
+  },
+});
 
-function switchSchemeTo(scheme: Scheme) {
-  preferredColorScheme.value = scheme;
-  setColorScheme(preferredColorScheme.value);
-  setDefaultBackgroundColor(getColorSchemeDefaultBackgroundColor(scheme));
-}
-
-switchSchemeTo(preferredColorScheme.value);
+const colorSchemeStore = useDemessifierGuiColorScheme();
+colorSchemeStore.resetScheme();
 </script>
 
 <template>
@@ -29,8 +41,8 @@ switchSchemeTo(preferredColorScheme.value);
       :key="scheme"
       :icon="faCircleHalfStroke"
       :text="`Switch to ${scheme} scheme`"
-      @click="switchSchemeTo(scheme)"
-      :disabled="preferredColorScheme == scheme"
+      @click="colorSchemeStore.switchSchemeTo(scheme)"
+      :disabled="colorSchemeStore.colorScheme == scheme"
       :id="`scheme-switch-${scheme}`"
     ></ButtonWithIcon>
   </div>
