@@ -11,23 +11,19 @@ type Interval = ReturnType<typeof setInterval>;
 function renderChildren(children?: ChildrenType): VNode[] {
   if (!children) return [];
   if (typeof children === "string") {
-    console.log([h("p", {}, children)]);
     return [h("p", {}, children)];
   }
   if (Array.isArray(children)) {
     if (typeof children[0] === "string") {
       if (children.every((child) => typeof child === "string")) {
-        console.log(children.map((child) => h("p", {}, child)));
         return children.map((child) => h("p", {}, child));
       }
       throw new Error(
         "Some of the elements of this array are strings and some are not.",
       );
     }
-    console.log(children);
     return children as VNode[];
   }
-  console.log([children]);
   return [children as VNode];
   // throw new Error(`Unexpected type of children '${typeof children}'.`);
 }

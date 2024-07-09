@@ -25,5 +25,4 @@ export function writeDefaultCssVariables() {
   fs.writeFileSync(fileName, content);
 }
 
-// console.log(generateDefaultCssVariables());
 writeDefaultCssVariables();

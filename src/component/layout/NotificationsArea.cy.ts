@@ -70,7 +70,6 @@ describe("NotificationsArea component", function () {
             Object.keys(demessifierGuiNotificationsList.notificationsList),
         ).to.be.at.most(shouldExist.length);
         cy.get("div#notifications-backdrop > *").should((notifications) => {
-          console.log(notifications.length, mightExist.length);
           expect(notifications.length, "gui component").to.be.at.least(
             mightExist.length,
           );
