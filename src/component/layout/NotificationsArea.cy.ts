@@ -1,6 +1,6 @@
 import NotificationsArea from "./NotificationsArea.vue";
 import { useDemessifierGuiNotificationsList } from "../../provider/notification";
-import { pinia } from "../../index";
+import { createTestingPinia } from "@pinia/testing";
 
 type NotificationInfo = {
   id: string;
@@ -12,18 +12,20 @@ type NotificationRegister = { [key: string]: NotificationInfo };
 describe("NotificationsArea component", function () {
   beforeEach(function () {
     cy.mount(NotificationsArea, {
-      global: { plugins: [pinia] },
+      global: {
+        plugins: [
+          createTestingPinia({ stubActions: false, createSpy: cy.spy }),
+        ],
+      },
     });
-    this.demessifierGuiNotificationsList = useDemessifierGuiNotificationsList();
-    this.demessifierGuiNotificationsList.$reset();
-    // Object.keys(this.demessifierGuiNotificationsList.notificationsList).forEach(
-    //   (k) => delete this.demessifierGuiNotificationsList.notificationsList[k],
-    // );
+    const demessifierGuiNotificationsList =
+      useDemessifierGuiNotificationsList();
+    demessifierGuiNotificationsList.$reset();
 
     this.notificationRegister = {} as NotificationRegister;
 
     this.addNotification = function (timeoutSeconds: number | false): string {
-      const id = this.demessifierGuiNotificationsList.addNewNotification(
+      const id = demessifierGuiNotificationsList.addNewNotification(
         "success",
         "headline",
         "body",
@@ -36,12 +38,16 @@ describe("NotificationsArea component", function () {
     };
 
     this.removeNotification = function (id: string) {
-      this.demessifierGuiNotificationsList.removeNotification(id);
+      const demessifierGuiNotificationsList =
+        useDemessifierGuiNotificationsList();
+      demessifierGuiNotificationsList.removeNotification(id, true);
       this.notificationRegister[id].endTimeMillis = 0;
     };
 
     this.testNotifications = function () {
       const gracePeriodMillis = 500; // increase if tests are running on a slow machine
+      const demessifierGuiNotificationsList =
+        useDemessifierGuiNotificationsList();
       cy.then(() => {
         const now = Date.now();
         const shouldExist = (
@@ -51,17 +57,17 @@ describe("NotificationsArea component", function () {
           (n) => n.endTimeMillis > now + gracePeriodMillis,
         );
         const lengthOfPinia = Object.keys(
-          this.demessifierGuiNotificationsList.notificationsList,
+          demessifierGuiNotificationsList.notificationsList,
         ).length;
         expect(
           lengthOfPinia,
           "pinia store " +
-            Object.keys(this.demessifierGuiNotificationsList.notificationsList),
+            Object.keys(demessifierGuiNotificationsList.notificationsList),
         ).to.be.at.least(mightExist.length);
         expect(
           lengthOfPinia,
           "pinia store " +
-            Object.keys(this.demessifierGuiNotificationsList.notificationsList),
+            Object.keys(demessifierGuiNotificationsList.notificationsList),
         ).to.be.at.most(shouldExist.length);
         cy.get("div#notifications-backdrop > *").should((notifications) => {
           console.log(notifications.length, mightExist.length);
@@ -79,8 +85,10 @@ describe("NotificationsArea component", function () {
   });
 
   it("Is empty in the beginning", function () {
+    const demessifierGuiNotificationsList =
+      useDemessifierGuiNotificationsList();
     expect(
-      Object.keys(this.demessifierGuiNotificationsList.notificationsList),
+      Object.keys(demessifierGuiNotificationsList.notificationsList),
       "pinia store - init",
     ).to.have.length(0);
     cy.get("div#notifications-backdrop > *").should((notifications) => {

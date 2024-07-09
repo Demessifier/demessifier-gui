@@ -119,10 +119,7 @@ export const useDemessifierGuiNotificationsList = defineStore({
       };
       return notificationId;
     },
-    removeNotification(
-      notificationId: string,
-      ignoreMissing: boolean = false,
-    ): StatusBoxProps | null {
+    removeNotification(notificationId: string, ignoreMissing: boolean = true) {
       if (notificationId in this.notificationsList) {
         const toBeDeleted = this.notificationsList[notificationId];
         if (!toBeDeleted) return null;
@@ -131,9 +128,9 @@ export const useDemessifierGuiNotificationsList = defineStore({
         setTimeout(() => {
           delete this.notificationsList[notificationId];
         }, HEIGHT_FADE_DURATION_MS);
-        return toBeDeleted.statusBoxProps;
+        return;
       }
-      if (ignoreMissing) return null;
+      if (ignoreMissing) return;
       throw new Error(
         `Notification ID ${notificationId} is not in the notifications list.`,
       );
