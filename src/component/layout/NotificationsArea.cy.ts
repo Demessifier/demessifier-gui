@@ -89,43 +89,43 @@ describe("NotificationsArea component", function () {
     this.testNotifications();
   });
 
-  describe("Add notification", function () {
+  describe("Add notification 1", function () {
     beforeEach(function () {
       this.addNotification(1);
     });
 
-    it("Renders all added notifications", function () {
+    it("Renders all added notifications 1", function () {
       this.testNotifications();
     });
 
-    describe("Add notification", function () {
+    describe("Add notification 2", function () {
       beforeEach(function () {
         this.addNotification(2);
       });
 
-      it("Renders all added notifications", function () {
+      it("Renders all added notifications 2", function () {
         this.testNotifications();
       });
 
-      describe("Add notification", function () {
+      describe("Add notification 3", function () {
         beforeEach(function () {
           this.addNotification(false);
         });
 
-        it("Renders all added notifications", function () {
+        it("Renders all added notifications 3", function () {
           this.testNotifications();
         });
 
-        describe("Add notification", function () {
+        describe("Add notification 4", function () {
           beforeEach(function () {
             this.idToBeClosed = this.addNotification(2);
           });
 
-          it("Renders all added notifications", function () {
+          it("Renders all added notifications 4", function () {
             this.testNotifications();
           });
 
-          describe("Add notification", function () {
+          describe("Add notification 5", function () {
             beforeEach(function () {
               this.idToBeRenewed = this.addNotification(1);
               // TODO: mouse over this one and reset its endTimeMillis:
@@ -133,7 +133,7 @@ describe("NotificationsArea component", function () {
               // notification.endTimeMillis = Date.now() + notification.timeoutSeconds * 1000;
             });
 
-            it("Renders all added notifications", function () {
+            it("Renders all added notifications 5", function () {
               this.testNotifications();
             });
 
