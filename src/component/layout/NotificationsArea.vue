@@ -38,7 +38,11 @@ function getStyle(id: string): CSSStyleDeclarationSubset {
       @mousemove="demessifierGuiNotificationsList.resetTimer(id as string)"
       :style="getStyle(id as string)"
     >
-      <component v-for="child in notification.children" :is="child" />
+      <component
+        v-for="child in notification.children"
+        :key="child"
+        :is="child"
+      />
     </StatusBox>
   </div>
 </template>

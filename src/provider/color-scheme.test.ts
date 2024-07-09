@@ -49,7 +49,9 @@ test("Color scheme", async () => {
 
   let previousScheme = getColorSchemeConfigured();
   for (let _i = 0; _i < 10 * supportedColorSchemes.length; _i++) {
-    const randomScheme = getPseudoRandomItem(supportedColorSchemes, [previousScheme]);
+    const randomScheme = getPseudoRandomItem(supportedColorSchemes, [
+      previousScheme,
+    ]);
     expect(randomScheme).to.be.ok;
     setColorScheme(randomScheme as Scheme);
     const activeScheme = getColorSchemeConfigured();

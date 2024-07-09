@@ -7,7 +7,7 @@ import {
   selectByContrastRatio,
   setDefaultColors,
 } from "../../provider/color-palette";
-import  { type StatusBoxFlavorName } from "../../provider/status-box";
+import { type StatusBoxFlavorName } from "../../provider/status-box";
 import { Color } from "../../model/color";
 
 function testColorOrComplement(

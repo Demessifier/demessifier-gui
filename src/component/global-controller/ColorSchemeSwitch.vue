@@ -43,7 +43,11 @@ colorSchemeStore.reapplyScheme();
       v-model="colorSchemeStore.colorScheme"
       @change="colorSchemeStore.reapplyScheme()"
     >
-      <option v-for="scheme in supportedColorSchemes" :value="scheme">
+      <option
+        v-for="scheme in supportedColorSchemes"
+        :key="scheme"
+        :value="scheme"
+      >
         {{ scheme }}
       </option>
     </select>
