@@ -62,43 +62,100 @@ function test(
 
 describe("StatusBox component", () => {
   for (const flavor of getAllStatusBoxFlavors()) {
-    describe(`State = ${flavor}`, () => {
-      const title = `Testing state ${flavor}`;
-      const testingText = `Testing text for ${flavor}...`;
-      it("Renders and switches minimized", () => {
+    describe(`Maximized state = ${flavor}`, () => {
+      beforeEach(() => {
         cy.mount(StatusBox, {
           props: { headlineText: title, boxFlavorName: flavor },
           slots: { default: testingText },
         });
-        test(flavor, testingText, title, false);
+      });
 
-        // minimizing and un-minimizing
-        cy.get("div.status-box").click("bottom"); // outside h3
-        test(flavor, testingText, title, false);
-        cy.get("h3").click();
-        test(flavor, testingText, title, true);
-        cy.get("div.status-box").click("bottom"); // outside h3
-        test(flavor, testingText, title, false);
-        cy.get("h3").click();
-        test(flavor, testingText, title, true);
-        cy.get("h3").click();
+      const title = `Testing state ${flavor}`;
+      const testingText = `Testing text for ${flavor}...`;
+
+      it("Renders maximized", () => {
         test(flavor, testingText, title, false);
       });
-      it("Renders minimized", () => {
-        cy.mount(StatusBox, {
-          props: {
-            headlineText: title,
-            boxFlavorName: flavor,
-            initializeMinimized: true,
-          },
-          slots: { default: testingText },
+
+      describe("click bottom", () => {
+        beforeEach(() => {
+          cy.get("div.status-box").click("bottom"); // outside h3
         });
-        test(flavor, testingText, title, true);
-        cy.get("div.status-box").click();
-        test(flavor, testingText, title, false);
+
+        it("does not minimize", () => {
+          test(flavor, testingText, title, false);
+        });
+
+        describe("click header", () => {
+          beforeEach(() => {
+            cy.get("h3").click();
+          });
+
+          it("minimizes", () => {
+            test(flavor, testingText, title, true);
+          });
+
+          describe("click bottom", () => {
+            beforeEach(() => {
+              cy.get("div.status-box").click("bottom"); // outside h3
+            });
+
+            it("maximizes", () => {
+              test(flavor, testingText, title, false);
+            });
+
+            describe("click header", () => {
+              beforeEach(() => {
+                cy.get("h3").click();
+              });
+
+              it("minimizes", () => {
+                test(flavor, testingText, title, true);
+              });
+
+              describe("click header", () => {
+                beforeEach(() => {
+                  cy.get("h3").click();
+                });
+
+                it("maximizes", () => {
+                  test(flavor, testingText, title, false);
+                });
+              });
+            });
+          });
+        });
+      });
+
+      describe(`Minimized state = ${flavor}`, () => {
+        beforeEach(() => {
+          cy.mount(StatusBox, {
+            props: {
+              headlineText: title,
+              boxFlavorName: flavor,
+              initializeMinimized: true,
+            },
+            slots: { default: testingText },
+          });
+        });
+
+        it("Renders minimized", () => {
+          test(flavor, testingText, title, true);
+        });
+
+        describe("click box", () => {
+          beforeEach(() => {
+            cy.get("div.status-box").click();
+          });
+
+          it("maximizes", () => {
+            test(flavor, testingText, title, false);
+          });
+        });
       });
     });
   }
+
   describe("Buttons row", () => {
     for (const canBeClosed of [true, false]) {
       for (const canBePinned of [true, false]) {
