@@ -9,7 +9,6 @@ import {
   setDefaultBackgroundColor,
   getColorSchemeDefaultBackgroundColor,
 } from "../../provider/color-scheme";
-import ButtonWithIcon from "./ButtonWithIcon.vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 const useDemessifierGuiColorScheme = defineStore({

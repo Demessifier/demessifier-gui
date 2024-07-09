@@ -1,52 +1,108 @@
 import ColorSchemeSwitch from "./ColorSchemeSwitch.vue";
 import {
   supportedColorSchemes,
-  getColorSchemeConfigured,
   getColorSchemeConfiguredOrPreferred,
   Scheme,
 } from "../../provider/color-scheme";
-import { getPseudoRandomItem } from "../../provider/randomness";
+import { createTestingPinia } from "@pinia/testing";
 
-describe("ColorSchemeSwitch component", () => {
+function selectScheme(scheme: Scheme) {
+  cy.get("select").select(scheme);
+}
+
+function checkThatEachOptionIsPresent() {
   for (const scheme of supportedColorSchemes) {
-    it(`Renders ${scheme}`, () => {
-      cy.mount(ColorSchemeSwitch);
-      const button_selector = `button#scheme-switch-${scheme}`;
-      cy.get(button_selector).should((btn) => {
-        expect(btn).to.contain.text(`Switch to ${scheme} scheme`);
-
-        if (scheme === getColorSchemeConfigured()) {
-          expect(btn).to.have.attr("disabled", "disabled");
-        } else {
-          expect(btn).to.not.have.attr("disabled");
-        }
-      });
-      cy.get(`${button_selector} svg`).should((svg) => {
-        expect(svg).to.have.length(1);
-      });
+    cy.get(`select option[value=${scheme}]`).should((option) => {
+      expect(option).to.have.length(1);
     });
   }
-  it("Switches (epilepsy warning when watching this)", () => {
-    cy.mount(ColorSchemeSwitch);
-    let activeScheme: Scheme = getColorSchemeConfiguredOrPreferred();
-    for (let _i = 0; _i < 10 * supportedColorSchemes.length; _i++) {
-      const randomScheme: Scheme = getPseudoRandomItem(supportedColorSchemes, [
-        activeScheme,
-      ]);
+}
 
-      cy.get(`button#scheme-switch-${activeScheme}`).should((btn) => {
-        expect(btn).to.have.attr("disabled", "disabled");
+function checkAllOptions(scheme: Scheme) {
+  cy.get("select option").each((o: JQuery<HTMLOptionElement>) => {
+    cy.wrap(o).should((option: JQuery<HTMLOptionElement>) => {
+      if (option.is(":selected")) {
+        expect(option).to.have.value(scheme);
+      } else {
+        expect(option).not.to.have.value(scheme);
+      }
+    });
+  });
+}
+
+describe("ColorSchemeSwitch component", function () {
+  beforeEach(() => {
+    cy.mount(ColorSchemeSwitch, {
+      global: {
+        plugins: [
+          createTestingPinia({ stubActions: false, createSpy: cy.spy }),
+        ],
+      },
+    });
+  });
+
+  it("has all options present", () => {
+    checkThatEachOptionIsPresent();
+  });
+
+  it("renders with the correct scheme active", () => {
+    const activeScheme: Scheme = getColorSchemeConfiguredOrPreferred();
+    checkAllOptions(activeScheme);
+  });
+
+  describe("select dark", () => {
+    beforeEach(() => {
+      selectScheme("dark");
+    });
+
+    it("has all options present", () => {
+      checkThatEachOptionIsPresent();
+    });
+
+    it("has the correct scheme active", () => {
+      checkAllOptions("dark");
+    });
+
+    describe("select light", () => {
+      beforeEach(() => {
+        selectScheme("light");
       });
 
-      cy.get(`button#scheme-switch-${randomScheme}`)
-        .should((btn) => {
-          expect(btn).to.not.have.attr("disabled");
-        })
-        .click()
-        .should((btn) => {
-          expect(btn).to.have.attr("disabled", "disabled");
+      it("has all options present", () => {
+        checkThatEachOptionIsPresent();
+      });
+
+      it("has the correct scheme active", () => {
+        checkAllOptions("light");
+      });
+
+      describe("select light again", () => {
+        beforeEach(() => {
+          selectScheme("light");
         });
-      activeScheme = randomScheme;
-    }
+
+        it("has all options present", () => {
+          checkThatEachOptionIsPresent();
+        });
+
+        it("has the correct scheme active", () => {
+          checkAllOptions("light");
+        });
+
+        describe("select dark", () => {
+          beforeEach(() => {
+            selectScheme("dark");
+          });
+
+          it("has all options present", () => {
+            checkThatEachOptionIsPresent();
+          });
+
+          it("has the correct scheme active", () => {
+            checkAllOptions("dark");
+          });
+        });
+      });
+    });
   });
 });
