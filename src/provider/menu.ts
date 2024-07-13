@@ -26,8 +26,8 @@ const clientPaths: PathsList = {
 type Keys = keyof typeof clientPaths;
 export type ClientPath = (typeof clientPaths)[Keys];
 
-export type MenuItemComponentDefinition = {
-  new (...args: any[]): { $props: any };
+export type MenuItemComponentDefinition = new (...args: any[]) => {
+  $props: any;
 };
 
 export type MenuItem<C extends MenuItemComponentDefinition> = {

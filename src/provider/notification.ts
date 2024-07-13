@@ -25,7 +25,6 @@ function renderChildren(children?: ChildrenType): VNode[] {
     return children as VNode[];
   }
   return [children as VNode];
-  // throw new Error(`Unexpected type of children '${typeof children}'.`);
 }
 
 type Notification = {

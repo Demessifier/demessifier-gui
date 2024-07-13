@@ -13,26 +13,35 @@ export function getElementBySelector(
     const result = document.getElementById(selector.elementId);
     if (result) return result;
   }
+
+  function returnFirstOfSelectedElements(
+    selectorInfo: string,
+    result: HTMLCollectionOf<Element>,
+  ) {
+    if (result.length > 1) {
+      console.warn(
+        `Selecting the first of ${result.length} elements of ${selectorInfo}.`,
+      );
+    }
+    return result[0] as HTMLElement;
+  }
+
   if (selector.elementClass) {
     const result = document.getElementsByClassName(selector.elementClass);
     if (result.length > 0) {
-      if (result.length > 1) {
-        console.warn(
-          `Selecting the first of ${result.length} elements of class ${selector.elementClass}.`,
-        );
-      }
-      return result[0] as HTMLElement;
+      return returnFirstOfSelectedElements(
+        `class ${selector.elementClass}`,
+        result,
+      );
     }
   }
   if (selector.elementTag) {
     const result = document.getElementsByTagName(selector.elementTag);
     if (result.length > 0) {
-      if (result.length > 1) {
-        console.warn(
-          `Selecting the first of ${result.length} elements of tag ${selector.elementTag}.`,
-        );
-      }
-      return result[0] as HTMLElement;
+      return returnFirstOfSelectedElements(
+        `tag ${selector.elementTag}`,
+        result,
+      );
     }
   }
   return document.body;

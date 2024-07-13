@@ -67,5 +67,5 @@ export function mountApp(
 }
 
 if (DEVELOPMENT) {
-  const app = mountApp({ elementId: "app" });
+  mountApp({ elementId: "app" });
 }
