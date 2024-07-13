@@ -100,6 +100,11 @@ test("HTML element selector", async () => {
     "path/to/file.txt",
     "/path/to/file.txt",
     "./path/to/file.txt",
+    "/",
+    "#",
+    "javascript/script.js",
+    "/javascript/script.js",
+    "./javascript/script.js"
   ]) {
     console.log(sanitizeHref(okHref));
     console.log(okHref);
