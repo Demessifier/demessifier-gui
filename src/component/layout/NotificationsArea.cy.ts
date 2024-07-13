@@ -30,8 +30,9 @@ describe("NotificationsArea component", () => {
     });
     demessifierGuiNotificationsList = useDemessifierGuiNotificationsList();
     demessifierGuiNotificationsList.$reset();
-    for (let prop in notificationRegister) {
-      if (notificationRegister.hasOwnProperty(prop)) {
+    for (const prop in notificationRegister) {
+      // delete only direct contents (not inherited)
+      if (Object.prototype.hasOwnProperty.call(notificationRegister, prop)) {
         delete notificationRegister[prop];
       }
     }
