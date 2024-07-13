@@ -159,64 +159,71 @@ describe("StatusBox component", () => {
   describe("Buttons row", () => {
     for (const canBeClosed of [true, false]) {
       for (const canBePinned of [true, false]) {
-        it(`Works for canBeClosed=${canBeClosed} canBePinned=${canBePinned}`, () => {
-          cy.mount(StatusBox, {
-            props: {
-              headlineText: "Buttons test",
-              boxFlavorName: getAllStatusBoxFlavors()[0],
-              canBeClosed: canBeClosed,
-              canBePinned: canBePinned,
-            },
-            slots: {
-              default: `canBeClosed=${canBeClosed} canBePinned=${canBePinned}`,
-            },
+        describe(`Works for canBeClosed=${canBeClosed} canBePinned=${canBePinned}`, () => {
+          beforeEach(() => {
+            cy.mount(StatusBox, {
+              props: {
+                headlineText: "Buttons test",
+                boxFlavorName: getAllStatusBoxFlavors()[0],
+                canBeClosed: canBeClosed,
+                canBePinned: canBePinned,
+              },
+              slots: {
+                default: `canBeClosed=${canBeClosed} canBePinned=${canBePinned}`,
+              },
+            });
           });
-          cy.get("div.buttons").should((buttonsDiv) => {
-            expect(buttonsDiv).to.have.length(
-              canBeClosed || canBePinned ? 1 : 0,
+
+          it("Has top row buttons as expected", () => {
+            cy.get("div.buttons").should((buttonsDiv) => {
+              expect(buttonsDiv).to.have.length(
+                canBeClosed || canBePinned ? 1 : 0,
+              );
+            });
+            cy.get("div.buttons span.icon-button").should((buttonIcons) => {
+              expect(buttonIcons).to.have.length(
+                canBeClosed || canBePinned ? 2 : 0,
+              );
+            });
+            cy.get("div.buttons span.icon-button.pin > *").should(
+              (buttonIcons) => {
+                expect(buttonIcons).to.have.length(canBePinned ? 1 : 0);
+              },
+            );
+            cy.get("div.buttons span.icon-button.close > *").should(
+              (buttonIcons) => {
+                expect(buttonIcons).to.have.length(canBeClosed ? 1 : 0);
+              },
             );
           });
-          cy.get("div.buttons span.icon-button").should((buttonIcons) => {
-            expect(buttonIcons).to.have.length(
-              canBeClosed || canBePinned ? 2 : 0,
-            );
-          });
-          cy.get("div.buttons span.icon-button.pin > *").should(
-            (buttonIcons) => {
-              expect(buttonIcons).to.have.length(canBePinned ? 1 : 0);
-            },
-          );
-          cy.get("div.buttons span.icon-button.close > *").should(
-            (buttonIcons) => {
-              expect(buttonIcons).to.have.length(canBeClosed ? 1 : 0);
-            },
-          );
 
-          let closeCount = 0;
-          let pinCount = 0;
+          it("Emits events", () => {
+            let closeCount = 0;
+            let pinCount = 0;
 
-          cy.expectEmitCount("pin-status-box", pinCount);
-          cy.expectEmitCount("close-status-box", closeCount);
-
-          if (canBePinned) {
-            cy.get("div.buttons span.icon-button.pin > *").click();
-            cy.expectEmitCount("pin-status-box", ++pinCount);
-
+            cy.expectEmitCount("pin-status-box", pinCount);
             cy.expectEmitCount("close-status-box", closeCount);
 
-            cy.get("div.buttons span.icon-button.pin > *").click();
-            cy.expectEmitCount("pin-status-box", ++pinCount);
-          }
+            if (canBePinned) {
+              cy.get("div.buttons span.icon-button.pin > *").click();
+              cy.expectEmitCount("pin-status-box", ++pinCount);
 
-          if (canBeClosed) {
-            cy.get("div.buttons span.icon-button.close > *").click();
-            cy.expectEmitCount("close-status-box", ++closeCount);
+              cy.expectEmitCount("close-status-box", closeCount);
 
-            cy.expectEmitCount("interrupt-count-down", pinCount);
+              cy.get("div.buttons span.icon-button.pin > *").click();
+              cy.expectEmitCount("pin-status-box", ++pinCount);
+            }
 
-            cy.get("div.buttons span.icon-button.close > *").click();
-            cy.expectEmitCount("close-status-box", ++closeCount);
-          }
+            if (canBeClosed) {
+              cy.get("div.buttons span.icon-button.close > *").click();
+              cy.expectEmitCount("close-status-box", ++closeCount);
+
+              cy.expectEmitCount("pin-status-box", pinCount);
+
+              cy.get("div.buttons span.icon-button.close > *").click();
+              cy.expectEmitCount("close-status-box", ++closeCount);
+            }
+          });
         });
       }
     }
