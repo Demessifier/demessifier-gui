@@ -1,5 +1,8 @@
 import NotificationsArea from "./NotificationsArea.vue";
-import { useDemessifierGuiNotificationsList } from "../../provider/notification";
+import {
+  type DemessifierGuiNotificationsList,
+  useDemessifierGuiNotificationsList,
+} from "../../provider/notification";
 import { createTestingPinia } from "@pinia/testing";
 
 type NotificationInfo = {
@@ -12,7 +15,7 @@ type NotificationRegister = { [key: string]: NotificationInfo };
 describe("NotificationsArea component", () => {
   const notificationRegister = {} as NotificationRegister;
   let demessifierGuiNotificationsList:
-    | ReturnType<typeof useDemessifierGuiNotificationsList>
+    | DemessifierGuiNotificationsList
     | undefined = undefined;
 
   function getDemessifierGuiNotificationsList() {

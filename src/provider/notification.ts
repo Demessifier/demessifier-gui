@@ -5,7 +5,7 @@ import { type StatusBoxFlavorName } from "./status-box";
 import { getPseudoRandomString } from "./randomness";
 
 type StatusBoxProps = InstanceType<typeof StatusBox>["$props"];
-type ChildrenType = string | string[] | VNode | VNode[];
+export type ChildrenType = string | string[] | VNode | VNode[];
 type Interval = ReturnType<typeof setInterval>;
 
 function renderChildren(children?: ChildrenType): VNode[] {
@@ -116,7 +116,12 @@ export const useDemessifierGuiNotificationsList = defineStore({
       return notificationId;
     },
     removeNotification(notificationId: string, ignoreMissing: boolean = true) {
-      if (notificationId in this.notificationsList) {
+      if (
+        Object.prototype.hasOwnProperty.call(
+          this.notificationsList,
+          notificationId,
+        )
+      ) {
         const toBeDeleted = this.notificationsList[notificationId];
         if (!toBeDeleted) return null;
         clearInterval(toBeDeleted.interval);
