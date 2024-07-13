@@ -227,7 +227,7 @@ header > * {
   background-color: Window;
   border: var(--color-secondary) solid;
   max-height: calc(100vh - $headerHeight - $headerBorderBottom);
-  box-shadow: 0 1em 2em 0 var(--color-secondary);
+  box-shadow: 0 0 1em 0.5em var(--color-secondary);
 
   &.hidden {
     transform: scaleX(0);

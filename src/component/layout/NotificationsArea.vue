@@ -65,6 +65,7 @@ function getStyle(id: string): CSSStyleDeclarationSubset {
     margin: 1em;
     pointer-events: auto;
     border-radius: 0.5rem;
+    box-shadow: 0 0 1em 0.5em var(--default-bg-color);
 
     &.full {
       background-color: var(--default-bg-color);
