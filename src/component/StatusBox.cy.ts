@@ -39,10 +39,10 @@ function test(
   });
   if (expectMinimized) {
     cy.get("div.status-box div.content").should((statusBoxDivContent) => {
-      expect(statusBoxDivContent).to.not.exist;
+      expect(statusBoxDivContent).not.to.exist;
     });
     cy.get("h3 span").should((h3Span) => {
-      expect(h3Span).to.not.exist;
+      expect(h3Span).not.to.exist;
     });
   } else {
     cy.get("div.status-box div.content").should((statusBoxDivContent) => {

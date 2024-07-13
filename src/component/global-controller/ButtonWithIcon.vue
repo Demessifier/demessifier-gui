@@ -19,7 +19,7 @@ interface Props {
   /**
    * Optional on-click function.
    */
-  onClick?: () => undefined;
+  onClick?: () => void;
 }
 
 const props = withDefaults(defineProps<Props>(), {
