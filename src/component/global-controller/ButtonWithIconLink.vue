@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { type IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import ButtonWithIcon from "./ButtonWithIcon.vue";
+import { sanitizeHref } from "../../provider/html-element";
 
 interface Props {
   /**
@@ -35,7 +36,7 @@ const props = withDefaults(defineProps<Props>(), {
   <a
     class="button-wrapper"
     :class="{ disabled: props.disabled }"
-    :href="props.href"
+    :href="sanitizeHref(props.href)"
     :target="props.openInNewTab ? '_blank' : undefined"
     :rel="props.openInNewTab ? 'noreferrer noopener' : undefined"
   >

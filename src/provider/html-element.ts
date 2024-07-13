@@ -37,3 +37,13 @@ export function getElementBySelector(
   }
   return document.body;
 }
+
+export function sanitizeHref(hrefValue: string): string {
+  if (/^javascript:/i.test(hrefValue)) {
+    // If the URL starts with 'javascript:', replace it with '#'
+    console.error(`Blocked a href value when sanitizing ${hrefValue}`);
+    return "#";
+  }
+  // Otherwise, return the original value
+  return hrefValue;
+}

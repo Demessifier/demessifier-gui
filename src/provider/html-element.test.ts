@@ -1,5 +1,6 @@
 import { test, expect } from "vitest";
 import * as htmlElement from "./html-element";
+import { sanitizeHref } from "./html-element";
 
 function testGettingSelector(
   selector: htmlElement.HtmlElementSelector,
@@ -86,5 +87,32 @@ test("HTML element selector", async () => {
         }
       }
     }
+  }
+});
+
+test("HTML element selector", async () => {
+  expect(sanitizeHref).to.be.ok;
+  for (const okHref of [
+    "http://example.com",
+    "https://example.com",
+    "https://example.com/",
+    "https://example.com/path/to/file.txt",
+    "path/to/file.txt",
+    "/path/to/file.txt",
+    "./path/to/file.txt",
+  ]) {
+    console.log(sanitizeHref(okHref));
+    console.log(okHref);
+    expect(sanitizeHref(okHref)).to.be.equal(okHref);
+  }
+  for (const badHref of [
+    "javascript:alert('Hello, world!')",
+    "JAVASCRIPT:alert('Hello, world!')",
+    "JavaScript:alert('Hello, world!')",
+    "javascript:console.log('Hello, world!')",
+    "javascript:const x = 1 + 1",
+    "javascript:",
+  ]) {
+    expect(sanitizeHref(badHref)).to.be.equal("#");
   }
 });
