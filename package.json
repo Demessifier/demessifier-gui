@@ -94,7 +94,7 @@
     "url": "https://github.com/Demessifier/demessifier-gui/issues"
   },
   "homepage": "https://github.com/Demessifier/demessifier-gui#readme",
-  "dependencies": {
+  "peerDependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
     "@fortawesome/free-brands-svg-icons": "^6.5.2",
     "@fortawesome/free-regular-svg-icons": "^6.5.2",
