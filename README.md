@@ -82,7 +82,26 @@ Demessifier GUI is a minimalistic GUI framework for Vue.
 
 ## Workflow
 
-- Before committing, execute `npm run checklist`
+- Before committing, execute `npm run checklist` to run all tests and build
+- For development, switch the `DEVELOPMENT` constant to `true` in `provider/development-environment.ts`
+- When testing local changes in an app that depends on this package,
+  one of the following is necessary after doing the changes here:
+  - With building the package
+    - Here:
+      - Run `npm:pack-development`
+    - In the app, switch to the local package by executing:
+      - `npm remove @demessifier/demessifier-gui` to remove the package you have
+      - Wait for a few seconds
+      - `npm install ../demessifier-gui/auxiliary/demessifier-demessifier-gui-0.0.0-development.tgz`
+        to install the package
+  - More dynamically
+    - Here:
+      - Run `build`
+    - In the app, switch to the local package by executing:
+      - `npm install ../demessifier-gui`
+  - Switching back to the `npm`-distributed package
+    - In the app:
+      - `npm install @demessifier/demessifier-gui`
 
 <!-- ---------------------------------------------------------------- -->
 

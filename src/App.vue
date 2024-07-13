@@ -1,14 +1,19 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
-import { setDefaultColors } from "./provider/color-palette";
+import {
+  type ColorPalette,
+  setColors,
+  setDefaultColors,
+} from "./provider/color-palette";
 import * as Z_INDEX from "./provider/z-index";
 import MenuLeft from "./component/layout/MenuLeft.vue";
-import { MENU } from "./provider/menu";
+import { type MenuItemAny } from "./provider/menu";
 import MenuTopRight from "./component/layout/MenuTopRight.vue";
-import BrandLogo from "./component/layout/BrandLogo.vue";
+import MainHeaderLogo from "./component/layout/MainHeaderLogo.vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faBars, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import NotificationsArea from "./component/layout/NotificationsArea.vue";
+import { type LogoSection } from "./model/logo-section";
 
 // window size for responsiveness
 const windowSize = ref(window.innerWidth);
@@ -56,6 +61,16 @@ function hideLeftMenuIfCompact() {
 }
 
 setDefaultColors();
+
+interface Props {
+  mainHeaderLogo: LogoSection[];
+  menu: MenuItemAny[];
+  colorPalette: ColorPalette;
+}
+
+const props = defineProps<Props>();
+
+setColors(props.colorPalette);
 </script>
 
 <template>
@@ -68,7 +83,7 @@ setDefaultColors();
         />
       </span>
       <div class="logo">
-        <BrandLogo />
+        <MainHeaderLogo v-bind="{ logoSections: props.mainHeaderLogo }" />
       </div>
       <span class="icon-button" @click="toggleRightMenu">
         <FontAwesomeIcon
@@ -104,7 +119,7 @@ setDefaultColors();
         :style="`z-index: ${Z_INDEX.LEFT_MENU}`"
         @click="hideLeftMenuIfCompact"
       >
-        <MenuLeft :menu-items="JSON.parse(JSON.stringify(MENU))" />
+        <MenuLeft :menu-items="menu" />
       </nav>
       <div class="main-and-notifications">
         <NotificationsArea :style="`z-index: ${Z_INDEX.NOTIFICATIONS}`" />
@@ -128,6 +143,7 @@ setDefaultColors();
   flex-wrap: nowrap;
   align-items: center;
   height: 100vh;
+  position: relative;
 }
 
 $headerHeight: 3rem;
@@ -171,8 +187,6 @@ header {
   }
 
   .logo {
-    margin-left: 20px;
-    margin-right: 20px;
     width: 100%;
     height: 80%;
     font-size: calc($headerHeight * 0.8);
@@ -213,7 +227,7 @@ header > * {
   background-color: Window;
   border: var(--color-secondary) solid;
   max-height: calc(100vh - $headerHeight - $headerBorderBottom);
-  box-shadow: 0 1em 2em 0 var(--color-secondary);
+  box-shadow: 0 0 1em 0.5em var(--color-secondary);
 
   &.hidden {
     transform: scaleX(0);

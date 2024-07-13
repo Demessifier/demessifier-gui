@@ -27,9 +27,13 @@ test("Randomness tools: getPseudoRandomItem", async () => {
       expect(subtractedArray).not.to.contain(randomItem);
     }
   }
-  expect(() => getPseudoRandomItem(smaller, bigger)).to.throw("No allowed item.");
+  expect(() => getPseudoRandomItem(smaller, bigger)).to.throw(
+    "No allowed item.",
+  );
   for (const array of [bigger, smaller, overlap, different]) {
-    expect(() => getPseudoRandomItem(array, array)).to.throw("No allowed item.");
+    expect(() => getPseudoRandomItem(array, array)).to.throw(
+      "No allowed item.",
+    );
   }
 });
 

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, type ComputedRef, ref, useSlots } from "vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
   statusBoxFlavor,
-  StatusBoxFlavorItem,
-  StatusBoxFlavorName,
+  type StatusBoxFlavorItem,
+  type StatusBoxFlavorName,
 } from "../provider/status-box";
 import { faCircleXmark, faThumbTack } from "@fortawesome/free-solid-svg-icons";
 
@@ -20,30 +20,32 @@ interface Props {
   boxFlavorName: StatusBoxFlavorName;
   initializeMinimized?: boolean;
   /**
-   * Whether the box is fading (and can be pinned).
+   * Whether the box can be pinned.
    * Pinning emits and event that has to be handled by the parent component.
    */
-  fading?: boolean;
+  canBePinned?: boolean;
   /**
    * Whether it can be closed.
    * Closing emits an event that has to be handled by the parent component.
    */
-  closable?: boolean;
+  canBeClosed?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   initializeMinimized: false,
-  fading: false,
-  closable: false,
+  canBePinned: false,
+  canBeClosed: false,
 });
 
-const emit = defineEmits(["close-status-box", "interrupt-count-down"]);
+const emit = defineEmits(["close-status-box", "pin-status-box"]);
 
-const boxType: StatusBoxFlavorItem = statusBoxFlavor[props.boxFlavorName];
+const boxType: ComputedRef<StatusBoxFlavorItem> = computed(
+  () => statusBoxFlavor[props.boxFlavorName],
+);
 const unMinimizeTooltip = `Expand: \n${props.headlineText}`;
 const minimized = ref(props.initializeMinimized);
-const boxColor = computed(() => `var(--${boxType.color})`);
-const boxBgColor = computed(() => `var(--${boxType.bgColor})`);
+const boxColor = computed(() => `var(--${boxType.value.color})`);
+const boxBgColor = computed(() => `var(--${boxType.value.bgColor})`);
 
 function switchMinimized() {
   minimized.value = !minimized.value;
@@ -61,19 +63,19 @@ function unMinimize() {
     :title="minimized ? unMinimizeTooltip : ''"
     @click="unMinimize"
   >
-    <div class="buttons" v-if="!minimized && (closable || fading)">
+    <div class="buttons" v-if="!minimized && (canBeClosed || canBePinned)">
       <span class="icon-button pin"
         ><FontAwesomeIcon
-          v-if="fading"
+          v-if="canBePinned"
           :icon="faThumbTack"
-          @click="emit('interrupt-count-down')"
+          @click="emit('pin-status-box')"
           title="Pin"
         ></FontAwesomeIcon
       ></span>
       <span class="spring"></span>
       <span class="icon-button close"
         ><FontAwesomeIcon
-          v-if="closable"
+          v-if="canBeClosed"
           :icon="faCircleXmark"
           @click="emit('close-status-box')"
           title="Close"
@@ -90,7 +92,7 @@ function unMinimize() {
         <span v-if="!minimized">{{ headlineText }}</span>
       </h3>
     </div>
-    <div class="content" v-if="!minimized && $slots.default">
+    <div class="content" v-if="!minimized && !!useSlots()['default']">
       <!-- @slot Contents of the box. -->
       <slot></slot>
     </div>
@@ -173,6 +175,14 @@ function unMinimize() {
       span {
         padding: 0 1em;
       }
+    }
+  }
+
+  div.content {
+    overflow: auto;
+
+    hr {
+      border-color: v-bind(boxBgColor);
     }
   }
 }

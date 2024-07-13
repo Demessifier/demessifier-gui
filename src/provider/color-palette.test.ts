@@ -102,7 +102,7 @@ test("color palette", async () => {
 
   const root = document.querySelector(":root") as HTMLElement;
   const rootStyle = root.style;
-  const defaultColor = Color.parse("#888888");
+  const defaultColor = Color.parse("#808080");
   for (const colorName of colorNames) {
     const colorNameColor = getColorNameFromPlainColorName(colorName);
     const colorNameComplement =

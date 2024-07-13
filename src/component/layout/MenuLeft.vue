@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { MenuItem } from "../../provider/menu";
+import { type MenuItemAny } from "../../provider/menu";
 
 interface Props {
-  menuItems: MenuItem[];
+  menuItems: MenuItemAny[];
 }
 
 const props = defineProps<Props>();
@@ -11,13 +11,17 @@ const props = defineProps<Props>();
 
 <template>
   <menu>
-    <li v-for="(menuItem, index) in menuItems" :key="index">
+    <li
+      v-for="(menuItem, index) in menuItems"
+      :key="index"
+      :title="menuItem.name"
+    >
       <router-link
         :to="menuItem.path"
         :class="{ current: menuItem.path === $route?.path }"
       >
         <FontAwesomeIcon :icon="menuItem.fa" class="square menu-icon" />
-        <span class="menu-title">{{ menuItem.title }}</span>
+        <span class="menu-title">{{ menuItem.name }}</span>
       </router-link>
     </li>
   </menu>

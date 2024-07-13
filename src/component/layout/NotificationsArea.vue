@@ -1,9 +1,24 @@
 <script setup lang="ts">
 import { StatusBox } from "../index";
-import { useDemessifierGuiNotificationsList } from "../../provider/notification";
+import {
+  HEIGHT_FADE_DURATION_MS,
+  OPACITY_STEP_DURATION_MS,
+  useDemessifierGuiNotificationsList,
+} from "../../provider/notification";
+import { type CSSStyleDeclarationSubset } from "../../provider/css";
 
 type StatusBoxProps = InstanceType<typeof StatusBox>["$props"];
 const demessifierGuiNotificationsList = useDemessifierGuiNotificationsList();
+
+function getStyle(id: string): CSSStyleDeclarationSubset {
+  const isGone = demessifierGuiNotificationsList.getIsGone(id);
+  return {
+    opacity: `${demessifierGuiNotificationsList.getOpacityFraction(id)}`,
+    transition: `opacity ${OPACITY_STEP_DURATION_MS}ms linear, max-height ${HEIGHT_FADE_DURATION_MS}ms linear`,
+    maxHeight: isGone ? "0" : "100rem",
+    pointerEvents: isGone ? "none" : "auto",
+  };
+}
 </script>
 
 <template>
@@ -17,12 +32,18 @@ const demessifierGuiNotificationsList = useDemessifierGuiNotificationsList();
       @close-status-box="
         () => demessifierGuiNotificationsList.removeNotification(id as string)
       "
-      @interrupt-count-down="
+      @pin-status-box="
         () => demessifierGuiNotificationsList.interruptCountDown(id as string)
       "
       @mousemove="demessifierGuiNotificationsList.resetTimer(id as string)"
-      :style="`opacity: ${demessifierGuiNotificationsList.getOpacityFraction(id as string)}`"
-    ></StatusBox>
+      :style="getStyle(id as string)"
+    >
+      <component
+        v-for="child in notification.children"
+        :key="child"
+        :is="child"
+      />
+    </StatusBox>
   </div>
 </template>
 
@@ -44,7 +65,8 @@ const demessifierGuiNotificationsList = useDemessifierGuiNotificationsList();
     margin: 1em;
     pointer-events: auto;
     border-radius: 0.5rem;
-    // TODO: transition: `opacity ${stepDurationMs}ms linear`;
+    box-shadow: 0 0 1em 0.5em var(--default-bg-color);
+
     &.full {
       background-color: var(--default-bg-color);
     }

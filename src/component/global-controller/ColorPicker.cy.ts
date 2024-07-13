@@ -1,4 +1,4 @@
-import ColorPalette from "./ColorPalette.vue";
+import ColorPalette from "./ColorPicker.vue";
 import {
   defaultColors,
   getColorNameComplementFromPlainColorName,
@@ -7,7 +7,7 @@ import {
   selectByContrastRatio,
   setDefaultColors,
 } from "../../provider/color-palette";
-import { StatusBoxFlavorName } from "../../provider/status-box";
+import { type StatusBoxFlavorName } from "../../provider/status-box";
 import { Color } from "../../model/color";
 
 function testColorOrComplement(
@@ -40,26 +40,6 @@ function testColorOrComplement(
         (complement ? complementValue : colorValue).hexStringNoAlpha,
       );
     });
-}
-
-function testColorOrComplementSetting(
-  colorName: string,
-  complement: boolean,
-): Color {
-  const randomColor = Color.randomColor;
-  const fullColorName = complement
-    ? getColorNameComplementFromPlainColorName(colorName)
-    : getColorNameFromPlainColorName(colorName);
-  cy.get(`.${fullColorName} input[type=color]`)
-    .should((input) => {
-      expect(input).to.have.length(1);
-    })
-    .each((i) => {
-      const input = i.get()[0] as HTMLInputElement;
-      input.value = randomColor.hexStringNoAlpha; // doesn't trigger onChange event
-    })
-    .trigger("change");
-  return randomColor;
 }
 
 function testContrasts() {
@@ -117,67 +97,106 @@ function testContrasts() {
 }
 
 describe("ColorPalette component", () => {
-  it("renders", () => {
-    // see: https://test-utils.vuejs.org/guide/
+  beforeEach(() => {
     cy.mount(ColorPalette);
     setDefaultColors();
+  });
+
+  it("renders the correct number of rows", () => {
     cy.get(".content .row").should((row) => {
       expect(row).to.have.length(Object.keys(defaultColors).length + 1);
     });
+  });
+
+  describe("default colors", () => {
     for (const colorName of Object.keys(defaultColors)) {
-      testColorOrComplement(
-        colorName,
-        false,
-        defaultColors[colorName].value,
-        defaultColors[colorName].complementValue,
-      );
-      testColorOrComplement(
-        colorName,
-        true,
-        defaultColors[colorName].value,
-        defaultColors[colorName].complementValue,
-      );
-      cy.get(`tbody td.${colorName}`)
-        .should((td) => {
-          expect(td).to.have.length.at.least(1);
-          expect(td).to.have.css(
-            "background-color",
-            defaultColors[colorName].value.rgbString,
-          );
-        })
-        .find("span")
-        .should((span) => {
-          expect(span).to.have.css(
-            "color",
-            defaultColors[colorName].complementValue.rgbString,
-          );
+      describe(`default color ${colorName}`, () => {
+        for (const complement of [false, true]) {
+          it(`works setting the ${complement ? "complement" : "color"}`, () => {
+            testColorOrComplement(
+              colorName,
+              complement,
+              defaultColors[colorName].value,
+              defaultColors[colorName].complementValue,
+            );
+          });
+        }
+        it("has correct css colors", () => {
+          cy.get(`tbody td.${colorName}`)
+            .should((td) => {
+              expect(td).to.have.length.at.least(1);
+              expect(td).to.have.css(
+                "background-color",
+                defaultColors[colorName].value.rgbString,
+              );
+            })
+            .find("span")
+            .should((span) => {
+              expect(span).to.have.css(
+                "color",
+                defaultColors[colorName].complementValue.rgbString,
+              );
+            });
         });
+      });
     }
 
-    testContrasts();
+    it("has correct contrasts for default colors", () => {
+      testContrasts();
+    });
+  });
 
-    // test color changing
+  describe("random colors", () => {
+    type ColorsCollection = { [color: keyof typeof defaultColors]: Color };
+
+    function getRandomColors(): ColorsCollection {
+      const result: ColorsCollection = {};
+      Object.keys(defaultColors).forEach((c) => {
+        result[c] = Color.randomColor;
+      });
+      return result;
+    }
+
+    const randomColor = getRandomColors();
+    const randomColorComplement = getRandomColors();
+
+    beforeEach(() => {
+      for (const colorName of Object.keys(defaultColors)) {
+        for (const complement of [false, true]) {
+          const colorsCollection = complement
+            ? randomColorComplement
+            : randomColor;
+          const color = colorsCollection[colorName];
+          const fullColorName = complement
+            ? getColorNameComplementFromPlainColorName(colorName)
+            : getColorNameFromPlainColorName(colorName);
+          cy.get(`.${fullColorName} input[type=color]`)
+            .should((input) => {
+              expect(input).to.have.length(1);
+            })
+            .invoke("val", color.hexStringNoAlpha)
+            .trigger("change");
+        }
+      }
+    });
+
     for (const colorName of Object.keys(defaultColors)) {
-      const randomColor = testColorOrComplementSetting(colorName, false);
-      const randomColorComplement = testColorOrComplementSetting(
-        colorName,
-        true,
-      );
-
-      testColorOrComplement(
-        colorName,
-        false,
-        randomColor,
-        randomColorComplement,
-      );
-      testColorOrComplement(
-        colorName,
-        true,
-        randomColor,
-        randomColorComplement,
-      );
+      describe(`random color ${colorName}`, () => {
+        for (const complement of [false, true]) {
+          it(`works setting the ${complement ? "complement" : "color"}`, () => {
+            testColorOrComplement(
+              colorName,
+              complement,
+              randomColor[colorName],
+              randomColorComplement[colorName],
+            );
+          });
+        }
+      });
     }
 
-    testContrasts();
+    it("has correct contrasts for random colors", () => {
+      testContrasts();
+    });
   });
 });

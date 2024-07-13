@@ -1,18 +1,39 @@
 import StatusBox from "../component/StatusBox.vue";
 import { defineStore } from "pinia";
-import { type VNode } from "vue";
+import { h, type VNode } from "vue";
 import { type StatusBoxFlavorName } from "./status-box";
 import { getPseudoRandomString } from "./randomness";
 
 type StatusBoxProps = InstanceType<typeof StatusBox>["$props"];
-type ChildrenType = string | VNode | VNode[];
+export type ChildrenType = string | string[] | VNode | VNode[];
 type Interval = ReturnType<typeof setInterval>;
+
+function renderChildren(children?: ChildrenType): VNode[] {
+  if (!children) return [];
+  if (typeof children === "string") {
+    return [h("p", {}, children)];
+  }
+  if (Array.isArray(children)) {
+    if (typeof children[0] === "string") {
+      if (children.every((child) => typeof child === "string")) {
+        return children.map((child) => h("p", {}, child));
+      }
+      throw new Error(
+        "Some of the elements of this array are strings and some are not.",
+      );
+    }
+    return children as VNode[];
+  }
+  return [children as VNode];
+}
 
 type Notification = {
   statusBoxProps: StatusBoxProps;
+  children: VNode[];
   interval: Interval;
-  maxTimeSeconds: number;
-  remainingTimeSeconds: number;
+  maxTimeMilliSeconds: number;
+  remainingTimeMilliSeconds: number;
+  isGone: boolean;
 };
 type NotificationsList = { [key: string]: Notification };
 
@@ -30,8 +51,10 @@ function getLogItems(
   ];
 }
 
-const fadeOutDurationSeconds = 5;
-const stepDurationMs = 500;
+export const OPACITY_STEP_DURATION_MS = 500;
+export const FADE_OUT_DURATION_MS = 5 * 1000;
+export const REMOVE_IN_MS = 10 * 1000;
+export const HEIGHT_FADE_DURATION_MS = 500;
 
 export const useDemessifierGuiNotificationsList = defineStore({
   id: "demessifier-gui:notifications-list",
@@ -45,13 +68,13 @@ export const useDemessifierGuiNotificationsList = defineStore({
       boxFlavorName: StatusBoxFlavorName,
       headlineText: string,
       children: ChildrenType,
-      removeInSeconds: number | false = 10,
+      removeInMilliSeconds: number | false = REMOVE_IN_MS,
     ): string {
       const props: StatusBoxProps = {
         boxFlavorName,
         headlineText,
-        fading: true,
-        closable: true,
+        canBePinned: removeInMilliSeconds !== false,
+        canBeClosed: true,
       };
       const notificationId = getPseudoRandomString(32);
 
@@ -70,60 +93,77 @@ export const useDemessifierGuiNotificationsList = defineStore({
           clearInterval(interval);
           return;
         }
-        if (notification.remainingTimeSeconds > 0) {
-          notification.remainingTimeSeconds -= stepDurationMs / 1000;
+        if (notification.remainingTimeMilliSeconds > 0) {
+          notification.remainingTimeMilliSeconds -= OPACITY_STEP_DURATION_MS;
           return;
         }
-        clearInterval(interval);
-        delete this.notificationsList[notificationId];
-      }, stepDurationMs);
+        this.removeNotification(notificationId);
+      }, OPACITY_STEP_DURATION_MS);
 
-      const maxTimeSeconds =
-        removeInSeconds === false ? Infinity : Math.max(removeInSeconds, 0);
+      const maxTimeMilliSeconds =
+        removeInMilliSeconds === false
+          ? Infinity
+          : Math.max(removeInMilliSeconds, 0);
       this.notificationsList[notificationId] = {
         statusBoxProps: props,
+        children: renderChildren(children),
         interval: interval,
-        maxTimeSeconds: maxTimeSeconds,
-        remainingTimeSeconds: maxTimeSeconds,
+        maxTimeMilliSeconds: maxTimeMilliSeconds,
+        remainingTimeMilliSeconds: maxTimeMilliSeconds,
+        isGone: false,
       };
       return notificationId;
     },
-    removeNotification(
-      notificationId: string,
-      ignoreMissing: boolean = false,
-    ): StatusBoxProps | null {
-      if (notificationId in this.notificationsList) {
+    removeNotification(notificationId: string, ignoreMissing: boolean = true) {
+      if (
+        Object.prototype.hasOwnProperty.call(
+          this.notificationsList,
+          notificationId,
+        )
+      ) {
         const toBeDeleted = this.notificationsList[notificationId];
+        if (!toBeDeleted) return null;
         clearInterval(toBeDeleted.interval);
-        delete this.notificationsList[notificationId];
-        return toBeDeleted.statusBoxProps;
+        toBeDeleted.isGone = true;
+        setTimeout(() => {
+          delete this.notificationsList[notificationId];
+        }, HEIGHT_FADE_DURATION_MS);
+        return;
       }
-      if (ignoreMissing) return null;
+      if (ignoreMissing) return;
       throw new Error(
         `Notification ID ${notificationId} is not in the notifications list.`,
       );
     },
     interruptCountDown(notificationId: string) {
       const notification = this.notificationsList[notificationId];
+      if (!notification) return;
       if (notification.interval !== null) {
         clearInterval(notification.interval);
       }
-      notification.maxTimeSeconds = Infinity;
-      notification.statusBoxProps.fading = false;
+      notification.maxTimeMilliSeconds = Infinity;
+      notification.statusBoxProps.canBePinned = false;
       this.resetTimer(notificationId);
     },
     resetTimer(notificationId: string) {
       const notification = this.notificationsList[notificationId];
-      notification.remainingTimeSeconds = notification.maxTimeSeconds;
+      if (!notification) return;
+      notification.remainingTimeMilliSeconds = notification.maxTimeMilliSeconds;
     },
-    getOpacityFraction(notificationId: string) {
+    getOpacityFraction(notificationId: string): number {
       const notification = this.notificationsList[notificationId];
-      const remainingTimeSeconds = notification.remainingTimeSeconds;
-      if (remainingTimeSeconds > fadeOutDurationSeconds) return 1;
+      if (!notification || notification.isGone) return 0;
+      const remainingTimeMilliSeconds = notification.remainingTimeMilliSeconds;
+      if (remainingTimeMilliSeconds > FADE_OUT_DURATION_MS) return 1;
       return (
-        remainingTimeSeconds /
-        Math.min(notification.maxTimeSeconds, fadeOutDurationSeconds)
+        remainingTimeMilliSeconds /
+        Math.min(notification.maxTimeMilliSeconds, FADE_OUT_DURATION_MS)
       );
+    },
+    getIsGone(notificationId: string): boolean {
+      const notification = this.notificationsList[notificationId];
+      if (!notification) return true;
+      return notification.isGone;
     },
   },
 });

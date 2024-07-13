@@ -6,7 +6,7 @@ type ColorAndComplement = {
   complementValue: Color;
 };
 
-type ColorPalette = {
+export type ColorPalette = {
   [color: string]: ColorAndComplement;
 };
 
@@ -88,7 +88,7 @@ export function setColor(
 export function getCurrentColor(
   colorName: ValidColorName | "default-bg-color",
 ): Color {
-  const defaultColor = Color.parse("#888888");
+  const defaultColor = Color.parse("#808080");
   const retrievedValue = getRootStyleProperty(`--${colorName}`); // empty string if not set
 
   return retrievedValue.trim() === ""
@@ -121,11 +121,18 @@ export function getColorNameComplementFromPlainColorName(
 /**
  * Set the default CSS color variables.
  */
-export function setDefaultColors() {
-  for (const [key, value] of Object.entries(defaultColors)) {
+export function setColors(colorPalette: ColorPalette) {
+  for (const [key, value] of Object.entries(colorPalette)) {
     setColor(`color-${key}`, value.value);
     setColor(`color-${key}-complement`, value.complementValue);
   }
+}
+
+/**
+ * Set the default CSS color variables.
+ */
+export function setDefaultColors() {
+  setColors(defaultColors);
 }
 
 /**
