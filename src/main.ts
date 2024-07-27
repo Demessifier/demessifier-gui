@@ -23,7 +23,6 @@ import {
   getElementBySelector,
   type HtmlElementSelector,
 } from "./provider/html-element";
-import { DEVELOPMENT } from "./provider/development-environment";
 import { type LogoSection, headerLogoExample } from "./model/logo-section";
 import { type ColorPalette, defaultColors } from "./provider/color-palette";
 
@@ -64,8 +63,4 @@ export function mountApp(
     app.mount(mountToElement);
   });
   return app;
-}
-
-if (DEVELOPMENT) {
-  mountApp({ elementId: "app" });
 }

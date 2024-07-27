@@ -12,16 +12,31 @@ export default defineConfig({
   ],
   build: {
     lib: {
-      entry: "src/index.ts",
+      entry: "src/main.ts",
       formats: ["cjs", "es"],
-      fileName: "index",
+      fileName: "main",
     },
     rollupOptions: {
       input: {
-        index: "src/index.ts",
+        index: "src/main.ts",
       },
-      // What shouldn't be bundled into the library: dependencies, tests
-      external: ["vue", "@vueuse/core", /\.test\.ts$/, /\.cy\.ts$/, "/test"],
+      // What shouldn't be bundled into the library: peerDependencies, tests
+      external: [
+        "@fortawesome/fontawesome-svg-core",
+        "@fortawesome/free-brands-svg-icons",
+        "@fortawesome/free-regular-svg-icons",
+        "@fortawesome/free-solid-svg-icons",
+        "@fortawesome/vue-fontawesome",
+        "@vueuse/core",
+        "pinia",
+        "vue",
+        "vue-router",
+        "/dev",
+        "/test",
+        /\.test\.ts$/,
+        /\.cy\.ts$/,
+      ],
+
       output: {
         globals: {
           vue: "Vue",

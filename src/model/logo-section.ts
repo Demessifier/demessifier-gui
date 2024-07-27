@@ -1,5 +1,4 @@
 import TheDemessifierLogoSvg from "../graphics/sbrul-shad-svg-v1.svg";
-import { DEVELOPMENT } from "../provider/development-environment";
 
 export type LogoSection = {
   logoSectionType: "text-title" | "text-subtitle" | "svg-mask-square";
@@ -14,7 +13,7 @@ export const headerLogoExample: LogoSection[] = [
   },
   {
     logoSectionType: "text-title",
-    logoSectionText: DEVELOPMENT ? "Demessifier GUI" : "My Demessifier App",
+    logoSectionText: "My Demessifier App",
   },
 ];
 

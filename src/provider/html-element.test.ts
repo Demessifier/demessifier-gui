@@ -104,7 +104,7 @@ test("HTML element selector", async () => {
     "#",
     "javascript/script.js",
     "/javascript/script.js",
-    "./javascript/script.js"
+    "./javascript/script.js",
   ]) {
     console.log(sanitizeHref(okHref));
     console.log(okHref);

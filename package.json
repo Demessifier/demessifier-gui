@@ -51,15 +51,15 @@
   "files": [
     "build"
   ],
-  "types": "./build/src/index.d.ts",
-  "main": "./build/index.cjs",
-  "module": "./build/index.js",
+  "types": "./build/src/main.d.ts",
+  "main": "./build/main.cjs",
+  "module": "./build/main.js",
   "exports": {
     ".": {
-      "types": "./build/index.d.ts",
-      "import": "./build/index.js",
-      "require": "./build/index.cjs",
-      "default": "./build/index.js"
+      "types": "./build/main.d.ts",
+      "import": "./build/main.js",
+      "require": "./build/main.cjs",
+      "default": "./build/main.js"
     },
     "./style.css": "./build/style.css"
   },
@@ -126,13 +126,13 @@
     "semantic-release": "^22.0.12",
     "ts-node": "^10.9.2",
     "tsx": "^4.11.0",
-    "typescript": "^5.4.5",
+    "typescript": "^5.5.4",
     "vite": "^5.2.12",
     "vite-plugin-dts": "^3.9.1",
     "vite-plugin-istanbul": "^6.0.2",
     "vitest": "^0.34.6",
     "vitest-matchmedia-mock": "^1.0.5",
-    "vue-tsc": "^1.8.27"
+    "vue-tsc": "^2.0.29"
   },
   "pnpm": {
     "overrides": {
