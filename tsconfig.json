@@ -17,5 +17,5 @@
     "declarationMap": true,
     "types": ["node", "vite/client", "cypress", "./src/shims-vue.d.ts"]
   },
-  "include": ["./src", "./test/cypress"]
+  "include": ["./dev", "./src", "./test/cypress"]
 }
